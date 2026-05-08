@@ -23,37 +23,37 @@ export const navItems = [
 ];
 
 export const services = [
-  { title: "AI Workflow Design", text: "Operational blueprints for intake, routing, enrichment, approvals, reporting, and human review." },
-  { title: "Customer Assistants", text: "Polished website and support assistants that qualify leads, answer questions, and trigger next actions." },
-  { title: "System Integration", text: "Connected CRMs, forms, sheets, inboxes, databases, ERPs, and internal tools with clean data movement." },
-  { title: "Document Intelligence", text: "Extraction, classification, summarization, and decision support for contracts, invoices, forms, and records." },
-  { title: "Operations Dashboards", text: "Live views of workload, status, bottlenecks, next steps, and business health across workflows." },
-  { title: "AI Enablement", text: "Governance, training, reusable prompt systems, and adoption support for teams moving beyond experiments." },
+  { title: "Process Automation Using AI", text: "Identify repetitive workflows and redesign them with AI-assisted intake, routing, summarization, approvals, and reporting." },
+  { title: "Workflow And Tool Integration", text: "Connect CRMs, forms, spreadsheets, inboxes, document stores, and internal systems so work moves without manual handoffs." },
+  { title: "AI Assistants For Operations", text: "Build practical assistants for internal knowledge, customer inquiries, document review, and team support." },
+  { title: "DPDPA Readiness Assessment", text: "Map personal data flows, consent touchpoints, notices, vendors, retention practices, and operational gaps against DPDPA expectations." },
+  { title: "Privacy Process Design", text: "Create implementable processes for consent, data principal requests, breach response, grievance handling, and governance ownership." },
+  { title: "Compliance Documentation Support", text: "Prepare structured registers, policies, SOPs, checklists, and implementation roadmaps for ongoing privacy operations." },
 ];
 
 export const solutionAreas = [
-  "Lead qualification and inquiry routing",
-  "Website assistants and support flows",
-  "Internal knowledge assistants",
+  "AI-assisted process automation",
+  "Internal workflow and approval automation",
   "Document processing and summarization",
-  "Approval and operations automation",
-  "CRM, reporting, and spreadsheet workflows",
-  "Client-facing service portals",
-  "Custom AI-enabled business systems",
+  "Customer inquiry and lead routing systems",
+  "DPDPA gap assessment and compliance roadmap",
+  "Consent, notice, and data principal request workflows",
+  "Data inventory, vendor, and retention mapping",
+  "Privacy governance and breach response readiness",
 ];
 
 export const processSteps = [
-  { step: "01", title: "Discover", text: "Study the business flow, people, tools, exceptions, and decisions that shape the work." },
-  { step: "02", title: "Design", text: "Turn scattered friction into a refined workflow architecture with data, UX, and AI boundaries." },
-  { step: "03", title: "Build", text: "Implement the system with practical interfaces, integrations, documentation, and handoff." },
-  { step: "04", title: "Refine", text: "Measure outcomes, tune the workflow, and expand automation where it creates durable leverage." },
+  { step: "01", title: "Assess", text: "Understand current workflows, tools, personal data touchpoints, risk areas, and business priorities." },
+  { step: "02", title: "Design", text: "Create a practical automation or DPDPA implementation plan with clear owners, controls, and milestones." },
+  { step: "03", title: "Implement", text: "Build workflows, integrations, assistant experiences, privacy processes, documents, and operating checklists." },
+  { step: "04", title: "Operationalize", text: "Train teams, monitor outcomes, refine controls, and keep the system usable after launch." },
 ];
 
 export const faqs = [
-  { q: "Can Serenvya work with the tools we already use?", a: "Yes. The work usually starts by connecting and improving existing tools before recommending new platforms." },
-  { q: "Do we need a finished automation idea before calling?", a: "No. A broad operational pain point is enough. Serenvya can turn that into a clear, prioritized roadmap." },
-  { q: "Is this only for large companies?", a: "No. Growing teams often benefit strongly because automation reduces manual drag without forcing a large team expansion." },
-  { q: "Can you build customer-facing AI experiences?", a: "Yes. That includes assistants, intake flows, lead qualification, support routing, and connected automation behind the experience." },
+  { q: "What are Serenvya's core services?", a: "Serenvya focuses on two areas: AI-led process automation and DPDPA consultancy for practical privacy compliance readiness." },
+  { q: "Can automation and DPDPA work happen together?", a: "Yes. Many automation projects touch personal data, so privacy-aware workflow design can reduce operational friction while improving governance." },
+  { q: "Do we need to know exactly what to automate?", a: "No. Serenvya can start with a broad operational pain point, assess the workflow, and convert it into a prioritized automation roadmap." },
+  { q: "Is DPDPA consultancy legal advice?", a: "Serenvya supports readiness, process design, documentation, and implementation. Formal legal interpretation should be reviewed with qualified legal counsel where required." },
 ];
 
 const pageMap = Object.fromEntries(navItems.map((item) => [item.page, item]));
@@ -193,15 +193,15 @@ function Home({ setPage }) {
       <section className="relative px-5 pb-16 pt-12 lg:px-8 lg:pb-24 lg:pt-18">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="fade-up">
-            <SectionLabel>AI automation for calmer operations</SectionLabel>
-            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.01] tracking-tight sm:text-6xl lg:text-7xl">Modern automation systems for businesses ready to move faster.</h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72">Serenvya designs polished AI workflows, connected tools, and customer-facing systems that make daily operations feel lighter, clearer, and more scalable.</p>
+            <SectionLabel>AI automation and DPDPA consultancy</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.01] tracking-tight sm:text-6xl lg:text-7xl">Automate smarter. Govern personal data better.</h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72">Serenvya helps businesses redesign operational processes using AI and prepare for DPDPA compliance with practical privacy workflows, documentation, and governance support.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button page="contact" onClick={() => setPage("contact")}>Start a conversation <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
               <Button page="services" variant="ghost" onClick={() => setPage("services")}>Explore services</Button>
             </div>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {[["Elegant", "glass-led digital presence"], ["Practical", "AI workflows for real work"], ["Connected", "tools, teams, and customers"]].map(([value, label]) => <Glass key={label} className="p-5"><p className="text-2xl font-semibold">{value}</p><p className="mt-2 text-sm leading-6 text-white/62">{label}</p></Glass>)}
+              {[["Automate", "reduce repetitive operational work"], ["Comply", "prepare for DPDPA obligations"], ["Operate", "make controls usable for teams"]].map(([value, label]) => <Glass key={label} className="p-5"><p className="text-2xl font-semibold">{value}</p><p className="mt-2 text-sm leading-6 text-white/62">{label}</p></Glass>)}
             </div>
           </div>
           <div className="grid gap-4 fade-up lg:grid-cols-[0.72fr_1fr]" style={{ animationDelay: "120ms" }}>
@@ -211,8 +211,8 @@ function Home({ setPage }) {
               <div className="absolute -right-12 -top-16 h-40 w-40 rounded-full bg-amber-300/20 blur-3xl" />
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-sm uppercase tracking-[0.22em] text-sky-100">Serenvya operating layer</p>
-                  <p className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight">Strategy, automation, AI assistants, and refined interfaces in one cohesive build.</p>
+                  <p className="text-sm uppercase tracking-[0.22em] text-sky-100">Serenvya focus areas</p>
+                  <p className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight">AI process automation for efficiency, and DPDPA consultancy for responsible data operations.</p>
                 </div>
                 <div className="hidden rounded-3xl bg-white p-3 shadow-[0_18px_55px_rgba(255,255,255,0.12)] sm:block">
                   <img src="/serenvya-logo.png" alt="Serenvya logo" className="h-16 w-28 object-contain" />
@@ -233,12 +233,12 @@ function FeaturedBand({ setPage }) {
   return (
     <section className="px-5 py-12 lg:px-8">
       <Glass className="mx-auto grid max-w-7xl gap-8 overflow-hidden p-6 lg:grid-cols-[0.9fr_1.1fr] lg:p-8">
-        <ImagePanel src={illustrations[1]} alt="Connected automation environment" className="aspect-[16/9]" tone="amber" />
+        <ImagePanel src={illustrations[1]} alt="Connected workflow and data systems" className="aspect-[16/9]" tone="amber" />
         <div className="flex flex-col justify-center">
-          <SectionLabel>What changes</SectionLabel>
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Less manual drag. More operational rhythm.</h2>
-          <p className="mt-5 text-lg leading-8 text-white/70">Serenvya turns repetitive business motion into a coherent operating system: intake, intelligence, routing, follow-up, measurement, and continuous refinement.</p>
-          <div className="mt-7"><Button page="solutions" onClick={() => setPage("solutions")}>View solution areas</Button></div>
+          <SectionLabel>Two clear service lines</SectionLabel>
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Operational efficiency and privacy readiness should work together.</h2>
+          <p className="mt-5 text-lg leading-8 text-white/70">AI automation improves how work moves. DPDPA consultancy improves how personal data is handled inside that work. Serenvya brings both into practical business workflows.</p>
+          <div className="mt-7"><Button page="solutions" onClick={() => setPage("solutions")}>View service areas</Button></div>
         </div>
       </Glass>
     </section>
@@ -251,7 +251,7 @@ function ServiceGrid() {
       <div className="mx-auto max-w-7xl">
         <div className="max-w-3xl">
           <SectionLabel>Services</SectionLabel>
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Built like a product. Tuned like a process.</h2>
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Two practices. One practical implementation mindset.</h2>
         </div>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => <Glass key={service.title} className="p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.105]">
@@ -276,16 +276,16 @@ function IllustrationStrip() {
 }
 
 function ServicesPage() {
-  return <><PageHero kicker="Services" title="AI, automation, and integration services with polish." text="Serenvya helps teams move from scattered tools to designed workflows that support customers, employees, and leadership." image={illustrations[0]} /><ServiceGrid /></>;
+  return <><PageHero kicker="Services" title="AI process automation and DPDPA consultancy." text="Serenvya works across two focused service lines: redesigning business processes with AI, and helping organizations prepare practical privacy operations for DPDPA." image={illustrations[0]} /><ServiceGrid /></>;
 }
 
 function SolutionsPage() {
   return (
     <>
-      <PageHero kicker="Solutions" title="Connected systems for the work that actually slows teams down." text="The best automation opportunities usually sit inside handoffs: intake, decisions, document review, reporting, and customer follow-up." image={illustrations[3]} />
+      <PageHero kicker="Solutions" title="Better workflows for business operations and personal data governance." text="Serenvya focuses on high-friction business processes and the privacy controls that should sit around personal data collection, use, sharing, retention, and response." image={illustrations[3]} />
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <ImagePanel src={illustrations[7]} alt="AI assistant workflow" className="aspect-[4/5]" tone="green" />
+          <ImagePanel src={illustrations[7]} alt="AI and privacy operations assistant" className="aspect-[4/5]" tone="green" />
           <div className="grid gap-4 sm:grid-cols-2">
             {solutionAreas.map((item) => <Glass key={item} className="flex items-start gap-3 p-5"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-7 text-white/76">{item}</p></Glass>)}
           </div>
@@ -298,7 +298,7 @@ function SolutionsPage() {
 function ProcessPage() {
   return (
     <>
-      <PageHero kicker="Process" title="A clear path from idea to implemented system." text="Every project is shaped to reduce ambiguity early, build only what matters, and leave the team with a system they can trust." image={illustrations[4]} />
+      <PageHero kicker="Process" title="A clear path from assessment to operational adoption." text="Whether the work is AI automation or DPDPA readiness, the approach stays practical: assess, design, implement, and operationalize." image={illustrations[4]} />
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-4">
           {processSteps.map((item) => <Glass key={item.step} className="p-6">
@@ -315,10 +315,14 @@ function ProcessPage() {
 function AboutPage() {
   return (
     <>
-      <PageHero kicker="About Serenvya" title="Modern systems thinking with a calm, premium edge." text="Serenvya Consulting & Automations Private Limited helps businesses translate operational friction into elegant AI-enabled systems." image={illustrations[5]} />
+      <PageHero kicker="About Serenvya" title="Technology execution with a governance-aware lens." text="Serenvya Consulting & Automations Private Limited helps businesses improve operations through AI automation while building more disciplined personal data practices." image={illustrations[5]} />
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-3">
-          {["Business-first automation", "Polished customer experience", "Maintainable implementation"].map((item) => <Glass key={item} className="p-7"><h3 className="text-2xl font-semibold tracking-tight">{item}</h3><p className="mt-4 text-[15px] leading-7 text-white/66">The work balances clarity, creative execution, and practical long-term operations.</p></Glass>)}
+          {[
+            ["Business-first automation", "AI is applied where it improves real workflows, reduces repetitive effort, and creates measurable operational value."],
+            ["DPDPA readiness", "Privacy work is translated into processes, responsibilities, documentation, and controls that teams can actually operate."],
+            ["Implementation support", "The work balances strategy, documentation, systems, training, and practical handover for long-term use."],
+          ].map(([title, text]) => <Glass key={title} className="p-7"><h3 className="text-2xl font-semibold tracking-tight">{title}</h3><p className="mt-4 text-[15px] leading-7 text-white/66">{text}</p></Glass>)}
         </div>
       </section>
     </>
@@ -329,7 +333,7 @@ function ContactPage() {
   const [openFaq, setOpenFaq] = useState(0);
   return (
     <>
-      <PageHero kicker="Contact" title="Let’s design the next intelligent layer of your business." text="Share the process, customer journey, or internal workflow you want to make smoother. Serenvya can help shape the path from idea to implementation." image={illustrations[6]}>
+      <PageHero kicker="Contact" title="Start with a workflow, a compliance gap, or both." text="Share the process you want to automate, the personal data practices you want to strengthen, or the DPDPA readiness work you need to structure." image={illustrations[6]}>
         <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button href="mailto:hello@serenvya.com">Email Serenvya <Icon name="mail" className="ml-2 h-5 w-5" /></Button></div>
       </PageHero>
       <section className="px-5 pb-20 lg:px-8">
@@ -337,7 +341,7 @@ function ContactPage() {
           <Glass className="p-7">
             <h2 className="text-3xl font-semibold tracking-tight">Good starting points</h2>
             <div className="mt-6 grid gap-3">
-              {["A workflow that eats too much team time", "A customer journey that needs faster response", "A document process that needs AI assistance", "A set of tools that should talk to each other"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
+              {["A workflow that eats too much team time", "A document or approval process that needs AI assistance", "A DPDPA gap assessment or readiness roadmap", "A consent, notice, grievance, or breach response process"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
             </div>
           </Glass>
           <div className="space-y-3">

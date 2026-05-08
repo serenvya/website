@@ -131,7 +131,7 @@ function Shell({ children, page, setPage }) {
             {navItems.map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${page === item.page ? "bg-white text-slate-950 shadow-lg" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>)}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
-            <Button href="mailto:hello@serenvya.com" variant="ghost">Email</Button>
+            <Button href="mailto:info@serenvya.com" variant="ghost">Email</Button>
             <Button page="contact" onClick={() => setPage("contact")}>Book a consultation</Button>
           </div>
           <button className="rounded-full border border-white/15 bg-white/10 p-3 lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
@@ -334,7 +334,7 @@ function ContactPage() {
   return (
     <>
       <PageHero kicker="Contact" title="Start with a workflow, a compliance gap, or both." text="Share the process you want to automate, the personal data practices you want to strengthen, or the DPDPA readiness work you need to structure." image={illustrations[6]}>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button href="mailto:hello@serenvya.com">Email Serenvya <Icon name="mail" className="ml-2 h-5 w-5" /></Button></div>
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button href="mailto:info@serenvya.com">Email Serenvya <Icon name="mail" className="ml-2 h-5 w-5" /></Button></div>
       </PageHero>
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">

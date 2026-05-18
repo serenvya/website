@@ -26,7 +26,7 @@ describe("Serenvya website content", () => {
     render(<App />);
     expect(
       screen.getByRole("heading", {
-        name: /automate smarter\. govern personal data better/i,
+        name: /where intelligent automation meets compliance precision/i,
       })
     ).toBeInTheDocument();
     expect(screen.getAllByText(/book a consultation/i).length).toBeGreaterThan(0);

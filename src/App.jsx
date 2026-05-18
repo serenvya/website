@@ -194,7 +194,7 @@ function Home({ setPage }) {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="fade-up">
             <SectionLabel>AI automation and DPDPA consultancy</SectionLabel>
-            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.01] tracking-tight sm:text-6xl lg:text-7xl">Automate smarter. Govern personal data better.</h1>
+            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.01] tracking-tight sm:text-6xl lg:text-7xl">Where Intelligent Automation meets Compliance Precision</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72">Serenvya helps businesses redesign operational processes using AI and prepare for DPDPA compliance with practical privacy workflows, documentation, and governance support.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button page="contact" onClick={() => setPage("contact")}>Start a conversation <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>

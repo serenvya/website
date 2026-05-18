@@ -42,4 +42,14 @@ Use the values shown in Vercel as the source of truth. After saving GoDaddy DNS,
 
 ## Contact form
 
-The form is currently UI-only. Connect it to Formspree, Resend, EmailJS, or a Vercel serverless function before launch.
+The contact form posts to the Vercel serverless endpoint at `/api/contact`.
+
+Email sending uses Resend. Add these environment variables in Vercel:
+
+```bash
+RESEND_API_KEY=your_resend_api_key
+CONTACT_FROM_EMAIL=info@serenvya.com
+CONTACT_TO_EMAIL=info@serenvya.com
+```
+
+Before using `info@serenvya.com` as the sender, verify the `serenvya.com` domain in Resend and add the DNS records Resend provides. If the domain is not verified yet, use a verified sender address temporarily.

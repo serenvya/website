@@ -92,6 +92,101 @@ function Button({ children, page, href, variant = "primary", className = "", onC
   return <a href={href || hrefFor(page)} className={classes} onClick={onClick}>{children}</a>;
 }
 
+function Field({ label, children }) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-medium text-white/72">{label}</span>
+      {children}
+    </label>
+  );
+}
+
+function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", query: "" });
+  const [status, setStatus] = useState("idle");
+  const [message, setMessage] = useState("");
+
+  const updateField = (event) => {
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  };
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setStatus("sending");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || "Unable to send your query right now.");
+      }
+
+      setStatus("sent");
+      setMessage("Thanks. Your query has been sent to Serenvya.");
+      setForm({ name: "", email: "", query: "" });
+    } catch (error) {
+      setStatus("error");
+      setMessage(error.message || "Unable to send your query right now.");
+    }
+  };
+
+  return (
+    <Glass className="p-6 sm:p-7">
+      <form className="grid gap-5" onSubmit={submit}>
+        <div>
+          <h2 className="text-3xl font-semibold tracking-tight">Send a query</h2>
+          <p className="mt-3 text-[15px] leading-7 text-white/64">Tell us what you want to automate, assess, or clarify. Serenvya will receive this directly at info@serenvya.com.</p>
+        </div>
+        <Field label="Name">
+          <input
+            className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
+            name="name"
+            onChange={updateField}
+            placeholder="Your name"
+            required
+            value={form.name}
+          />
+        </Field>
+        <Field label="Email (optional)">
+          <input
+            className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
+            name="email"
+            onChange={updateField}
+            placeholder="you@example.com"
+            type="email"
+            value={form.email}
+          />
+        </Field>
+        <Field label="Query">
+          <textarea
+            className="min-h-36 w-full resize-y rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
+            name="query"
+            onChange={updateField}
+            placeholder="Share your automation requirement or DPDPA readiness question..."
+            required
+            value={form.query}
+          />
+        </Field>
+        <button
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={status === "sending"}
+          type="submit"
+        >
+          {status === "sending" ? "Sending..." : "Submit query"}
+          <Icon name="arrow" className="ml-2 h-5 w-5" />
+        </button>
+        {message && <p className={`rounded-2xl border px-4 py-3 text-sm ${status === "error" ? "border-red-300/30 bg-red-400/10 text-red-100" : "border-emerald-300/30 bg-emerald-400/10 text-emerald-100"}`}>{message}</p>}
+      </form>
+    </Glass>
+  );
+}
+
 function Logo({ compact = false }) {
   return (
     <div className="flex items-center gap-3">
@@ -131,7 +226,7 @@ function Shell({ children, page, setPage }) {
             {navItems.map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${page === item.page ? "bg-white text-slate-950 shadow-lg" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>)}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
-            <Button href="mailto:info@serenvya.com" variant="ghost">Email</Button>
+            <Button page="contact" variant="ghost" onClick={() => setPage("contact")}>Send query</Button>
             <Button page="contact" onClick={() => setPage("contact")}>Book a consultation</Button>
           </div>
           <button className="rounded-full border border-white/15 bg-white/10 p-3 lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
@@ -334,17 +429,20 @@ function ContactPage() {
   return (
     <>
       <PageHero kicker="Contact" title="Start with a workflow, a compliance gap, or both." text="Share the process you want to automate, the personal data practices you want to strengthen, or the DPDPA readiness work you need to structure." image={illustrations[6]}>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button href="mailto:info@serenvya.com">Email Serenvya <Icon name="mail" className="ml-2 h-5 w-5" /></Button></div>
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><a href="#query-form" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50">Send a query <Icon name="mail" className="ml-2 h-5 w-5" /></a></div>
       </PageHero>
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <Glass className="p-7">
+          <div id="query-form">
+            <ContactForm />
+          </div>
+          <div className="space-y-3">
+            <Glass className="p-7">
             <h2 className="text-3xl font-semibold tracking-tight">Good starting points</h2>
             <div className="mt-6 grid gap-3">
               {["A workflow that eats too much team time", "A document or approval process that needs AI assistance", "A DPDPA gap assessment or readiness roadmap", "A consent, notice, grievance, or breach response process"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
             </div>
-          </Glass>
-          <div className="space-y-3">
+            </Glass>
             {faqs.map((faq, index) => <Glass key={faq.q} className="overflow-hidden">
               <button className="flex w-full items-center justify-between gap-5 p-6 text-left" onClick={() => setOpenFaq(openFaq === index ? -1 : index)}>
                 <span className="text-lg font-semibold">{faq.q}</span>

@@ -45,6 +45,7 @@ export default async function handler(request, response) {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "User-Agent": "serenvya-website-contact-form",
     },
     body: JSON.stringify({
       from: `Serenvya Website <${fromEmail}>`,
@@ -56,6 +57,13 @@ export default async function handler(request, response) {
   });
 
   if (!resendResponse.ok) {
+    const errorBody = await resendResponse.text().catch(() => "");
+    console.error("Resend email send failed", {
+      status: resendResponse.status,
+      body: errorBody,
+      fromEmail,
+      toEmail,
+    });
     return response.status(502).json({ error: "Unable to send your query right now." });
   }
 

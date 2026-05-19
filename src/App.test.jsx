@@ -11,6 +11,7 @@ describe("Serenvya website content", () => {
       "Solutions",
       "Process",
       "About",
+      "Payments",
       "Contact",
     ]);
   });

@@ -19,6 +19,7 @@ export const navItems = [
   { label: "Solutions", page: "solutions" },
   { label: "Process", page: "process" },
   { label: "About", page: "about" },
+  { label: "Payments", page: "payments" },
   { label: "Contact", page: "contact" },
 ];
 
@@ -57,6 +58,7 @@ export const faqs = [
 ];
 
 const pageMap = Object.fromEntries(navItems.map((item) => [item.page, item]));
+const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || "";
 
 function getInitialPage() {
   const page = window.location.hash.replace("#/", "") || "home";
@@ -227,6 +229,7 @@ function Shell({ children, page, setPage }) {
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
             <Button page="contact" variant="ghost" onClick={() => setPage("contact")}>Send query</Button>
+            <Button page="payments" variant="ghost" onClick={() => setPage("payments")}>Pay online</Button>
             <Button page="contact" onClick={() => setPage("contact")}>Book a consultation</Button>
           </div>
           <button className="rounded-full border border-white/15 bg-white/10 p-3 lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
@@ -424,6 +427,40 @@ function AboutPage() {
   );
 }
 
+function PaymentsPage({ setPage }) {
+  const paymentReady = Boolean(razorpayPaymentLink);
+
+  return (
+    <>
+      <PageHero kicker="Payments" title="Make a secure payment after your plan is discussed." text="For consultancy work, the payment amount can be finalized after the scope is discussed. Once the amount is agreed, use the secure payment option below." image={illustrations[1]}>
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          {paymentReady ? (
+            <a className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
+              Pay securely with Razorpay <Icon name="arrow" className="ml-2 h-5 w-5" />
+            </a>
+          ) : (
+            <Button page="contact" onClick={() => setPage("contact")}>Discuss payment details</Button>
+          )}
+          <Button page="contact" variant="ghost" onClick={() => setPage("contact")}>Send a query</Button>
+        </div>
+      </PageHero>
+      <section className="px-5 pb-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-3">
+          {[
+            ["1. Discuss the scope", "Share your automation or DPDPA consultancy requirement so Serenvya can understand the effort and commercial terms."],
+            ["2. Confirm the amount", "Once the plan is agreed, Serenvya can configure or share the relevant Razorpay payment link."],
+            ["3. Pay securely", "The payment is completed on Razorpay's hosted checkout page, with payment methods enabled from the Razorpay dashboard."],
+          ].map(([title, text]) => <Glass key={title} className="p-7"><h2 className="text-2xl font-semibold tracking-tight">{title}</h2><p className="mt-4 text-[15px] leading-7 text-white/66">{text}</p></Glass>)}
+        </div>
+        {!paymentReady && <Glass className="mx-auto mt-6 max-w-7xl p-6">
+          <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Setup pending</p>
+          <p className="mt-3 text-lg leading-8 text-white/72">Add `VITE_RAZORPAY_PAYMENT_LINK_URL` in Vercel once the Razorpay Payment Link or Payment Button URL is ready. Until then, visitors are guided to contact Serenvya first.</p>
+        </Glass>}
+      </section>
+    </>
+  );
+}
+
 function ContactPage() {
   const [openFaq, setOpenFaq] = useState(0);
   return (
@@ -440,7 +477,7 @@ function ContactPage() {
             <Glass className="p-7">
             <h2 className="text-3xl font-semibold tracking-tight">Good starting points</h2>
             <div className="mt-6 grid gap-3">
-              {["A workflow that eats too much team time", "A document or approval process that needs AI assistance", "A DPDPA gap assessment or readiness roadmap", "A consent, notice, grievance, or breach response process"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
+              {["A workflow that eats too much team time", "A document or approval process that needs AI assistance", "A DPDPA gap assessment or readiness roadmap", "A secure online payment after scope is discussed"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
             </div>
             </Glass>
             {faqs.map((faq, index) => <Glass key={faq.q} className="overflow-hidden">
@@ -472,6 +509,7 @@ export default function App() {
     solutions: <SolutionsPage />,
     process: <ProcessPage />,
     about: <AboutPage />,
+    payments: <PaymentsPage setPage={setPage} />,
     contact: <ContactPage />,
   };
 

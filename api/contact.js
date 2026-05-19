@@ -21,9 +21,11 @@ export default async function handler(request, response) {
   const name = sanitize(request.body?.name);
   const email = sanitize(request.body?.email);
   const query = sanitize(request.body?.query);
+  const type = sanitize(request.body?.type) === "problem" ? "problem" : "query";
+  const submissionLabel = type === "problem" ? "Problem Statement" : "Query";
 
   if (!name || !query) {
-    return response.status(400).json({ error: "Please provide your name and query." });
+    return response.status(400).json({ error: `Please provide your name and ${type === "problem" ? "problem statement" : "query"}.` });
   }
 
   if (name.length > 120 || email.length > 160 || query.length > 3000) {
@@ -31,12 +33,13 @@ export default async function handler(request, response) {
   }
 
   const lines = [
-    "New Serenvya website query",
+    `New Serenvya ${submissionLabel.toLowerCase()}`,
     "",
+    `Type: ${submissionLabel}`,
     `Name: ${name}`,
     `Email: ${email || "Not provided"}`,
     "",
-    "Query:",
+    `${submissionLabel}:`,
     query,
   ];
 
@@ -51,7 +54,7 @@ export default async function handler(request, response) {
       from: `Serenvya Website <${fromEmail}>`,
       to: [toEmail],
       reply_to: email || toEmail,
-      subject: `New website query from ${name}`,
+      subject: `New Serenvya ${submissionLabel.toLowerCase()} from ${name}`,
       text: lines.join("\n"),
     }),
   });

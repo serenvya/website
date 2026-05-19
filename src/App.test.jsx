@@ -11,8 +11,7 @@ describe("Serenvya website content", () => {
       "Solutions",
       "Process",
       "About",
-      "Payments",
-      "Contact",
+      "Query",
     ]);
   });
 
@@ -23,13 +22,14 @@ describe("Serenvya website content", () => {
     expect(faqs.every((faq) => faq.q && faq.a)).toBe(true);
   });
 
-  it("renders the homepage headline and contact CTA", () => {
+  it("renders the homepage headline and intake CTAs", () => {
     render(<App />);
     expect(
       screen.getByRole("heading", {
         name: /where intelligent automation meets compliance precision/i,
       })
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/book a consultation/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/ask a query/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/submit problem statement/i).length).toBeGreaterThan(0);
   });
 });

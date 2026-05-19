@@ -19,8 +19,7 @@ export const navItems = [
   { label: "Solutions", page: "solutions" },
   { label: "Process", page: "process" },
   { label: "About", page: "about" },
-  { label: "Payments", page: "payments" },
-  { label: "Contact", page: "contact" },
+  { label: "Query", page: "query" },
 ];
 
 export const services = [
@@ -57,7 +56,10 @@ export const faqs = [
   { q: "Is DPDPA consultancy legal advice?", a: "Serenvya supports readiness, process design, documentation, and implementation. Formal legal interpretation should be reviewed with qualified legal counsel where required." },
 ];
 
-const pageMap = Object.fromEntries(navItems.map((item) => [item.page, item]));
+const utilityPages = [
+  { label: "Problem Statement", page: "problem" },
+];
+const pageMap = Object.fromEntries([...navItems, ...utilityPages].map((item) => [item.page, item]));
 const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || "";
 
 function getInitialPage() {
@@ -103,7 +105,7 @@ function Field({ label, children }) {
   );
 }
 
-function ContactForm() {
+function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceholder, buttonLabel, successMessage }) {
   const [form, setForm] = useState({ name: "", email: "", query: "" });
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -121,7 +123,7 @@ function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, type: formType }),
       });
       const result = await response.json().catch(() => ({}));
 
@@ -130,7 +132,7 @@ function ContactForm() {
       }
 
       setStatus("sent");
-      setMessage("Thanks. Your query has been sent to Serenvya.");
+      setMessage(successMessage);
       setForm({ name: "", email: "", query: "" });
     } catch (error) {
       setStatus("error");
@@ -142,8 +144,8 @@ function ContactForm() {
     <Glass className="p-6 sm:p-7">
       <form className="grid gap-5" onSubmit={submit}>
         <div>
-          <h2 className="text-3xl font-semibold tracking-tight">Send a query</h2>
-          <p className="mt-3 text-[15px] leading-7 text-white/64">Tell us what you want to automate, assess, or clarify. Serenvya will receive this directly at info@serenvya.com.</p>
+          <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+          <p className="mt-3 text-[15px] leading-7 text-white/64">{intro}</p>
         </div>
         <Field label="Name">
           <input
@@ -165,12 +167,12 @@ function ContactForm() {
             value={form.email}
           />
         </Field>
-        <Field label="Query">
+        <Field label={queryLabel}>
           <textarea
             className="min-h-36 w-full resize-y rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
             name="query"
             onChange={updateField}
-            placeholder="Share your automation requirement or DPDPA readiness question..."
+            placeholder={queryPlaceholder}
             required
             value={form.query}
           />
@@ -180,7 +182,7 @@ function ContactForm() {
           disabled={status === "sending"}
           type="submit"
         >
-          {status === "sending" ? "Sending..." : "Submit query"}
+          {status === "sending" ? "Sending..." : buttonLabel}
           <Icon name="arrow" className="ml-2 h-5 w-5" />
         </button>
         {message && <p className={`rounded-2xl border px-4 py-3 text-sm ${status === "error" ? "border-red-300/30 bg-red-400/10 text-red-100" : "border-emerald-300/30 bg-emerald-400/10 text-emerald-100"}`}>{message}</p>}
@@ -228,9 +230,7 @@ function Shell({ children, page, setPage }) {
             {navItems.map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${page === item.page ? "bg-white text-slate-950 shadow-lg" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>)}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
-            <Button page="contact" variant="ghost" onClick={() => setPage("contact")}>Send query</Button>
-            <Button page="payments" variant="ghost" onClick={() => setPage("payments")}>Pay online</Button>
-            <Button page="contact" onClick={() => setPage("contact")}>Book a consultation</Button>
+            <Button page="query" onClick={() => setPage("query")}>Start here</Button>
           </div>
           <button className="rounded-full border border-white/15 bg-white/10 p-3 lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
             <Icon name={mobileOpen ? "close" : "menu"} />
@@ -246,7 +246,7 @@ function Shell({ children, page, setPage }) {
       <footer className="border-t border-white/10 px-5 py-10 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-7 lg:flex-row lg:items-center">
           <Logo />
-          <div className="flex flex-wrap gap-5 text-sm text-white/58">{navItems.map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className="hover:text-white">{item.label}</a>)}</div>
+          <div className="flex flex-wrap gap-5 text-sm text-white/58">{[...navItems, ...utilityPages].map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className="hover:text-white">{item.label}</a>)}</div>
           <p className="text-sm text-white/48">© {year} Serenvya. All rights reserved.</p>
         </div>
       </footer>
@@ -295,8 +295,8 @@ function Home({ setPage }) {
             <h1 className="max-w-4xl text-5xl font-semibold leading-[1.01] tracking-tight sm:text-6xl lg:text-7xl">Where Intelligent Automation meets Compliance Precision</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72">Serenvya helps businesses redesign operational processes using AI and prepare for DPDPA compliance with practical privacy workflows, documentation, and governance support.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button page="contact" onClick={() => setPage("contact")}>Start a conversation <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
-              <Button page="services" variant="ghost" onClick={() => setPage("services")}>Explore services</Button>
+              <Button page="query" onClick={() => setPage("query")}>Ask a query <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+              <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Submit problem statement</Button>
             </div>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
               {[["Automate", "reduce repetitive operational work"], ["Comply", "prepare for DPDPA obligations"], ["Operate", "make controls usable for teams"]].map(([value, label]) => <Glass key={label} className="p-5"><p className="text-2xl font-semibold">{value}</p><p className="mt-2 text-sm leading-6 text-white/62">{label}</p></Glass>)}
@@ -318,6 +318,22 @@ function Home({ setPage }) {
               </div>
             </Glass>
           </div>
+        </div>
+      </section>
+      <section className="px-5 py-10 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-2">
+          <Glass className="p-7">
+            <p className="text-sm uppercase tracking-[0.18em] text-sky-100">Free query</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight">Ask if Serenvya can help.</h2>
+            <p className="mt-4 text-[15px] leading-7 text-white/66">Use this for quick questions, service fit, DPDPA readiness doubts, or early exploration.</p>
+            <div className="mt-6"><Button page="query" onClick={() => setPage("query")}>Send query</Button></div>
+          </Glass>
+          <Glass className="p-7">
+            <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Problem statement</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight">Share what you have and what you want to achieve.</h2>
+            <p className="mt-4 text-[15px] leading-7 text-white/66">Use this for a serious automation or compliance problem where you want structured review and next steps.</p>
+            <div className="mt-6"><Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Submit problem</Button></div>
+          </Glass>
         </div>
       </section>
       <FeaturedBand setPage={setPage} />
@@ -427,70 +443,75 @@ function AboutPage() {
   );
 }
 
-function PaymentsPage({ setPage }) {
+function ProblemPage({ setPage }) {
   const paymentReady = Boolean(razorpayPaymentLink);
 
   return (
     <>
-      <PageHero kicker="Payments" title="Make a secure payment after your plan is discussed." text="For consultancy work, the payment amount can be finalized after the scope is discussed. Once the amount is agreed, use the secure payment option below." image={illustrations[1]}>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-          {paymentReady ? (
-            <a className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
-              Pay securely with Razorpay <Icon name="arrow" className="ml-2 h-5 w-5" />
-            </a>
-          ) : (
-            <Button page="contact" onClick={() => setPage("contact")}>Discuss payment details</Button>
-          )}
-          <Button page="contact" variant="ghost" onClick={() => setPage("contact")}>Send a query</Button>
-        </div>
-      </PageHero>
-      <section className="px-5 pb-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-3">
-          {[
-            ["1. Discuss the scope", "Share your automation or DPDPA consultancy requirement so Serenvya can understand the effort and commercial terms."],
-            ["2. Confirm the amount", "Once the plan is agreed, Serenvya can configure or share the relevant Razorpay payment link."],
-            ["3. Pay securely", "The payment is completed on Razorpay's hosted checkout page, with payment methods enabled from the Razorpay dashboard."],
-          ].map(([title, text]) => <Glass key={title} className="p-7"><h2 className="text-2xl font-semibold tracking-tight">{title}</h2><p className="mt-4 text-[15px] leading-7 text-white/66">{text}</p></Glass>)}
+      <section className="px-5 py-14 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div className="fade-up">
+            <SectionLabel>Problem statement</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">Share the problem you want Serenvya to study.</h1>
+            <p className="mt-6 text-lg leading-8 text-white/70">Use this when you already have a business process, compliance gap, or automation idea and want structured review from the team.</p>
+            <div className="mt-8 rounded-[2rem] border border-amber-200/20 bg-amber-300/10 p-5 text-white/72">
+              <p className="font-semibold text-amber-100">Paid discovery flow</p>
+              <p className="mt-2 text-[15px] leading-7">Submit the problem statement first. If you have been asked to pay the consultation fee, complete payment through the secure Razorpay link below. The team will review your statement and get back with the next steps.</p>
+            </div>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              {paymentReady ? (
+                <a className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
+                  Pay consultation fee <Icon name="arrow" className="ml-2 h-5 w-5" />
+                </a>
+              ) : (
+                <Button page="query" onClick={() => setPage("query")}>Discuss fee first</Button>
+              )}
+              <Button page="query" variant="ghost" onClick={() => setPage("query")}>Ask a free query</Button>
+            </div>
+          </div>
+          <IntakeForm
+            buttonLabel="Send problem statement"
+            formType="problem"
+            intro="Describe the current situation, what is not working, and what outcome you want. Include tools, data, documents, teams, or compliance context if relevant."
+            queryLabel="Problem statement"
+            queryPlaceholder="Example: We receive customer requests in email and WhatsApp, manually update a sheet, and need an AI-assisted workflow with DPDPA-aware consent and tracking..."
+            successMessage="Thanks. Your problem statement has been sent to Serenvya. The team will review it and get back to you."
+            title="Submit your problem"
+          />
         </div>
         {!paymentReady && <Glass className="mx-auto mt-6 max-w-7xl p-6">
           <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Setup pending</p>
-          <p className="mt-3 text-lg leading-8 text-white/72">Add `VITE_RAZORPAY_PAYMENT_LINK_URL` in Vercel once the Razorpay Payment Link or Payment Button URL is ready. Until then, visitors are guided to contact Serenvya first.</p>
+          <p className="mt-3 text-lg leading-8 text-white/72">Add `VITE_RAZORPAY_PAYMENT_LINK_URL` in Vercel once the Razorpay consultation fee link is ready. Until then, visitors can submit the problem statement and discuss the fee first.</p>
         </Glass>}
       </section>
     </>
   );
 }
 
-function ContactPage() {
-  const [openFaq, setOpenFaq] = useState(0);
+function QueryPage() {
   return (
-    <>
-      <PageHero kicker="Contact" title="Start with a workflow, a compliance gap, or both." text="Share the process you want to automate, the personal data practices you want to strengthen, or the DPDPA readiness work you need to structure." image={illustrations[6]}>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><a href="#query-form" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50">Send a query <Icon name="mail" className="ml-2 h-5 w-5" /></a></div>
-      </PageHero>
-      <section className="px-5 pb-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div id="query-form">
-            <ContactForm />
-          </div>
-          <div className="space-y-3">
-            <Glass className="p-7">
-            <h2 className="text-3xl font-semibold tracking-tight">Good starting points</h2>
-            <div className="mt-6 grid gap-3">
-              {["A workflow that eats too much team time", "A document or approval process that needs AI assistance", "A DPDPA gap assessment or readiness roadmap", "A secure online payment after scope is discussed"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
-            </div>
-            </Glass>
-            {faqs.map((faq, index) => <Glass key={faq.q} className="overflow-hidden">
-              <button className="flex w-full items-center justify-between gap-5 p-6 text-left" onClick={() => setOpenFaq(openFaq === index ? -1 : index)}>
-                <span className="text-lg font-semibold">{faq.q}</span>
-                <Icon name="chevron" className={`h-5 w-5 shrink-0 text-white/48 transition ${openFaq === index ? "rotate-180" : ""}`} />
-              </button>
-              {openFaq === index && <p className="border-t border-white/10 px-6 pb-6 pt-5 text-[15px] leading-8 text-white/66">{faq.a}</p>}
-            </Glass>)}
+    <section className="relative px-5 py-14 lg:px-8 lg:py-20">
+      <div className="absolute inset-x-0 top-0 -z-0 h-80 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.22),transparent_58%)]" />
+      <div className="relative mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <div className="fade-up">
+          <SectionLabel>Free query</SectionLabel>
+          <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">Ask a simple question.</h1>
+          <p className="mt-6 text-lg leading-8 text-white/70">Use this when you want to know whether Serenvya can help, what service fits, or how to think about an automation or DPDPA requirement.</p>
+          <div className="mt-8 grid gap-3">
+            {["Can you help with this workflow?", "Is this a DPDPA readiness concern?", "What is the right next step?"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
           </div>
         </div>
-      </section>
-    </>
+        <IntakeForm
+          buttonLabel="Send query"
+          formType="query"
+          intro="Write the question in plain language. This is for early-stage queries and quick clarification."
+          queryLabel="Query"
+          queryPlaceholder="Example: Can Serenvya help us automate invoice review, or help assess our DPDPA readiness?"
+          successMessage="Thanks. Your query has been sent to Serenvya."
+          title="Send your query"
+        />
+      </div>
+    </section>
   );
 }
 
@@ -509,8 +530,8 @@ export default function App() {
     solutions: <SolutionsPage />,
     process: <ProcessPage />,
     about: <AboutPage />,
-    payments: <PaymentsPage setPage={setPage} />,
-    contact: <ContactPage />,
+    query: <QueryPage />,
+    problem: <ProblemPage setPage={setPage} />,
   };
 
   return <Shell page={page} setPage={setPage}>{pages[page] || pages.home}</Shell>;

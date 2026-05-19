@@ -40,9 +40,9 @@ Vercel will show the exact DNS records to add. In GoDaddy, open your domain DNS 
 
 Use the values shown in Vercel as the source of truth. After saving GoDaddy DNS, return to Vercel and click **Refresh** or wait for propagation.
 
-## Contact form
+## Query and problem statement forms
 
-The contact form posts to the Vercel serverless endpoint at `/api/contact`.
+The free query form and the problem statement form both post to the Vercel serverless endpoint at `/api/contact`. The request includes a `type` value so Serenvya can identify whether the submission is a simple query or a paid-discovery problem statement.
 
 Email sending uses Resend. Add these environment variables in Vercel:
 
@@ -56,7 +56,7 @@ Before using `info@serenvya.com` as the sender, verify the `serenvya.com` domain
 
 ## Razorpay payment option
 
-The site includes a Payments page for consultancy payments. It is designed for the current business model where the amount is discussed first, then the client pays through a Razorpay-hosted payment page.
+The site includes a payment entry point on the Problem Statement page for consultancy fees. It is designed for the current business model where the amount is discussed or pre-agreed first, then the client pays through a Razorpay-hosted payment page.
 
 Recommended setup:
 
@@ -71,4 +71,4 @@ VITE_RAZORPAY_PAYMENT_LINK_URL=https://rzp.io/...
 
 5. Redeploy the Vercel project.
 
-If this variable is not set, the Payments page remains visible but sends visitors to the contact form to discuss payment details first.
+If this variable is not set, the Problem Statement page remains usable and sends visitors to the free query page to discuss payment details first.

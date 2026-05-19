@@ -42,7 +42,7 @@ Use the values shown in Vercel as the source of truth. After saving GoDaddy DNS,
 
 ## Query and problem statement forms
 
-The free query form and the problem statement form both post to the Vercel serverless endpoint at `/api/contact`. The request includes a `type` value so Serenvya can identify whether the submission is a simple query or a paid-discovery problem statement.
+The free query form and the problem statement form both post to the Vercel serverless endpoint at `/api/contact`. The request includes a `type` value so Serenvya can identify whether the submission is a simple query or a paid-discovery problem statement. Name, email, mobile number, and the query/problem text are mandatory; email and mobile number are validated in the browser and again in the API route.
 
 Email sending uses Resend. Add these environment variables in Vercel:
 

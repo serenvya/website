@@ -1,7 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
 import App, { faqs, navItems, processSteps, services, solutionAreas } from "./App.jsx";
 import "@testing-library/jest-dom/vitest";
+
+afterEach(() => {
+  cleanup();
+  window.location.hash = "";
+});
 
 describe("Serenvya website content", () => {
   it("has complete navigation", () => {
@@ -31,5 +36,13 @@ describe("Serenvya website content", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText(/ask a query/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/submit problem statement/i).length).toBeGreaterThan(0);
+  });
+
+  it("requires email and mobile fields on intake forms", () => {
+    window.location.hash = "#/query";
+    render(<App />);
+
+    expect(screen.getByLabelText(/email/i)).toBeRequired();
+    expect(screen.getByLabelText(/mobile number/i)).toBeRequired();
   });
 });

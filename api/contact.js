@@ -4,6 +4,15 @@ function sanitize(value) {
   return String(value || "").replace(/[<>]/g, "").trim();
 }
 
+function normalizeMobile(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.length === 12 && digits.startsWith("91") ? digits.slice(2) : digits;
+}
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 export default async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -20,16 +29,25 @@ export default async function handler(request, response) {
 
   const name = sanitize(request.body?.name);
   const email = sanitize(request.body?.email);
+  const mobile = normalizeMobile(request.body?.mobile);
   const query = sanitize(request.body?.query);
   const type = sanitize(request.body?.type) === "problem" ? "problem" : "query";
   const submissionLabel = type === "problem" ? "Problem Statement" : "Query";
 
-  if (!name || !query) {
-    return response.status(400).json({ error: `Please provide your name and ${type === "problem" ? "problem statement" : "query"}.` });
+  if (!name || !email || !mobile || !query) {
+    return response.status(400).json({ error: `Please provide your name, email, mobile number, and ${type === "problem" ? "problem statement" : "query"}.` });
+  }
+
+  if (!isValidEmail(email)) {
+    return response.status(400).json({ error: "Please provide a valid email address." });
+  }
+
+  if (!/^[6-9]\d{9}$/.test(mobile)) {
+    return response.status(400).json({ error: "Please provide a valid 10-digit mobile number." });
   }
 
   if (name.length > 120 || email.length > 160 || query.length > 3000) {
-    return response.status(400).json({ error: "Please shorten the query and try again." });
+    return response.status(400).json({ error: "Please shorten the submission and try again." });
   }
 
   const lines = [
@@ -37,7 +55,8 @@ export default async function handler(request, response) {
     "",
     `Type: ${submissionLabel}`,
     `Name: ${name}`,
-    `Email: ${email || "Not provided"}`,
+    `Email: ${email}`,
+    `Mobile: ${mobile}`,
     "",
     `${submissionLabel}:`,
     query,

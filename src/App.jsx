@@ -96,34 +96,70 @@ function Button({ children, page, href, variant = "primary", className = "", onC
   return <a href={href || hrefFor(page)} className={classes} onClick={onClick}>{children}</a>;
 }
 
-function Field({ label, children }) {
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function normalizeMobile(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.length === 12 && digits.startsWith("91") ? digits.slice(2) : digits;
+}
+
+function validateForm(form, formType) {
+  const errors = {};
+  const mobileDigits = normalizeMobile(form.mobile);
+  const requestLabel = formType === "problem" ? "problem statement" : "query";
+
+  if (!form.name.trim()) errors.name = "Please enter your name.";
+  if (!emailPattern.test(form.email.trim())) errors.email = "Enter a valid email address.";
+  if (!/^[6-9]\d{9}$/.test(mobileDigits)) errors.mobile = "Enter a valid 10-digit mobile number.";
+  if (!form.query.trim()) errors.query = `Please enter your ${requestLabel}.`;
+
+  return errors;
+}
+
+function Field({ label, children, error, hint }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm font-medium text-white/72">{label}</span>
       {children}
+      {hint && !error && <span className="mt-2 block text-xs leading-5 text-white/42">{hint}</span>}
+      {error && <span className="mt-2 block text-xs leading-5 text-red-100">{error}</span>}
     </label>
   );
 }
 
 function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceholder, buttonLabel, successMessage }) {
-  const [form, setForm] = useState({ name: "", email: "", query: "" });
+  const [form, setForm] = useState({ name: "", email: "", mobile: "", query: "" });
+  const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
 
   const updateField = (event) => {
+    setErrors((current) => ({ ...current, [event.target.name]: "" }));
+    if (status === "error") setMessage("");
     setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
   };
 
   const submit = async (event) => {
     event.preventDefault();
+    const nextErrors = validateForm(form, formType);
+
+    if (Object.keys(nextErrors).length) {
+      setErrors(nextErrors);
+      setStatus("error");
+      setMessage("Please fix the highlighted fields and try again.");
+      return;
+    }
+
     setStatus("sending");
     setMessage("");
+    setErrors({});
 
     try {
+      const mobileDigits = normalizeMobile(form.mobile);
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: formType }),
+        body: JSON.stringify({ ...form, mobile: mobileDigits, type: formType }),
       });
       const result = await response.json().catch(() => ({}));
 
@@ -133,7 +169,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
 
       setStatus("sent");
       setMessage(successMessage);
-      setForm({ name: "", email: "", query: "" });
+      setForm({ name: "", email: "", mobile: "", query: "" });
     } catch (error) {
       setStatus("error");
       setMessage(error.message || "Unable to send your query right now.");
@@ -147,9 +183,10 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
           <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
           <p className="mt-3 text-[15px] leading-7 text-white/64">{intro}</p>
         </div>
-        <Field label="Name">
+        <Field label="Name" error={errors.name}>
           <input
-            className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
+            aria-invalid={Boolean(errors.name)}
+            className={`w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.name ? "border-red-300/50" : "border-white/12"}`}
             name="name"
             onChange={updateField}
             placeholder="Your name"
@@ -157,19 +194,36 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
             value={form.name}
           />
         </Field>
-        <Field label="Email (optional)">
+        <Field label="Email" error={errors.email}>
           <input
-            className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
+            aria-invalid={Boolean(errors.email)}
+            className={`w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.email ? "border-red-300/50" : "border-white/12"}`}
             name="email"
             onChange={updateField}
             placeholder="you@example.com"
+            required
             type="email"
             value={form.email}
           />
         </Field>
-        <Field label={queryLabel}>
+        <Field label="Mobile number" error={errors.mobile} hint="Use a 10-digit mobile number. +91, spaces, or dashes are okay.">
+          <input
+            aria-invalid={Boolean(errors.mobile)}
+            className={`w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.mobile ? "border-red-300/50" : "border-white/12"}`}
+            inputMode="tel"
+            name="mobile"
+            onChange={updateField}
+            pattern="(?:\+91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}"
+            placeholder="+91 98765 43210"
+            required
+            type="tel"
+            value={form.mobile}
+          />
+        </Field>
+        <Field label={queryLabel} error={errors.query}>
           <textarea
-            className="min-h-36 w-full resize-y rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300"
+            aria-invalid={Boolean(errors.query)}
+            className={`min-h-36 w-full resize-y rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.query ? "border-red-300/50" : "border-white/12"}`}
             name="query"
             onChange={updateField}
             placeholder={queryPlaceholder}

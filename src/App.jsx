@@ -15,6 +15,7 @@ export const illustrations = [
 
 export const navItems = [
   { label: "Home", page: "home" },
+  { label: "Products", page: "products" },
   { label: "Services", page: "services" },
   { label: "Solutions", page: "solutions" },
   { label: "Process", page: "process" },
@@ -56,6 +57,95 @@ export const faqs = [
   { q: "Is DPDPA consultancy legal advice?", a: "Serenvya supports readiness, process design, documentation, and implementation. Formal legal interpretation should be reviewed with qualified legal counsel where required." },
 ];
 
+const envValue = (key, fallback = "") => import.meta.env[key] || fallback;
+
+export const productPaymentLinks = {
+  salarySlipProcessor: envValue("VITE_PRODUCT_SALARY_SLIP_PROCESSOR_PAYMENT_LINK_URL"),
+  quotationInvoiceSuite: envValue("VITE_PRODUCT_QUOTATION_INVOICE_SUITE_PAYMENT_LINK_URL"),
+  whatsappBroadcaster: envValue("VITE_PRODUCT_WHATSAPP_BROADCASTER_PAYMENT_LINK_URL"),
+  contactQrGenerator: envValue("VITE_PRODUCT_CONTACT_QR_GENERATOR_PAYMENT_LINK_URL"),
+  stuffingPlanManager: envValue("VITE_PRODUCT_STUFFING_PLAN_MANAGER_PAYMENT_LINK_URL", "https://stuffing-plan-manager.replit.app"),
+};
+
+export const products = [
+  {
+    slug: "salary-slip-processor",
+    key: "salarySlipProcessor",
+    name: "Advanced Salary Slip Processor",
+    eyebrow: "Payroll document automation",
+    summary: "Upload salary slips across PDF and image formats, extract months and allowance fields, and download a clean Excel summary.",
+    detail: "A browser-based processing utility for teams that need to consolidate salary slip information across government, corporate, defense, railway, PSU, bank, and consulting formats. It supports password-protected PDFs, multi-page files, image inputs, smart field mapping, and Excel export.",
+    price: envValue("VITE_PRODUCT_SALARY_SLIP_PROCESSOR_PRICE", "Pricing on request"),
+    deployment: "Standalone web utility",
+    image: illustrations[6],
+    accent: "green",
+    idealFor: "Payroll teams, HR consultants, audit support teams, and finance operations handling varied salary slip formats.",
+    outcomes: ["Process PDF, JPG, JPEG, and PNG salary slips", "Handle optional PDF passwords and multi-page files", "Extract month-wise salary fields and unique allowances", "Export summarized output to Excel for downstream review"],
+    features: ["Universal format support", "Smart field mapping", "OCR-ready workflow", "Password PDF support", "Excel summary download", "Processing log and status counters"],
+  },
+  {
+    slug: "quotation-invoice-suite",
+    key: "quotationInvoiceSuite",
+    name: "Quotation & Invoice Suite",
+    eyebrow: "Business billing workspace",
+    summary: "Create quotations, invoices, product masters, company profiles, sales history, and PDF or Excel reports from one local browser tool.",
+    detail: "A multi-company commercial document system for small and mid-sized teams that need quotation, invoice, product, GST, sales person, history, backup, import, and report workflows without a heavy ERP rollout.",
+    price: envValue("VITE_PRODUCT_QUOTATION_INVOICE_SUITE_PRICE", "Pricing on request"),
+    deployment: "Standalone web utility",
+    image: illustrations[0],
+    accent: "blue",
+    idealFor: "Distributors, service businesses, trading firms, agencies, and teams that need fast branded billing documents.",
+    outcomes: ["Generate quotation and invoice PDFs", "Maintain product masters with HSN, unit, rate, and GST", "Track quotation and invoice history by company", "Export sales analytics and backup data"],
+    features: ["Multi-company support", "Quotation-to-invoice flow", "Product search and Excel import", "GST-ready calculations", "Sales reports", "Data backup and restore"],
+  },
+  {
+    slug: "whatsapp-group-broadcaster",
+    key: "whatsappBroadcaster",
+    name: "WhatsApp Group Broadcaster",
+    eyebrow: "Desktop outreach automation",
+    summary: "Send text, image, video, or combined messages to WhatsApp Desktop groups from a CSV list with controlled batching and logs.",
+    detail: "A Windows desktop automation tool built for carefully controlled WhatsApp group communication. It reads group names from CSV, supports image-only, text-only, and image-with-caption modes, offers pause, resume, stop, calibration, batch delays, and background mode that restores the user's active window after each send.",
+    price: envValue("VITE_PRODUCT_WHATSAPP_BROADCASTER_PRICE", "Pricing on request"),
+    deployment: "Windows desktop tool",
+    image: illustrations[2],
+    accent: "amber",
+    idealFor: "Community managers, training teams, local business networks, and operators who need structured group messaging.",
+    outcomes: ["Load target groups from CSV", "Send media, text, or media with caption", "Control batch size, delay, and rest gaps", "Export sending results for review"],
+    features: ["WhatsApp Desktop automation", "CSV group import", "Batch throttling", "Pause and stop controls", "Background mode", "Calibration and result logs"],
+  },
+  {
+    slug: "contact-qr-code-generator",
+    key: "contactQrGenerator",
+    name: "Contact QR Code Generator",
+    eyebrow: "Lead capture and contact sharing",
+    summary: "Generate downloadable vCard QR codes from contact details so prospects can save business contacts instantly.",
+    detail: "A simple branded utility for teams that distribute contact cards at events, counters, branches, showrooms, and sales meetings. Enter contact details, generate a universal vCard 3.0 QR code, and download it as a PNG.",
+    price: envValue("VITE_PRODUCT_CONTACT_QR_GENERATOR_PRICE", "Pricing on request"),
+    deployment: "Standalone web utility",
+    image: illustrations[4],
+    accent: "green",
+    idealFor: "Sales teams, consultants, clinics, counters, event desks, and customer-facing staff.",
+    outcomes: ["Create QR codes with name, phone, company, email, website, address, and notes", "Use vCard 3.0 for broad iOS and Android compatibility", "Download QR codes as PNG files", "Standardize contact sharing across staff or branches"],
+    features: ["vCard QR generation", "Mandatory field validation", "PNG download", "Mobile scanner compatibility", "Contact detail templates", "Lightweight browser use"],
+  },
+  {
+    slug: "stuffing-plan-manager",
+    key: "stuffingPlanManager",
+    name: "Stuffing Plan Manager",
+    eyebrow: "Hosted operations planner",
+    summary: "A hosted Replit-based planning tool for managing stuffing plan workflows as a reusable operations product.",
+    detail: "A hosted operational planning product suitable for teams that need a lightweight shared tool without local installation. The current live build is available on Replit and can be licensed, branded, and adapted for client-specific workflows.",
+    price: envValue("VITE_PRODUCT_STUFFING_PLAN_MANAGER_PRICE", "Pricing on request"),
+    deployment: "Hosted web app",
+    image: illustrations[7],
+    accent: "blue",
+    idealFor: "Operations teams that coordinate planning steps, shared updates, and reusable process checklists.",
+    outcomes: ["Use a hosted tool with no desktop installation", "Adapt the workflow to client planning requirements", "License a working product instead of starting from scratch", "Extend with custom reporting or integration work"],
+    features: ["Hosted deployment", "Reusable planning workflow", "Client-specific customization", "Quick launch path", "Operational visibility", "Optional integration roadmap"],
+  },
+];
+
+const productMap = Object.fromEntries(products.map((product) => [product.slug, product]));
 const utilityPages = [
   { label: "Problem Statement", page: "problem" },
 ];
@@ -64,6 +154,7 @@ const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || ""
 
 function getInitialPage() {
   const page = window.location.hash.replace("#/", "") || "home";
+  if (page === "products" || productMap[page.replace("products/", "")]) return page;
   return pageMap[page] ? page : "home";
 }
 
@@ -78,6 +169,9 @@ function Icon({ name, className = "h-5 w-5" }) {
     mail: <svg {...common}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>,
     chevron: <svg {...common}><path d="m6 9 6 6 6-6" /></svg>,
     node: <svg {...common}><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M8.5 11 15.5 7" /><path d="M8.5 13 15.5 17" /></svg>,
+    box: <svg {...common}><path d="m21 8-9-5-9 5 9 5 9-5Z" /><path d="M3 8v8l9 5 9-5V8" /><path d="M12 13v8" /></svg>,
+    qr: <svg {...common}><path d="M4 4h6v6H4z" /><path d="M14 4h6v6h-6z" /><path d="M4 14h6v6H4z" /><path d="M14 14h2" /><path d="M20 14v2" /><path d="M16 18h4" /><path d="M14 20h2" /></svg>,
+    rupee: <svg {...common}><path d="M6 4h12" /><path d="M6 8h12" /><path d="M8 4c5.2 0 5.2 8 0 8H6l8 8" /></svg>,
   };
   return icons[name] || icons.spark;
 }
@@ -86,14 +180,14 @@ function hrefFor(page) {
   return page === "home" ? "#/" : `#/${page}`;
 }
 
-function Button({ children, page, href, variant = "primary", className = "", onClick }) {
+function Button({ children, page, href, variant = "primary", className = "", onClick, target, rel }) {
   const styles = {
     primary: "border-white/20 bg-white text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] hover:-translate-y-0.5 hover:bg-sky-50",
     dark: "border-white/15 bg-slate-950/80 text-white shadow-[0_18px_55px_rgba(2,8,23,0.26)] hover:-translate-y-0.5 hover:bg-slate-900",
     ghost: "border-white/20 bg-white/10 text-white backdrop-blur-2xl hover:-translate-y-0.5 hover:bg-white/16",
   };
   const classes = `inline-flex min-h-12 items-center justify-center rounded-full border px-6 text-sm font-semibold transition duration-300 focus:outline-none focus:ring-2 focus:ring-sky-300 ${styles[variant]} ${className}`;
-  return <a href={href || hrefFor(page)} className={classes} onClick={onClick}>{children}</a>;
+  return <a href={href || hrefFor(page)} className={classes} onClick={onClick} rel={rel} target={target}>{children}</a>;
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -281,7 +375,10 @@ function Shell({ children, page, setPage }) {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <a href="#/" onClick={() => setPage("home")} aria-label="Serenvya home"><Logo /></a>
           <nav className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] p-1.5 text-sm font-medium text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:flex">
-            {navItems.map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${page === item.page ? "bg-white text-slate-950 shadow-lg" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>)}
+            {navItems.map((item) => {
+              const active = page === item.page || (item.page === "products" && page.startsWith("products/"));
+              return <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${active ? "bg-white text-slate-950 shadow-lg" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>;
+            })}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
             <Button page="query" onClick={() => setPage("query")}>Start here</Button>
@@ -292,7 +389,10 @@ function Shell({ children, page, setPage }) {
         </div>
         {mobileOpen && <div className="border-t border-white/10 bg-[#061225]/95 px-5 py-4 backdrop-blur-2xl lg:hidden">
           <div className="grid gap-2">
-            {navItems.map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => { setPage(item.page); setMobileOpen(false); }} className={`rounded-2xl px-4 py-3 ${page === item.page ? "bg-white text-slate-950" : "bg-white/[0.06] text-white/80"}`}>{item.label}</a>)}
+            {navItems.map((item) => {
+              const active = page === item.page || (item.page === "products" && page.startsWith("products/"));
+              return <a key={item.page} href={hrefFor(item.page)} onClick={() => { setPage(item.page); setMobileOpen(false); }} className={`rounded-2xl px-4 py-3 ${active ? "bg-white text-slate-950" : "bg-white/[0.06] text-white/80"}`}>{item.label}</a>;
+            })}
           </div>
         </div>}
       </header>
@@ -319,6 +419,96 @@ function Glass({ children, className = "" }) {
 function ImagePanel({ src, alt, className = "", tone = "blue" }) {
   const glow = tone === "green" ? "shadow-[0_24px_80px_rgba(41,204,111,0.16)]" : tone === "amber" ? "shadow-[0_24px_80px_rgba(255,166,0,0.16)]" : "shadow-[0_24px_80px_rgba(0,140,255,0.18)]";
   return <div className={`group overflow-hidden rounded-[2rem] border border-white/14 bg-white/[0.07] ${glow} backdrop-blur-xl ${className}`}><img src={src} alt={alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]" /></div>;
+}
+
+function ProductVisual({ product, compact = false }) {
+  const toneClasses = {
+    green: "from-emerald-300/26 via-sky-400/10 to-white/8 text-emerald-100",
+    amber: "from-amber-300/28 via-sky-400/10 to-white/8 text-amber-100",
+    blue: "from-sky-300/26 via-emerald-400/10 to-white/8 text-sky-100",
+  };
+
+  return (
+    <div className={`relative overflow-hidden rounded-[2rem] border border-white/14 bg-gradient-to-br ${toneClasses[product.accent] || toneClasses.blue} p-5 shadow-[0_24px_80px_rgba(0,140,255,0.14)]`}>
+      <img src={product.image} alt="" className={`absolute inset-0 h-full w-full object-cover opacity-18 mix-blend-luminosity ${compact ? "" : "scale-105"}`} />
+      <div className="absolute inset-0 bg-[#071325]/48" />
+      <div className="relative grid min-h-52 content-between gap-8">
+        <div className="flex items-start justify-between gap-4">
+          <span className="rounded-2xl border border-white/16 bg-white/12 p-3 backdrop-blur-xl"><Icon name={product.slug.includes("qr") ? "qr" : "box"} className="h-6 w-6" /></span>
+          <span className="rounded-full border border-white/14 bg-black/20 px-3 py-1 text-xs font-semibold text-white/78 backdrop-blur-xl">{product.deployment}</span>
+        </div>
+        <div>
+          <p className="text-sm uppercase tracking-[0.18em] text-white/62">{product.eyebrow}</p>
+          <p className={`${compact ? "text-2xl" : "text-4xl"} mt-3 font-semibold leading-tight tracking-tight`}>{product.name}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductPrice({ product }) {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.065] p-4">
+      <span className="rounded-full bg-white/10 p-2 text-amber-200"><Icon name="rupee" className="h-5 w-5" /></span>
+      <div>
+        <p className="text-xs uppercase tracking-[0.18em] text-white/42">Price</p>
+        <p className="mt-1 text-lg font-semibold text-white">{product.price}</p>
+      </div>
+    </div>
+  );
+}
+
+function ProductAction({ product, label = "License this product", variant = "primary", className = "" }) {
+  const href = productPaymentLinks[product.key];
+  if (href) {
+    return <Button href={href} variant={variant} className={className} rel="noreferrer" target="_blank">{label} <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>;
+  }
+  return <Button page="query" variant={variant} className={className}>{label} <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>;
+}
+
+function ProductCard({ product, setPage, featured = false }) {
+  const productPage = `products/${product.slug}`;
+  return (
+    <Glass className={`group flex h-full flex-col overflow-hidden ${featured ? "lg:grid lg:grid-cols-[0.86fr_1.14fr]" : ""}`}>
+      <ProductVisual product={product} compact={!featured} />
+      <div className="flex flex-1 flex-col p-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/68">{product.eyebrow}</span>
+          <span className="rounded-full bg-emerald-300/12 px-3 py-1 text-xs font-semibold text-emerald-100">{product.deployment}</span>
+        </div>
+        <h3 className="mt-5 text-2xl font-semibold tracking-tight">{product.name}</h3>
+        <p className="mt-4 text-[15px] leading-7 text-white/66">{product.summary}</p>
+        <div className="mt-6"><ProductPrice product={product} /></div>
+        <div className="mt-auto flex flex-col gap-3 pt-6 sm:flex-row">
+          <Button page={productPage} variant="ghost" onClick={() => setPage(productPage)}>Explore product</Button>
+          <ProductAction product={product} label="Buy or license" variant="dark" />
+        </div>
+      </div>
+    </Glass>
+  );
+}
+
+function ProductsBand({ setPage }) {
+  return (
+    <section className="px-5 py-14 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+          <div className="max-w-3xl">
+            <SectionLabel>Ready products</SectionLabel>
+            <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Automation products Serenvya can license, host, or customize.</h2>
+            <p className="mt-5 text-lg leading-8 text-white/68">These are working tools shaped from real client requirements, packaged for reuse with clear pricing variables and dedicated product pages.</p>
+          </div>
+          <Button page="products" variant="ghost" onClick={() => setPage("products")}>View all products <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+        </div>
+        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2"><ProductCard product={products[1]} setPage={setPage} featured /></div>
+          <div className="grid gap-4">
+            {products.slice(0, 3).filter((product) => product.slug !== products[1].slug).map((product) => <ProductCard key={product.slug} product={product} setPage={setPage} />)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function PageHero({ kicker, title, text, image, children }) {
@@ -374,6 +564,7 @@ function Home({ setPage }) {
           </div>
         </div>
       </section>
+      <ProductsBand setPage={setPage} />
       <section className="px-5 py-10 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-2">
           <Glass className="p-7">
@@ -393,6 +584,114 @@ function Home({ setPage }) {
       <FeaturedBand setPage={setPage} />
       <ServiceGrid />
       <IllustrationStrip />
+    </>
+  );
+}
+
+function ProductsPage({ setPage }) {
+  return (
+    <>
+      <PageHero
+        kicker="Products"
+        title="Working automation products ready for reuse."
+        text="Serenvya turns client-built automation tools into licenseable products. Each product can be bought as-is, branded, hosted, or extended for a specific workflow."
+        image={illustrations[1]}
+      >
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Button page="query" onClick={() => setPage("query")}>Ask about licensing <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+          <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Request customization</Button>
+        </div>
+      </PageHero>
+      <section className="px-5 pb-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {products.map((product) => <ProductCard key={product.slug} product={product} setPage={setPage} />)}
+        </div>
+      </section>
+      <section className="px-5 pb-20 lg:px-8">
+        <Glass className="mx-auto grid max-w-7xl gap-8 p-7 lg:grid-cols-[0.8fr_1.2fr] lg:p-9">
+          <div>
+            <SectionLabel>Commercial setup</SectionLabel>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Pricing and payment links are configurable.</h2>
+            <p className="mt-4 text-[15px] leading-7 text-white/66">Each product uses a separate price and payment-link variable, so Serenvya can publish list pricing, seasonal offers, hosted subscription links, or one-time license payment links without changing the code.</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              "One-time license or hosted subscription",
+              "White-label branding and deployment support",
+              "Client-specific feature extension",
+              "Implementation, onboarding, and maintenance options",
+            ].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-6 text-white/72">{item}</p></div>)}
+          </div>
+        </Glass>
+      </section>
+    </>
+  );
+}
+
+function ProductDetailPage({ product, setPage }) {
+  if (!product) return <ProductsPage setPage={setPage} />;
+
+  return (
+    <>
+      <section className="px-5 py-14 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className="fade-up">
+            <a href="#/products" onClick={() => setPage("products")} className="mb-6 inline-flex items-center text-sm font-semibold text-sky-100/78 hover:text-white">
+              <span className="mr-2">&larr;</span> Back to products
+            </a>
+            <SectionLabel>{product.eyebrow}</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">{product.name}</h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">{product.detail}</p>
+            <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
+              <ProductPrice product={product} />
+              <div className="rounded-2xl border border-white/12 bg-white/[0.065] p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-white/42">Delivery</p>
+                <p className="mt-1 text-lg font-semibold text-white">{product.deployment}</p>
+              </div>
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ProductAction product={product} />
+              <Button page="query" variant="ghost" onClick={() => setPage("query")}>Discuss customization</Button>
+            </div>
+          </div>
+          <div className="fade-up" style={{ animationDelay: "100ms" }}>
+            <ProductVisual product={product} />
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+          <Glass className="p-7">
+            <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Best fit</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight">Who this is for</h2>
+            <p className="mt-4 text-[15px] leading-7 text-white/68">{product.idealFor}</p>
+            <div className="mt-7 grid gap-3">
+              {product.outcomes.map((outcome) => <div key={outcome} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-6 text-white/72">{outcome}</p></div>)}
+            </div>
+          </Glass>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {product.features.map((feature, index) => <Glass key={feature} className="p-6">
+              <p className="text-sm font-semibold text-sky-200">0{index + 1}</p>
+              <h3 className="mt-5 text-xl font-semibold tracking-tight">{feature}</h3>
+            </Glass>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-20 lg:px-8">
+        <Glass className="mx-auto grid max-w-7xl gap-7 overflow-hidden p-7 lg:grid-cols-[1.05fr_0.95fr] lg:p-9">
+          <div>
+            <SectionLabel>Next step</SectionLabel>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">License it, brand it, or adapt it for your workflow.</h2>
+            <p className="mt-4 text-[15px] leading-7 text-white/66">Serenvya can provide the product as a reusable tool, configure hosting or desktop packaging where relevant, and add client-specific fields, reports, branding, integrations, or access controls.</p>
+          </div>
+          <div className="flex flex-col justify-center gap-3">
+            <ProductAction product={product} label="Proceed with this product" />
+            <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Request a custom version</Button>
+          </div>
+        </Glass>
+      </section>
     </>
   );
 }
@@ -578,8 +877,10 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
+  const activeProduct = page.startsWith("products/") ? productMap[page.replace("products/", "")] : null;
   const pages = {
     home: <Home setPage={setPage} />,
+    products: <ProductsPage setPage={setPage} />,
     services: <ServicesPage />,
     solutions: <SolutionsPage />,
     process: <ProcessPage />,
@@ -588,5 +889,5 @@ export default function App() {
     problem: <ProblemPage setPage={setPage} />,
   };
 
-  return <Shell page={page} setPage={setPage}>{pages[page] || pages.home}</Shell>;
+  return <Shell page={page} setPage={setPage}>{activeProduct ? <ProductDetailPage product={activeProduct} setPage={setPage} /> : pages[page] || pages.home}</Shell>;
 }

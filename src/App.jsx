@@ -546,7 +546,7 @@ function Shell({ children, page, setPage }) {
             })}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
-            <Button page="query" onClick={() => setPage("query")}>Start here</Button>
+            <Button page="query" onClick={() => setPage("query")}>Start Here</Button>
           </div>
           <button className="rounded-full border border-white/15 bg-white/10 p-3 lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
             <Icon name={mobileOpen ? "close" : "menu"} />

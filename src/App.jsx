@@ -3,14 +3,16 @@ import React, { useEffect, useMemo, useState } from "react";
 const img = (name) => `/illustrations/${name}`;
 
 export const illustrations = [
-  img("ChatGPT Image May 8, 2026, 08_58_18 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_05_55 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_07_30 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_09_15 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_10_31 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_12_48 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_14_00 PM.png"),
-  img("ChatGPT Image May 8, 2026, 09_16_08 PM.png"),
+  img('hero-workflow.png'),        // [0] Home hero
+  img('automation-dashboard.png'),  // [1] Services, automation
+  img('privacy-governance.png'),    // [2] DPDPA, privacy
+  img('products-floating-ui.png'),  // [3] Products hero
+  img('solutions-network.png'),     // [4] Solutions page
+  img('process-roadmap.png'),       // [5] Process page
+  img('about-methodology.png'),     // [6] About page
+  img('contact-nodes.png'),         // [7] Contact/Query
+  img('data-pipeline.png'),         // [8] Featured band
+  img('integration-tools.png'),     // [9] Integration/Products band
 ];
 
 export const navItems = [
@@ -59,13 +61,7 @@ export const faqs = [
 
 const envValue = (key, fallback = "") => import.meta.env[key] || fallback;
 
-export const productPaymentLinks = {
-  salarySlipProcessor: envValue("VITE_PRODUCT_SALARY_SLIP_PROCESSOR_PAYMENT_LINK_URL"),
-  quotationInvoiceSuite: envValue("VITE_PRODUCT_QUOTATION_INVOICE_SUITE_PAYMENT_LINK_URL"),
-  whatsappBroadcaster: envValue("VITE_PRODUCT_WHATSAPP_BROADCASTER_PAYMENT_LINK_URL"),
-  contactQrGenerator: envValue("VITE_PRODUCT_CONTACT_QR_GENERATOR_PAYMENT_LINK_URL"),
-  stuffingPlanManager: envValue("VITE_PRODUCT_STUFFING_PLAN_MANAGER_PAYMENT_LINK_URL", "https://stuffing-plan-manager.replit.app"),
-};
+const productInquiry = (name, focus) => `I want to enquire about ${name}. ${focus} Please share licensing options, implementation effort, customization possibilities, support terms, and the next steps for evaluating this product for our organization.`;
 
 export const products = [
   {
@@ -80,6 +76,7 @@ export const products = [
     image: illustrations[6],
     accent: "green",
     idealFor: "Payroll teams, HR consultants, audit support teams, and finance operations handling varied salary slip formats.",
+    inquiry: productInquiry("Advanced Salary Slip Processor", "We want to understand how it can process salary slips across formats, handle PDF or image uploads, extract month-wise salary components, and generate Excel summaries for payroll, audit, or HR review."),
     outcomes: ["Process PDF, JPG, JPEG, and PNG salary slips", "Handle optional PDF passwords and multi-page files", "Extract month-wise salary fields and unique allowances", "Export summarized output to Excel for downstream review"],
     features: ["Universal format support", "Smart field mapping", "OCR-ready workflow", "Password PDF support", "Excel summary download", "Processing log and status counters"],
   },
@@ -95,6 +92,7 @@ export const products = [
     image: illustrations[0],
     accent: "blue",
     idealFor: "Distributors, service businesses, trading firms, agencies, and teams that need fast branded billing documents.",
+    inquiry: productInquiry("Quotation & Invoice Suite", "We want to understand how it can manage companies, product masters, quotations, invoices, GST-ready calculations, sales history, reporting, backup, and branded PDF generation."),
     outcomes: ["Generate quotation and invoice PDFs", "Maintain product masters with HSN, unit, rate, and GST", "Track quotation and invoice history by company", "Export sales analytics and backup data"],
     features: ["Multi-company support", "Quotation-to-invoice flow", "Product search and Excel import", "GST-ready calculations", "Sales reports", "Data backup and restore"],
   },
@@ -110,6 +108,7 @@ export const products = [
     image: illustrations[2],
     accent: "amber",
     idealFor: "Community managers, training teams, local business networks, and operators who need structured group messaging.",
+    inquiry: productInquiry("WhatsApp Group Broadcaster", "We want to understand how it can send controlled WhatsApp Desktop group messages from CSV lists, support text or media campaigns, manage batch delays, and maintain sending logs."),
     outcomes: ["Load target groups from CSV", "Send media, text, or media with caption", "Control batch size, delay, and rest gaps", "Export sending results for review"],
     features: ["WhatsApp Desktop automation", "CSV group import", "Batch throttling", "Pause and stop controls", "Background mode", "Calibration and result logs"],
   },
@@ -125,6 +124,7 @@ export const products = [
     image: illustrations[4],
     accent: "green",
     idealFor: "Sales teams, consultants, clinics, counters, event desks, and customer-facing staff.",
+    inquiry: productInquiry("Contact QR Code Generator", "We want to understand how it can generate standardized vCard QR codes for team members, branches, event desks, or customer-facing staff, including branding and deployment options."),
     outcomes: ["Create QR codes with name, phone, company, email, website, address, and notes", "Use vCard 3.0 for broad iOS and Android compatibility", "Download QR codes as PNG files", "Standardize contact sharing across staff or branches"],
     features: ["vCard QR generation", "Mandatory field validation", "PNG download", "Mobile scanner compatibility", "Contact detail templates", "Lightweight browser use"],
   },
@@ -140,8 +140,59 @@ export const products = [
     image: illustrations[7],
     accent: "blue",
     idealFor: "Operations teams that coordinate planning steps, shared updates, and reusable process checklists.",
+    inquiry: productInquiry("Stuffing Plan Manager", "We want to understand how the hosted planning workflow can be adapted for our operations, what customization is possible, and how hosting, access, reporting, and rollout would work."),
     outcomes: ["Use a hosted tool with no desktop installation", "Adapt the workflow to client planning requirements", "License a working product instead of starting from scratch", "Extend with custom reporting or integration work"],
     features: ["Hosted deployment", "Reusable planning workflow", "Client-specific customization", "Quick launch path", "Operational visibility", "Optional integration roadmap"],
+  },
+  {
+    slug: "income-tax-calculator-ay-2026-27",
+    key: "incomeTaxCalculator",
+    name: "Income Tax Calculator AY 2026-27",
+    eyebrow: "Tax computation utility",
+    summary: "Compare old and new tax regimes, salary components, deductions, terminal benefits, surcharge, cess, and print-ready summaries.",
+    detail: "A professional income-tax computation utility for salaried employees and advisory teams. It supports AY 2026-27 calculations, old-versus-new regime comparison, Chapter VI-A deduction inputs, terminal benefit handling, visual tax comparison, slab references, and print or PDF-ready outputs.",
+    price: envValue("VITE_PRODUCT_INCOME_TAX_CALCULATOR_PRICE", "Pricing on request"),
+    deployment: "Standalone web utility",
+    image: illustrations[5],
+    accent: "amber",
+    idealFor: "Chartered accountants, finance teams, tax consultants, HR payroll teams, and advisory firms supporting salaried taxpayers.",
+    inquiry: productInquiry("Income Tax Calculator AY 2026-27", "We want to understand how it can support salaried employee tax estimates, old and new regime comparison, deduction planning, terminal benefit computation, and branded client-facing tax reports."),
+    outcomes: ["Compare old and new tax regimes side by side", "Capture salary, deductions, terminal benefits, and other income", "Show slab, surcharge, cess, rebate, and net-income summaries", "Print or save computation summaries for review"],
+    features: ["AY 2026-27 tax logic", "Regime recommendation", "Deduction checker", "Terminal benefit calculator", "Visual comparison charts", "Print-ready output"],
+  },
+  {
+    slug: "lbh-lex-suite",
+    key: "lbhLexSuite",
+    name: "Legal Research & Drafting Suite",
+    eyebrow: "Legal agent team",
+    summary: "A legal AI team for case-law research, headnote generation, and structured legal or tax notice-response drafting.",
+    detail: "A Serenvya product in partnership with Zijus for legal and tax knowledge workflows. The suite generalizes a team-of-agents pattern for law practices: a planner identifies user intent, a research agent queries case-law knowledge, a headnote writer prepares publication-style legal headnotes, and a drafting agent prepares structured notice replies based on provided facts and documents.",
+    price: envValue("VITE_PRODUCT_LBH_LEX_SUITE_PRICE", "Pricing on request"),
+    deployment: "Partner AI solution",
+    image: illustrations[3],
+    accent: "blue",
+    partner: "Serenvya x Zijus",
+    idealFor: "Law firms, tax practices, legal publishers, litigation support teams, and advisory teams that need governed legal research and drafting workflows.",
+    inquiry: productInquiry("Legal Research & Drafting Suite", "We want to understand how a legal agent team can be configured for case-law research, legal query answering, headnote drafting, notice reply drafting, document-grounded workflows, and review controls for our practice."),
+    outcomes: ["Route legal intent to specialized research, headnote, or drafting agents", "Answer case-law and legal principle queries from a controlled knowledge base", "Draft structured headnotes and notice replies from provided material", "Keep human review, source discipline, and non-invention rules at the center"],
+    features: ["Planner agent", "Lex research agent", "Headnote writer", "Notice draft agent", "Knowledge workflow", "Human-review ready outputs"],
+  },
+  {
+    slug: "zin-finance-agent",
+    key: "zinFinanceAgent",
+    name: "ZIN Finance Agent",
+    eyebrow: "Finance and accounting AI",
+    summary: "Serenvya's flagship enterprise agent for finance operations, developed in close partnership with Zijus. Automates document review, bank statement reconciliation, ledger extraction, and multi-tier approval workflows with institutional-grade security.",
+    detail: "ZIN is Serenvya's flagship finance and accounting workflow agent built in close partnership with Zijus. Designed for document-heavy, high-security finance operations, ZIN offers institutional-grade ledger extraction, automated statement reconciliation, multi-level approval workflows, cryptographic audit trails, and seamless human-in-the-loop validation checkpoints.",
+    price: envValue("VITE_PRODUCT_ZIN_FINANCE_AGENT_PRICE", "Pricing on request"),
+    deployment: "Partner AI solution",
+    image: illustrations[0],
+    accent: "green",
+    partner: "Serenvya x Zijus",
+    idealFor: "CAs, CS teams, accounting firms, finance operations teams, controllers, and shared-service teams handling recurring finance workflows.",
+    inquiry: productInquiry("ZIN Finance Agent", "We want to understand how the flagship finance agent can assist our workflows including document review, bank statement understanding, reconciliation-adjacent checks, reporting support, cryptographic audit trails, and human-in-the-loop validation."),
+    outcomes: ["Deploy an enterprise-grade finance agent with built-in human-in-the-loop safeguards", "Automate statement reconciliation and multi-ledger data extraction", "Secure operations with cryptographic audit trails and active role-based routing", "Minimize human error across complex tax, auditing, and corporate accounting flows"],
+    features: ["Institutional-grade OCR & Extraction", "Smart Ledger Reconciliation", "Multi-tier Approval Workflows", "Cryptographic Audit Trails", "Human-in-the-Loop Controls", "Seamless ERP & CRM Integrations"],
   },
 ];
 
@@ -152,12 +203,69 @@ const utilityPages = [
 const pageMap = Object.fromEntries([...navItems, ...utilityPages].map((item) => [item.page, item]));
 const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || "";
 
+function parseHash() {
+  const raw = window.location.hash.replace("#/", "") || "home";
+  const [path, query = ""] = raw.split("?");
+  return { path: path || "home", params: new URLSearchParams(query) };
+}
+
 function getInitialPage() {
-  const page = window.location.hash.replace("#/", "") || "home";
+  const { path: page } = parseHash();
   if (page === "products" || productMap[page.replace("products/", "")]) return page;
   return pageMap[page] ? page : "home";
 }
 
+/* ─── Scroll Reveal Hook ─── */
+function useScrollReveal(page) {
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    if (typeof IntersectionObserver === "undefined") {
+      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("visible"));
+      return undefined;
+    }
+
+    // Instantly scroll window to top on page transition to avoid blank-fold reveal issues
+    if (typeof window.scrollTo === "function") {
+      window.scrollTo(0, 0);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            // Once the element is visible, stop observing to keep animation static and smooth
+            observer.unobserve(entry.target);
+          }
+        }),
+      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
+    );
+
+    const timer = setTimeout(() => {
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      document.querySelectorAll(".reveal").forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < viewportHeight) {
+          // If the element is in or above the initial viewport, reveal it immediately
+          el.classList.add("visible");
+        } else {
+          // Otherwise, observe it for scroll reveal
+          observer.observe(el);
+        }
+      });
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [page]);
+}
+
+/* ─── Expanded Icon Component ─── */
 function Icon({ name, className = "h-5 w-5" }) {
   const common = { className, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.85", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true" };
   const icons = {
@@ -172,6 +280,24 @@ function Icon({ name, className = "h-5 w-5" }) {
     box: <svg {...common}><path d="m21 8-9-5-9 5 9 5 9-5Z" /><path d="M3 8v8l9 5 9-5V8" /><path d="M12 13v8" /></svg>,
     qr: <svg {...common}><path d="M4 4h6v6H4z" /><path d="M14 4h6v6h-6z" /><path d="M4 14h6v6H4z" /><path d="M14 14h2" /><path d="M20 14v2" /><path d="M16 18h4" /><path d="M14 20h2" /></svg>,
     rupee: <svg {...common}><path d="M6 4h12" /><path d="M6 8h12" /><path d="M8 4c5.2 0 5.2 8 0 8H6l8 8" /></svg>,
+    shield: <svg {...common}><path d="M12 2l7 4v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11V6l7-4Z" /></svg>,
+    workflow: <svg {...common}><rect x="3" y="3" width="6" height="6" rx="1" /><rect x="15" y="3" width="6" height="6" rx="1" /><rect x="9" y="15" width="6" height="6" rx="1" /><path d="M9 6h6" /><path d="M12 9v6" /></svg>,
+    database: <svg {...common}><ellipse cx="12" cy="5" rx="8" ry="3" /><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" /><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" /></svg>,
+    lock: <svg {...common}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>,
+    chart: <svg {...common}><path d="M4 20h16" /><rect x="4" y="12" width="4" height="8" rx="1" /><rect x="10" y="6" width="4" height="14" rx="1" /><rect x="16" y="10" width="4" height="10" rx="1" /></svg>,
+    document: <svg {...common}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z" /><path d="M14 2v6h6" /><path d="M8 13h8" /><path d="M8 17h8" /></svg>,
+    integration: <svg {...common}><path d="M5.5 7.5h3v3h-3z" /><path d="M15.5 7.5h3v3h-3z" /><path d="M10.5 13.5h3v3h-3z" /><path d="M8.5 9l2 4.5" /><path d="M15.5 9l-2 4.5" /></svg>,
+    globe: <svg {...common}><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2c2.76 3.2 4 6.5 4 10s-1.24 6.8-4 10c-2.76-3.2-4-6.5-4-10s1.24-6.8 4-10Z" /></svg>,
+    lightning: <svg {...common}><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" /></svg>,
+    users: <svg {...common}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
+    terminal: <svg {...common}><path d="m4 17 6-5-6-5" /><path d="M12 19h8" /></svg>,
+    clipboard: <svg {...common}><rect x="8" y="2" width="8" height="4" rx="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="M9 14l2 2 4-4" /></svg>,
+    compass: <svg {...common}><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>,
+    layers: <svg {...common}><path d="M12 2 2 7l10 5 10-5-10-5Z" /><path d="m2 17 10 5 10-5" /><path d="m2 12 10 5 10-5" /></svg>,
+    target: <svg {...common}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>,
+    clock: <svg {...common}><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>,
+    fingerprint: <svg {...common}><path d="M2 12a10 10 0 0 1 18-6" /><path d="M7 20.7A10 10 0 0 1 2 12" /><path d="M12 12a2 2 0 0 0-2 2c0 1.02-.1 2.52-.4 4" /><path d="M12 12a2 2 0 0 1 2 2c0 1.02.1 2.52.4 4" /><path d="M12 2a10 10 0 0 1 10 10c0 4.25-1.56 7.43-4 9.5" /><path d="M12 12v-2a4 4 0 0 0-4 4c0 1.59-.18 3.7-.6 5.5" /><path d="M16 8a4 4 0 0 0-8 0v4" /></svg>,
+    filter: <svg {...common}><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3Z" /></svg>,
   };
   return icons[name] || icons.spark;
 }
@@ -180,13 +306,17 @@ function hrefFor(page) {
   return page === "home" ? "#/" : `#/${page}`;
 }
 
+function inquiryHref(product) {
+  return `#/query?product=${encodeURIComponent(product.slug)}`;
+}
+
 function Button({ children, page, href, variant = "primary", className = "", onClick, target, rel }) {
   const styles = {
-    primary: "border-white/20 bg-white text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] hover:-translate-y-0.5 hover:bg-sky-50",
-    dark: "border-white/15 bg-slate-950/80 text-white shadow-[0_18px_55px_rgba(2,8,23,0.26)] hover:-translate-y-0.5 hover:bg-slate-900",
+    primary: "border-white/20 bg-white text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] hover:-translate-y-0.5 hover:bg-sky-50",
+    dark: "border-white/15 bg-slate-950/80 text-white shadow-[0_14px_40px_rgba(2,8,23,0.22)] hover:-translate-y-0.5 hover:bg-slate-900",
     ghost: "border-white/20 bg-white/10 text-white backdrop-blur-2xl hover:-translate-y-0.5 hover:bg-white/16",
   };
-  const classes = `inline-flex min-h-12 items-center justify-center rounded-full border px-6 text-sm font-semibold transition duration-300 focus:outline-none focus:ring-2 focus:ring-sky-300 ${styles[variant]} ${className}`;
+  const classes = `inline-flex min-h-12 items-center justify-center rounded-xl border px-6 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-300 ${styles[variant]} ${className}`;
   return <a href={href || hrefFor(page)} className={classes} onClick={onClick} rel={rel} target={target}>{children}</a>;
 }
 
@@ -221,11 +351,15 @@ function Field({ label, children, error, hint }) {
   );
 }
 
-function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceholder, buttonLabel, successMessage }) {
-  const [form, setForm] = useState({ name: "", email: "", mobile: "", query: "" });
+function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceholder, buttonLabel, successMessage, initialQuery = "" }) {
+  const [form, setForm] = useState({ name: "", email: "", mobile: "", query: initialQuery });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setForm((current) => ({ ...current, query: initialQuery }));
+  }, [initialQuery]);
 
   const updateField = (event) => {
     setErrors((current) => ({ ...current, [event.target.name]: "" }));
@@ -270,17 +404,19 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
     }
   };
 
+  const inputBase = "w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.15)]";
+
   return (
     <Glass className="p-6 sm:p-7">
       <form className="grid gap-5" onSubmit={submit}>
         <div>
-          <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+          <h2 className="text-2xl font-medium tracking-tight">{title}</h2>
           <p className="mt-3 text-[15px] leading-7 text-white/64">{intro}</p>
         </div>
         <Field label="Name" error={errors.name}>
           <input
             aria-invalid={Boolean(errors.name)}
-            className={`w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.name ? "border-red-300/50" : "border-white/12"}`}
+            className={`${inputBase} ${errors.name ? "border-red-300/50" : "border-white/12"}`}
             name="name"
             onChange={updateField}
             placeholder="Your name"
@@ -291,7 +427,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
         <Field label="Email" error={errors.email}>
           <input
             aria-invalid={Boolean(errors.email)}
-            className={`w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.email ? "border-red-300/50" : "border-white/12"}`}
+            className={`${inputBase} ${errors.email ? "border-red-300/50" : "border-white/12"}`}
             name="email"
             onChange={updateField}
             placeholder="you@example.com"
@@ -303,7 +439,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
         <Field label="Mobile number" error={errors.mobile} hint="Use a 10-digit mobile number. +91, spaces, or dashes are okay.">
           <input
             aria-invalid={Boolean(errors.mobile)}
-            className={`w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.mobile ? "border-red-300/50" : "border-white/12"}`}
+            className={`${inputBase} ${errors.mobile ? "border-red-300/50" : "border-white/12"}`}
             inputMode="tel"
             name="mobile"
             onChange={updateField}
@@ -317,7 +453,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
         <Field label={queryLabel} error={errors.query}>
           <textarea
             aria-invalid={Boolean(errors.query)}
-            className={`min-h-36 w-full resize-y rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 ${errors.query ? "border-red-300/50" : "border-white/12"}`}
+            className={`min-h-36 resize-y ${inputBase} ${errors.query ? "border-red-300/50" : "border-white/12"}`}
             name="query"
             onChange={updateField}
             placeholder={queryPlaceholder}
@@ -326,7 +462,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
           />
         </Field>
         <button
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white px-6 text-sm font-medium text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
           disabled={status === "sending"}
           type="submit"
         >
@@ -346,32 +482,61 @@ function Logo({ compact = false }) {
         <img src="/serenvya-logo.png" alt="" className="absolute left-1/2 top-1/2 h-[72px] w-[96px] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain" />
       </span>
       {!compact && <div>
-        <p className="text-lg font-semibold tracking-tight text-white">Serenvya</p>
+        <p className="text-lg font-medium tracking-tight text-white">Serenvya</p>
         <p className="text-[10px] uppercase tracking-[0.22em] text-white/58">Consulting & Automations</p>
       </div>}
     </div>
   );
 }
 
+/* ─── Backdrop with dot-grid + floating orbs ─── */
 function Backdrop() {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#071325]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(0,160,255,0.34),transparent_28%),radial-gradient(circle_at_78%_12%,rgba(255,176,0,0.24),transparent_26%),radial-gradient(circle_at_86%_72%,rgba(17,184,80,0.24),transparent_28%),linear-gradient(135deg,#071325_0%,#091b35_42%,#050912_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:88px_88px] opacity-35" />
-      <div className="absolute left-[8%] top-[18%] h-56 w-56 rounded-full bg-sky-400/18 blur-3xl" />
-      <div className="absolute bottom-[8%] right-[10%] h-72 w-72 rounded-full bg-emerald-400/12 blur-3xl" />
+    <div className="noise-overlay pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#080E1E]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(0,160,255,0.30),transparent_28%),radial-gradient(circle_at_78%_12%,rgba(255,176,0,0.20),transparent_26%),radial-gradient(circle_at_86%_72%,rgba(17,184,80,0.20),transparent_28%),linear-gradient(135deg,#080E1E_0%,#0A1A30_42%,#060A14_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
+      <div className="absolute left-[8%] top-[18%] h-56 w-56 rounded-full bg-sky-400/16 blur-3xl" />
+      <div className="absolute bottom-[8%] right-[10%] h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
+      <div className="absolute right-[35%] top-[55%] h-48 w-48 rounded-full bg-amber-400/8 blur-3xl" />
+      {/* Floating orbs */}
+      <div className="absolute left-[15%] top-[30%] h-2 w-2 rounded-full bg-sky-400/30 float" />
+      <div className="absolute right-[20%] top-[20%] h-3 w-3 rounded-full bg-emerald-400/20 float-slow" />
+      <div className="absolute left-[60%] bottom-[25%] h-2 w-2 rounded-full bg-amber-400/25 float-delayed" />
     </div>
   );
 }
 
+/* ─── Decorative Components ─── */
+function GradientDivider() {
+  return <div className="shimmer-line mx-auto max-w-5xl my-2" />;
+}
+
+function Ticker() {
+  const items = ['Workflow Automation', 'DPDPA Readiness', 'AI Assistants', 'Consent Workflows', 'Document Processing', 'Privacy Governance', 'Data Mapping', 'Process Design'];
+  return (
+    <div className="overflow-hidden py-4 border-y border-white/6 mt-8">
+      <div className="ticker-track">
+        {[...items, ...items].map((item, i) => (
+          <span key={i} className="mx-6 text-sm font-medium text-white/30 whitespace-nowrap flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-white/20" />{item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Shell ─── */
 function Shell({ children, page, setPage }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const year = useMemo(() => new Date().getFullYear(), []);
 
+  useScrollReveal(page);
+
   return (
     <div className="min-h-screen overflow-x-hidden text-white selection:bg-sky-200 selection:text-slate-950">
       <Backdrop />
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#061225]/62 backdrop-blur-2xl">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080E1E]/62 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <a href="#/" onClick={() => setPage("home")} aria-label="Serenvya home"><Logo /></a>
           <nav className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] p-1.5 text-sm font-medium text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:flex">
@@ -387,7 +552,7 @@ function Shell({ children, page, setPage }) {
             <Icon name={mobileOpen ? "close" : "menu"} />
           </button>
         </div>
-        {mobileOpen && <div className="border-t border-white/10 bg-[#061225]/95 px-5 py-4 backdrop-blur-2xl lg:hidden">
+        {mobileOpen && <div className="border-t border-white/10 bg-[#080E1E]/95 px-5 py-4 backdrop-blur-2xl lg:hidden">
           <div className="grid gap-2">
             {navItems.map((item) => {
               const active = page === item.page || (item.page === "products" && page.startsWith("products/"));
@@ -398,9 +563,10 @@ function Shell({ children, page, setPage }) {
       </header>
       <main>{children}</main>
       <footer className="border-t border-white/10 px-5 py-10 lg:px-8">
+        <div className="shimmer-line mx-auto max-w-7xl mb-8" />
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-7 lg:flex-row lg:items-center">
           <Logo />
-          <div className="flex flex-wrap gap-5 text-sm text-white/58">{[...navItems, ...utilityPages].map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className="hover:text-white">{item.label}</a>)}</div>
+          <div className="flex flex-wrap gap-5 text-sm font-medium text-white/58">{[...navItems, ...utilityPages].map((item) => <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className="hover:text-white">{item.label}</a>)}</div>
           <p className="text-sm text-white/48">© {year} Serenvya. All rights reserved.</p>
         </div>
       </footer>
@@ -408,39 +574,48 @@ function Shell({ children, page, setPage }) {
   );
 }
 
-function SectionLabel({ children }) {
-  return <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.08] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl"><Icon name="spark" className="h-4 w-4 text-amber-300" />{children}</p>;
+function SectionLabel({ children, icon = "spark" }) {
+  return <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.08] px-4 py-2 text-xs font-medium uppercase tracking-[0.14em] text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl"><Icon name={icon} className="h-4 w-4 text-amber-300" />{children}</p>;
 }
 
 function Glass({ children, className = "" }) {
-  return <div className={`rounded-[2rem] border border-white/14 bg-white/[0.075] shadow-[0_28px_90px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl ${className}`}>{children}</div>;
+  return <div className={`gradient-border rounded-2xl bg-white/[0.035] shadow-[0_20px_60px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl hover:bg-white/[0.055] transition-colors duration-500 ${className}`}>{children}</div>;
 }
 
-function ImagePanel({ src, alt, className = "", tone = "blue" }) {
-  const glow = tone === "green" ? "shadow-[0_24px_80px_rgba(41,204,111,0.16)]" : tone === "amber" ? "shadow-[0_24px_80px_rgba(255,166,0,0.16)]" : "shadow-[0_24px_80px_rgba(0,140,255,0.18)]";
-  return <div className={`group overflow-hidden rounded-[2rem] border border-white/14 bg-white/[0.07] ${glow} backdrop-blur-xl ${className}`}><img src={src} alt={alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]" /></div>;
+function ImagePanel({ src, alt, className = "" }) {
+  return <div className={`gradient-border group overflow-hidden rounded-2xl bg-white/[0.05] backdrop-blur-xl ${className}`}><img src={src} alt={alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.02]" /></div>;
 }
 
 function ProductVisual({ product, compact = false }) {
   const toneClasses = {
-    green: "from-emerald-300/26 via-sky-400/10 to-white/8 text-emerald-100",
-    amber: "from-amber-300/28 via-sky-400/10 to-white/8 text-amber-100",
-    blue: "from-sky-300/26 via-emerald-400/10 to-white/8 text-sky-100",
+    green: "from-emerald-500/20 via-sky-500/10 to-transparent text-emerald-300",
+    amber: "from-amber-500/20 via-sky-500/10 to-transparent text-amber-300",
+    blue: "from-sky-500/20 via-emerald-500/10 to-transparent text-sky-300",
+  };
+
+  const productIconMap = {
+    "salary-slip-processor": "document",
+    "quotation-invoice-suite": "rupee",
+    "whatsapp-group-broadcaster": "node",
+    "contact-qr-code-generator": "qr",
+    "stuffing-plan-manager": "clipboard",
+    "income-tax-calculator-ay-2026-27": "chart",
+    "lbh-lex-suite": "document",
+    "zin-finance-agent": "database",
   };
 
   return (
-    <div className={`relative overflow-hidden rounded-[2rem] border border-white/14 bg-gradient-to-br ${toneClasses[product.accent] || toneClasses.blue} p-5 shadow-[0_24px_80px_rgba(0,140,255,0.14)]`}>
-      <img src={product.image} alt="" className={`absolute inset-0 h-full w-full object-cover opacity-18 mix-blend-luminosity ${compact ? "" : "scale-105"}`} />
-      <div className="absolute inset-0 bg-[#071325]/48" />
-      <div className="relative grid min-h-52 content-between gap-8">
-        <div className="flex items-start justify-between gap-4">
-          <span className="rounded-2xl border border-white/16 bg-white/12 p-3 backdrop-blur-xl"><Icon name={product.slug.includes("qr") ? "qr" : "box"} className="h-6 w-6" /></span>
-          <span className="rounded-full border border-white/14 bg-black/20 px-3 py-1 text-xs font-semibold text-white/78 backdrop-blur-xl">{product.deployment}</span>
-        </div>
-        <div>
-          <p className="text-sm uppercase tracking-[0.18em] text-white/62">{product.eyebrow}</p>
-          <p className={`${compact ? "text-2xl" : "text-4xl"} mt-3 font-semibold leading-tight tracking-tight`}>{product.name}</p>
-        </div>
+    <div className={`relative overflow-hidden w-full rounded-2xl ${compact ? "h-52" : "h-full min-h-[220px] lg:min-h-full"} flex items-center justify-center bg-gradient-to-br ${toneClasses[product.accent] || toneClasses.blue}`}>
+      <img src={product.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity scale-105" />
+      <div className="absolute inset-0 bg-[#080E1E]/40" />
+      
+      <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/16 bg-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+        {product.partner ? (
+          <img src="/zijus-icon.png" alt="" className="h-9 w-9 object-contain" />
+        ) : (
+          <Icon name={productIconMap[product.slug] || "box"} className="h-9 w-9 text-sky-300" />
+        )}
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-sky-400/20 blur-md" />
       </div>
     </div>
   );
@@ -452,36 +627,105 @@ function ProductPrice({ product }) {
       <span className="rounded-full bg-white/10 p-2 text-amber-200"><Icon name="rupee" className="h-5 w-5" /></span>
       <div>
         <p className="text-xs uppercase tracking-[0.18em] text-white/42">Price</p>
-        <p className="mt-1 text-lg font-semibold text-white">{product.price}</p>
+        <p className="mt-1 text-lg font-medium text-white">{product.price}</p>
       </div>
     </div>
   );
 }
 
 function ProductAction({ product, label = "License this product", variant = "primary", className = "" }) {
-  const href = productPaymentLinks[product.key];
-  if (href) {
-    return <Button href={href} variant={variant} className={className} rel="noreferrer" target="_blank">{label} <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>;
-  }
-  return <Button page="query" variant={variant} className={className}>{label} <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>;
+  return <Button href={inquiryHref(product)} variant={variant} className={className}>{label} <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>;
 }
 
-function ProductCard({ product, setPage, featured = false }) {
+function ProductCard({ product, setPage }) {
   const productPage = `products/${product.slug}`;
+  const productIconMap = {
+    "salary-slip-processor": "document",
+    "quotation-invoice-suite": "rupee",
+    "whatsapp-group-broadcaster": "node",
+    "contact-qr-code-generator": "qr",
+    "stuffing-plan-manager": "clipboard",
+    "income-tax-calculator-ay-2026-27": "chart",
+    "lbh-lex-suite": "document",
+    "zin-finance-agent": "database",
+  };
+
+  const accentColors = {
+    green: {
+      text: "text-emerald-400",
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20",
+      glow: "bg-emerald-400/20"
+    },
+    amber: {
+      text: "text-amber-400",
+      bg: "bg-amber-500/10",
+      border: "border-amber-500/20",
+      glow: "bg-amber-400/20"
+    },
+    blue: {
+      text: "text-sky-400",
+      bg: "bg-sky-500/10",
+      border: "border-sky-500/20",
+      glow: "bg-sky-400/20"
+    }
+  };
+
+  const accent = accentColors[product.accent] || accentColors.blue;
+
   return (
-    <Glass className={`group flex h-full flex-col overflow-hidden ${featured ? "lg:grid lg:grid-cols-[0.86fr_1.14fr]" : ""}`}>
-      <ProductVisual product={product} compact={!featured} />
-      <div className="flex flex-1 flex-col p-6">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/68">{product.eyebrow}</span>
-          <span className="rounded-full bg-emerald-300/12 px-3 py-1 text-xs font-semibold text-emerald-100">{product.deployment}</span>
+    <Glass className="group flex flex-col justify-between overflow-hidden h-full min-h-[380px] p-6 hover:translate-y-[-4px] transition-all duration-300">
+      <div>
+        {/* Header Row */}
+        <div className="flex items-start gap-4">
+          <div className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${accent.border} ${accent.bg} ${accent.text} shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition duration-500 group-hover:scale-105`}>
+            {product.partner ? (
+              <img src="/zijus-icon.png" alt="" className="h-6 w-6 object-contain" />
+            ) : (
+              <Icon name={productIconMap[product.slug] || "box"} className="h-6 w-6" />
+            )}
+            <div className={`absolute inset-0 -z-10 rounded-xl ${accent.glow} blur-sm opacity-50 group-hover:opacity-100 transition duration-500`} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className={`text-[10px] uppercase tracking-[0.14em] ${accent.text} font-medium`}>{product.eyebrow}</p>
+            <h3 className="mt-1 text-lg font-medium tracking-tight text-white group-hover:text-sky-300 transition duration-300 leading-snug">
+              {product.name}
+            </h3>
+          </div>
         </div>
-        <h3 className="mt-5 text-2xl font-semibold tracking-tight">{product.name}</h3>
-        <p className="mt-4 text-[15px] leading-7 text-white/66">{product.summary}</p>
-        <div className="mt-6"><ProductPrice product={product} /></div>
-        <div className="mt-auto flex flex-col gap-3 pt-6 sm:flex-row">
-          <Button page={productPage} variant="ghost" onClick={() => setPage(productPage)}>Explore product</Button>
-          <ProductAction product={product} label="Buy or license" variant="dark" />
+
+        {/* Summary Description */}
+        <p className="mt-5 text-[14px] leading-6 text-white/60 font-normal">
+          {product.summary}
+        </p>
+      </div>
+
+      <div>
+        {/* Metadata Tags Row */}
+        <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/5 pt-4 text-[11px] text-white/40">
+          <span className="rounded-md bg-white/[0.03] border border-white/5 px-2.5 py-1 backdrop-blur-md">
+            {product.deployment}
+          </span>
+          <span className="rounded-md bg-white/[0.03] border border-white/5 px-2.5 py-1 backdrop-blur-md">
+            {product.price}
+          </span>
+          {product.partner && (
+            <span className="rounded-md bg-rose-500/5 border border-rose-500/10 px-2.5 py-1 text-rose-300/80 font-medium">
+              {product.partner}
+            </span>
+          )}
+        </div>
+
+        {/* Explore CTA */}
+        <div className="mt-5">
+          <Button
+            href={`#/${productPage}`}
+            onClick={() => setPage(productPage)}
+            variant="ghost"
+            className="w-full text-xs py-2.5"
+          >
+            Explore specifications <Icon name="arrow" className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </div>
     </Glass>
@@ -489,35 +733,255 @@ function ProductCard({ product, setPage, featured = false }) {
 }
 
 function ProductsBand({ setPage }) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const featuredProducts = [products[7], products[1], products[6]];
+  const activeProduct = featuredProducts[activeIdx];
+
+  const productIconMap = {
+    "salary-slip-processor": "document",
+    "quotation-invoice-suite": "rupee",
+    "whatsapp-group-broadcaster": "node",
+    "contact-qr-code-generator": "qr",
+    "stuffing-plan-manager": "clipboard",
+    "income-tax-calculator-ay-2026-27": "chart",
+    "lbh-lex-suite": "document",
+    "zin-finance-agent": "database",
+  };
+
+  const toneClasses = {
+    green: {
+      text: "text-emerald-300",
+      bg: "from-emerald-500/20 via-sky-500/10 to-transparent",
+      glow: "bg-emerald-400/20",
+      accentBorder: "border-emerald-500/30",
+      tabActive: "bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.15)]",
+    },
+    amber: {
+      text: "text-amber-300",
+      bg: "from-amber-500/20 via-sky-500/10 to-transparent",
+      glow: "bg-amber-400/20",
+      accentBorder: "border-amber-500/30",
+      tabActive: "bg-amber-500/10 border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.15)]",
+    },
+    blue: {
+      text: "text-sky-300",
+      bg: "from-sky-500/20 via-emerald-500/10 to-transparent",
+      glow: "bg-sky-400/20",
+      accentBorder: "border-sky-500/30",
+      tabActive: "bg-sky-500/10 border-sky-500/30 shadow-[0_0_20px_rgba(14,165,233,0.15)]",
+    },
+  };
+
   return (
-    <section className="px-5 py-14 lg:px-8">
+    <section className="px-5 py-14 lg:px-8 reveal">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
-            <SectionLabel>Ready products</SectionLabel>
-            <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Automation products Serenvya can license, host, or customize.</h2>
-            <p className="mt-5 text-lg leading-8 text-white/68">These are working tools shaped from real client requirements, packaged for reuse with clear pricing variables and dedicated product pages.</p>
+            <SectionLabel icon="box">Ready products</SectionLabel>
+            <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
+              Automation products Serenvya can license, host, or customize.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-white/68">
+              These are working tools shaped from real client requirements, packaged for reuse with clear pricing variables and dedicated product pages.
+            </p>
           </div>
-          <Button page="products" variant="ghost" onClick={() => setPage("products")}>View all products <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+          <Button page="products" variant="ghost" onClick={() => setPage("products")}>
+            View all products <Icon name="arrow" className="ml-2 h-5 w-5" />
+          </Button>
         </div>
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2"><ProductCard product={products[1]} setPage={setPage} featured /></div>
-          <div className="grid gap-4">
-            {products.slice(0, 3).filter((product) => product.slug !== products[1].slug).map((product) => <ProductCard key={product.slug} product={product} setPage={setPage} />)}
+
+        {/* Moving Marquee with generous top margins */}
+        <div className="mt-12 sm:mt-16">
+          <Ticker />
+        </div>
+
+        {/* Dashboard Showcase Grid */}
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.8fr] items-start">
+          
+          {/* Left Panel: Selector Tabs */}
+          <div className="flex flex-col gap-4">
+            {featuredProducts.map((product, idx) => {
+              const isActive = activeIdx === idx;
+              const accent = product.accent || "blue";
+              const colors = toneClasses[accent];
+              const isZin = product.slug === "zin-finance-agent";
+
+              return (
+                <button
+                  key={product.slug}
+                  onClick={() => setActiveIdx(idx)}
+                  className={`group relative flex items-start gap-4 rounded-2xl border text-left p-5 transition-all duration-500 cursor-pointer ${
+                    isActive
+                      ? colors.tabActive
+                      : "border-white/8 bg-white/[0.02] hover:border-white/16 hover:bg-white/[0.04]"
+                  }`}
+                >
+                  {/* Left Active Accent Bar */}
+                  <span
+                    className={`absolute left-0 top-1/4 bottom-1/4 w-1 rounded-r transition-all duration-500 ${
+                      isActive ? (isZin ? "bg-emerald-400 scale-y-100" : "bg-sky-400 scale-y-100") : "bg-transparent scale-y-0"
+                    }`}
+                  />
+
+                  {/* Icon Container */}
+                  <div
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-all duration-500 ${
+                      isActive
+                        ? "border-white/20 bg-white/10 text-white"
+                        : "border-white/10 bg-white/[0.04] text-white/50 group-hover:border-white/20 group-hover:text-white"
+                    }`}
+                  >
+                    {product.partner ? (
+                      <img src="/zijus-icon.png" alt="" className="h-6 w-6 object-contain" />
+                    ) : (
+                      <Icon name={productIconMap[product.slug] || "box"} className="h-6 w-6" />
+                    )}
+                  </div>
+
+                  {/* Product Tag and Details */}
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-medium text-white">{product.name}</p>
+                      {isZin && (
+                        <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[9px] font-medium tracking-wider text-amber-300 uppercase animate-pulse">
+                          Flagship
+                        </span>
+                      )}
+                      {product.partner && !isZin && (
+                        <span className="rounded-full bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 text-[9px] font-medium text-rose-300">
+                          Zijus Partner
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs text-white/50 leading-relaxed">
+                      {product.eyebrow}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
+
+          {/* Right Panel: Workspace Preview Details */}
+          <Glass className="overflow-hidden p-6 sm:p-8 flex flex-col justify-between h-full min-h-[480px]">
+            <div className="grid gap-8 md:grid-cols-[1fr_1.2fr] items-center">
+              
+              {/* Product Visual Area */}
+              <div className={`relative overflow-hidden aspect-[4/3] rounded-2xl bg-gradient-to-br ${toneClasses[activeProduct.accent || "blue"].bg} flex items-center justify-center p-6 border border-white/8`}>
+                <img src={activeProduct.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity scale-105" />
+                <div className="absolute inset-0 bg-[#080E1E]/40" />
+
+                {/* Floating Interactive Micro-UI Layout */}
+                <div className="relative z-10 w-full max-w-[240px] rounded-2xl border border-white/12 bg-[#080E1E]/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[10px] uppercase tracking-wider text-white/42 font-medium">LIVE PREVIEW</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/16 bg-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+                      {activeProduct.partner ? (
+                        <img src="/zijus-icon.png" alt="" className="h-6 w-6 object-contain" />
+                      ) : (
+                        <Icon name={productIconMap[activeProduct.slug] || "box"} className="h-6 w-6 text-sky-300" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-white truncate max-w-[120px]">{activeProduct.name}</p>
+                      <p className="text-[9px] text-white/42">{activeProduct.deployment}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 border-t border-white/8 pt-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-white/50">Status</span>
+                      <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 text-[9px] font-medium text-emerald-300">Ready</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Glow ring in the back */}
+                <div className={`absolute h-40 w-40 rounded-full ${toneClasses[activeProduct.accent || "blue"].glow} blur-2xl -z-10`} />
+              </div>
+
+              {/* Product Info Block */}
+              <div>
+                <p className="text-xs uppercase tracking-[0.18em] text-white/42 font-medium">
+                  {activeProduct.eyebrow}
+                </p>
+                <h3 className="mt-2 text-2xl font-medium tracking-tight text-white">
+                  {activeProduct.name}
+                </h3>
+                
+                {/* Premium Inline Metadata Row */}
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/42">
+                  <span className="font-medium text-sky-200">{activeProduct.deployment}</span>
+                  <span>•</span>
+                  <span>{activeProduct.price}</span>
+                  {activeProduct.partner && (
+                    <>
+                      <span>•</span>
+                      <span className="text-rose-300 font-medium">{activeProduct.partner}</span>
+                    </>
+                  )}
+                </div>
+
+                <p className="mt-4 text-[14px] leading-relaxed text-white/66">
+                  {activeProduct.summary}
+                </p>
+
+                {/* Smart outcomes checklist */}
+                <div className="mt-6 flex flex-col gap-3">
+                  {activeProduct.outcomes.slice(0, 3).map((outcome) => (
+                    <div key={outcome} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-300">
+                        <Icon name="check" className="h-3 w-3" />
+                      </span>
+                      <p className="text-xs leading-5 text-white/70">{outcome}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Premium CTA Panel */}
+            <div className="mt-8 border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                <p className="text-xs text-white/50">Fully customizable for your organization</p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <a
+                  href={`#/products/${activeProduct.slug}`}
+                  onClick={() => setPage(`products/${activeProduct.slug}`)}
+                  className="text-xs font-medium text-white/62 hover:text-white transition duration-200 flex items-center gap-1 cursor-pointer w-full sm:w-auto justify-center"
+                >
+                  Explore specifications <Icon name="arrow" className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href={inquiryHref(activeProduct)}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/20 bg-white px-5 text-xs font-medium text-slate-950 shadow-[0_12px_36px_rgba(0,140,255,0.14)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-auto cursor-pointer"
+                >
+                  License & Customize
+                </a>
+              </div>
+            </div>
+
+          </Glass>
         </div>
       </div>
     </section>
   );
 }
 
-function PageHero({ kicker, title, text, image, children }) {
+function PageHero({ kicker, title, text, image, children, kickerIcon = "spark" }) {
   return (
     <section className="px-5 pb-12 pt-12 lg:px-8 lg:pb-20 lg:pt-16">
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
         <div className="fade-up">
-          <SectionLabel>{kicker}</SectionLabel>
-          <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">{title}</h1>
+          <SectionLabel icon={kickerIcon}>{kicker}</SectionLabel>
+          <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">{text}</p>
           {children}
         </div>
@@ -529,34 +993,42 @@ function PageHero({ kicker, title, text, image, children }) {
   );
 }
 
+/* ─── Home Page ─── */
 function Home({ setPage }) {
   return (
     <>
       <section className="relative px-5 pb-16 pt-12 lg:px-8 lg:pb-24 lg:pt-18">
+        {/* Decorative circuit fragments */}
+        <svg className="pointer-events-none absolute left-[5%] top-[15%] h-24 w-24 text-white/[0.04]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1">
+          <path d="M10 50h30M50 10v30M50 50h40M50 50v40" /><circle cx="50" cy="50" r="3" /><circle cx="10" cy="50" r="2" /><circle cx="90" cy="50" r="2" />
+        </svg>
+        <svg className="pointer-events-none absolute right-[8%] bottom-[20%] h-20 w-20 text-white/[0.04]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1">
+          <path d="M20 20h60v60H20z" /><path d="M50 20v60" /><path d="M20 50h60" />
+        </svg>
+
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="fade-up">
-            <SectionLabel>AI automation and DPDPA consultancy</SectionLabel>
-            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.01] tracking-tight sm:text-6xl lg:text-7xl">Where Intelligent Automation meets Compliance Precision</h1>
+            <SectionLabel icon="workflow">AI automation and DPDPA consultancy</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-medium leading-[1.01] tracking-tight sm:text-6xl">Where Intelligent Automation meets Compliance Precision</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/72">Serenvya helps businesses redesign operational processes using AI and prepare for DPDPA compliance with practical privacy workflows, documentation, and governance support.</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button page="query" onClick={() => setPage("query")}>Ask a query <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
               <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Submit problem statement</Button>
             </div>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {[["Automate", "reduce repetitive operational work"], ["Comply", "prepare for DPDPA obligations"], ["Operate", "make controls usable for teams"]].map(([value, label]) => <Glass key={label} className="p-5"><p className="text-2xl font-semibold">{value}</p><p className="mt-2 text-sm leading-6 text-white/62">{label}</p></Glass>)}
+              {[["Automate", "reduce repetitive operational work", "lightning"], ["Comply", "prepare for DPDPA obligations", "shield"], ["Operate", "make controls usable for teams", "users"]].map(([value, label, icon]) => <Glass key={label} className="p-5"><div className="flex items-center gap-3 mb-2"><Icon name={icon} className="h-5 w-5 text-sky-300" /><p className="text-2xl font-medium">{value}</p></div><p className="mt-1 text-sm leading-6 text-white/62">{label}</p></Glass>)}
             </div>
           </div>
-          <div className="grid gap-4 fade-up lg:grid-cols-[0.72fr_1fr]" style={{ animationDelay: "120ms" }}>
-            <ImagePanel src={illustrations[2]} alt="AI consultant with workflow interface" className="aspect-[4/5] lg:mt-16" tone="green" />
-            <ImagePanel src={illustrations[0]} alt="Automation dashboard and connected systems" className="aspect-[16/10]" />
-            <Glass className="relative overflow-hidden p-6 lg:col-span-2">
+          <div className="fade-up" style={{ animationDelay: "120ms" }}>
+            <ImagePanel src={illustrations[0]} alt="Serenvya hero workflow" className="aspect-[16/10]" />
+            <Glass className="relative overflow-hidden p-6 mt-4">
               <div className="absolute -right-12 -top-16 h-40 w-40 rounded-full bg-amber-300/20 blur-3xl" />
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-sm uppercase tracking-[0.22em] text-sky-100">Serenvya focus areas</p>
-                  <p className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight">AI process automation for efficiency, and DPDPA consultancy for responsible data operations.</p>
+                  <p className="mt-3 max-w-2xl text-xl font-medium tracking-tight">AI process automation for efficiency, and DPDPA consultancy for responsible data operations.</p>
                 </div>
-                <div className="hidden rounded-3xl bg-white p-3 shadow-[0_18px_55px_rgba(255,255,255,0.12)] sm:block">
+                <div className="hidden rounded-3xl bg-white p-3 shadow-[0_14px_40px_rgba(255,255,255,0.10)] sm:block">
                   <img src="/serenvya-logo.png" alt="Serenvya logo" className="h-16 w-28 object-contain" />
                 </div>
               </div>
@@ -564,18 +1036,21 @@ function Home({ setPage }) {
           </div>
         </div>
       </section>
+
+      <GradientDivider />
       <ProductsBand setPage={setPage} />
-      <section className="px-5 py-10 lg:px-8">
+
+      <section className="px-5 py-10 lg:px-8 reveal">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-2">
-          <Glass className="p-7">
+          <Glass className="p-7 border border-sky-400/10">
             <p className="text-sm uppercase tracking-[0.18em] text-sky-100">Free query</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight">Ask if Serenvya can help.</h2>
+            <h2 className="mt-4 text-2xl font-medium tracking-tight">Ask if Serenvya can help.</h2>
             <p className="mt-4 text-[15px] leading-7 text-white/66">Use this for quick questions, service fit, DPDPA readiness doubts, or early exploration.</p>
             <div className="mt-6"><Button page="query" onClick={() => setPage("query")}>Send query</Button></div>
           </Glass>
-          <Glass className="p-7">
+          <Glass className="p-7 border border-amber-400/10">
             <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Problem statement</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight">Share what you have and what you want to achieve.</h2>
+            <h2 className="mt-4 text-2xl font-medium tracking-tight">Share what you have and what you want to achieve.</h2>
             <p className="mt-4 text-[15px] leading-7 text-white/66">Use this for a serious automation or compliance problem where you want structured review and next steps.</p>
             <div className="mt-6"><Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Submit problem</Button></div>
           </Glass>
@@ -588,38 +1063,45 @@ function Home({ setPage }) {
   );
 }
 
+/* ─── Products Page ─── */
 function ProductsPage({ setPage }) {
   return (
     <>
-      <PageHero
-        kicker="Products"
-        title="Working automation products ready for reuse."
-        text="Serenvya turns client-built automation tools into licenseable products. Each product can be bought as-is, branded, hosted, or extended for a specific workflow."
-        image={illustrations[1]}
-      >
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Button page="query" onClick={() => setPage("query")}>Ask about licensing <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
-          <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Request customization</Button>
+      <section className="relative px-5 pb-12 pt-12 lg:px-8 lg:pb-20 lg:pt-16">
+        <img src={illustrations[3]} alt="" className="pointer-events-none absolute right-0 top-0 h-96 w-96 object-contain opacity-[0.06] mix-blend-luminosity" />
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className="fade-up">
+            <SectionLabel icon="box">Products</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Working automation products ready for reuse.</h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">Serenvya turns client-built automation tools into licenseable products. Each product can be bought as-is, branded, hosted, or extended for a specific workflow.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button page="query" onClick={() => setPage("query")}>Ask about licensing <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+              <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Request customization</Button>
+            </div>
+          </div>
+          <div className="fade-up" style={{ animationDelay: "100ms" }}>
+            <ImagePanel src={illustrations[3]} alt="" className="aspect-[16/10]" />
+          </div>
         </div>
-      </PageHero>
+      </section>
       <section className="px-5 pb-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
           {products.map((product) => <ProductCard key={product.slug} product={product} setPage={setPage} />)}
         </div>
       </section>
       <section className="px-5 pb-20 lg:px-8">
         <Glass className="mx-auto grid max-w-7xl gap-8 p-7 lg:grid-cols-[0.8fr_1.2fr] lg:p-9">
           <div>
-            <SectionLabel>Commercial setup</SectionLabel>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Pricing and payment links are configurable.</h2>
-            <p className="mt-4 text-[15px] leading-7 text-white/66">Each product uses a separate price and payment-link variable, so Serenvya can publish list pricing, seasonal offers, hosted subscription links, or one-time license payment links without changing the code.</p>
+            <SectionLabel icon="integration">Product inquiry</SectionLabel>
+            <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">Start with a focused product conversation.</h2>
+            <p className="mt-4 text-[15px] leading-7 text-white/66">Each product CTA opens the query form with a product-specific message already drafted. Visitors can add their contact details, edit the message, and optionally complete the consultation-fee flow from the same query page.</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              "One-time license or hosted subscription",
+              "Product-specific inquiry draft",
               "White-label branding and deployment support",
               "Client-specific feature extension",
-              "Implementation, onboarding, and maintenance options",
+              "Consultation-fee link available after query context",
             ].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-6 text-white/72">{item}</p></div>)}
           </div>
         </Glass>
@@ -628,6 +1110,7 @@ function ProductsPage({ setPage }) {
   );
 }
 
+/* ─── Product Detail Page ─── */
 function ProductDetailPage({ product, setPage }) {
   if (!product) return <ProductsPage setPage={setPage} />;
 
@@ -636,22 +1119,28 @@ function ProductDetailPage({ product, setPage }) {
       <section className="px-5 py-14 lg:px-8 lg:py-20">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div className="fade-up">
-            <a href="#/products" onClick={() => setPage("products")} className="mb-6 inline-flex items-center text-sm font-semibold text-sky-100/78 hover:text-white">
+            <a href="#/products" onClick={() => setPage("products")} className="mb-6 inline-flex items-center text-sm font-medium text-sky-100/78 hover:text-white">
               <span className="mr-2">&larr;</span> Back to products
             </a>
             <SectionLabel>{product.eyebrow}</SectionLabel>
-            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">{product.name}</h1>
+            <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">{product.name}</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">{product.detail}</p>
             <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
               <ProductPrice product={product} />
               <div className="rounded-2xl border border-white/12 bg-white/[0.065] p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-white/42">Delivery</p>
-                <p className="mt-1 text-lg font-semibold text-white">{product.deployment}</p>
+                <p className="mt-1 text-lg font-medium text-white">{product.deployment}</p>
               </div>
             </div>
+            {product.partner && <div className="mt-5 inline-flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.065] px-4 py-3">
+              <img src="/serenvya-logo.png" alt="" className="h-8 w-10 rounded-lg bg-white object-contain" />
+              <span className="text-sm font-medium text-white/78">in partnership with</span>
+              <img src="/zijus-icon.png" alt="" className="h-8 w-8 rounded-lg object-contain" />
+              <span className="text-sm font-medium text-white">{product.partner.replace("Serenvya x ", "")}</span>
+            </div>}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ProductAction product={product} />
-              <Button page="query" variant="ghost" onClick={() => setPage("query")}>Discuss customization</Button>
+              <ProductAction product={product} label="Ask about this product" />
+              <Button href={inquiryHref(product)} variant="ghost">Discuss customization</Button>
             </div>
           </div>
           <div className="fade-up" style={{ animationDelay: "100ms" }}>
@@ -664,7 +1153,7 @@ function ProductDetailPage({ product, setPage }) {
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[0.95fr_1.05fr]">
           <Glass className="p-7">
             <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Best fit</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight">Who this is for</h2>
+            <h2 className="mt-4 text-2xl font-medium tracking-tight">Who this is for</h2>
             <p className="mt-4 text-[15px] leading-7 text-white/68">{product.idealFor}</p>
             <div className="mt-7 grid gap-3">
               {product.outcomes.map((outcome) => <div key={outcome} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-6 text-white/72">{outcome}</p></div>)}
@@ -673,7 +1162,7 @@ function ProductDetailPage({ product, setPage }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {product.features.map((feature, index) => <Glass key={feature} className="p-6">
               <p className="text-sm font-semibold text-sky-200">0{index + 1}</p>
-              <h3 className="mt-5 text-xl font-semibold tracking-tight">{feature}</h3>
+              <h3 className="mt-5 text-xl font-medium tracking-tight">{feature}</h3>
             </Glass>)}
           </div>
         </div>
@@ -683,11 +1172,11 @@ function ProductDetailPage({ product, setPage }) {
         <Glass className="mx-auto grid max-w-7xl gap-7 overflow-hidden p-7 lg:grid-cols-[1.05fr_0.95fr] lg:p-9">
           <div>
             <SectionLabel>Next step</SectionLabel>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">License it, brand it, or adapt it for your workflow.</h2>
+            <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">License it, brand it, or adapt it for your workflow.</h2>
             <p className="mt-4 text-[15px] leading-7 text-white/66">Serenvya can provide the product as a reusable tool, configure hosting or desktop packaging where relevant, and add client-specific fields, reports, branding, integrations, or access controls.</p>
           </div>
           <div className="flex flex-col justify-center gap-3">
-            <ProductAction product={product} label="Proceed with this product" />
+            <ProductAction product={product} label="Send a product inquiry" />
             <Button page="problem" variant="ghost" onClick={() => setPage("problem")}>Request a custom version</Button>
           </div>
         </Glass>
@@ -696,14 +1185,15 @@ function ProductDetailPage({ product, setPage }) {
   );
 }
 
+/* ─── Featured Band ─── */
 function FeaturedBand({ setPage }) {
   return (
-    <section className="px-5 py-12 lg:px-8">
+    <section className="px-5 py-12 lg:px-8 reveal">
       <Glass className="mx-auto grid max-w-7xl gap-8 overflow-hidden p-6 lg:grid-cols-[0.9fr_1.1fr] lg:p-8">
-        <ImagePanel src={illustrations[1]} alt="Connected workflow and data systems" className="aspect-[16/9]" tone="amber" />
+        <ImagePanel src={illustrations[8]} alt="Connected workflow and data systems" className="aspect-[16/9]" />
         <div className="flex flex-col justify-center">
-          <SectionLabel>Two clear service lines</SectionLabel>
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Operational efficiency and privacy readiness should work together.</h2>
+          <SectionLabel icon="node">Two clear service lines</SectionLabel>
+          <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">Operational efficiency and privacy readiness should work together.</h2>
           <p className="mt-5 text-lg leading-8 text-white/70">AI automation improves how work moves. DPDPA consultancy improves how personal data is handled inside that work. Serenvya brings both into practical business workflows.</p>
           <div className="mt-7"><Button page="solutions" onClick={() => setPage("solutions")}>View service areas</Button></div>
         </div>
@@ -712,18 +1202,23 @@ function FeaturedBand({ setPage }) {
   );
 }
 
+/* ─── Service Grid ─── */
 function ServiceGrid() {
+  const serviceIcons = ['workflow', 'integration', 'lightning', 'shield', 'fingerprint', 'document'];
   return (
-    <section className="px-5 py-16 lg:px-8">
+    <section className="px-5 py-16 lg:px-8 reveal">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-3xl">
-          <SectionLabel>Services</SectionLabel>
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Two practices. One practical implementation mindset.</h2>
+          <SectionLabel icon="workflow">Services</SectionLabel>
+          <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">Two practices. One practical implementation mindset.</h2>
         </div>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => <Glass key={service.title} className="p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.105]">
-            <p className="text-sm font-semibold text-amber-200">0{index + 1}</p>
-            <h3 className="mt-5 text-2xl font-semibold tracking-tight">{service.title}</h3>
+          {services.map((service, index) => <Glass key={service.title} className="p-6 transition duration-300 hover:-translate-y-1">
+            <div className="mb-4 inline-flex rounded-2xl border border-white/12 bg-white/[0.08] p-3">
+              <Icon name={serviceIcons[index]} className="h-6 w-6 text-sky-300" />
+            </div>
+            <p className="text-xs font-semibold text-amber-200">0{index + 1}</p>
+            <h3 className="mt-3 text-xl font-medium tracking-tight">{service.title}</h3>
             <p className="mt-4 text-[15px] leading-7 text-white/66">{service.text}</p>
           </Glass>)}
         </div>
@@ -732,29 +1227,42 @@ function ServiceGrid() {
   );
 }
 
+/* ─── Illustration Strip ─── */
 function IllustrationStrip() {
+  const stripImages = [illustrations[2], illustrations[4], illustrations[6], illustrations[9]];
   return (
-    <section className="px-5 py-14 lg:px-8">
+    <section className="px-5 py-14 lg:px-8 reveal">
       <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-4">
-        {[illustrations[3], illustrations[4], illustrations[5], illustrations[6]].map((src, index) => <ImagePanel key={src} src={src} alt={`Serenvya illustration ${index + 1}`} className={`${index % 2 ? "md:mt-10" : ""} aspect-[4/5]`} tone={index === 1 ? "green" : index === 2 ? "amber" : "blue"} />)}
+        {stripImages.map((src, index) => (
+          <div key={src} className="reveal" style={{ transitionDelay: `${index * 100}ms` }}>
+            <ImagePanel src={src} alt={`Serenvya illustration ${index + 1}`} className={`${index % 2 ? "md:mt-10" : ""} aspect-[4/5]`} />
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
+/* ─── Services Page ─── */
 function ServicesPage() {
-  return <><PageHero kicker="Services" title="AI process automation and DPDPA consultancy." text="Serenvya works across two focused service lines: redesigning business processes with AI, and helping organizations prepare practical privacy operations for DPDPA." image={illustrations[0]} /><ServiceGrid /></>;
+  return <><PageHero kicker="Services" kickerIcon="workflow" title="AI process automation and DPDPA consultancy." text="Serenvya works across two focused service lines: redesigning business processes with AI, and helping organizations prepare practical privacy operations for DPDPA." image={illustrations[1]} /><ServiceGrid /></>;
 }
 
+/* ─── Solutions Page ─── */
 function SolutionsPage() {
   return (
     <>
-      <PageHero kicker="Solutions" title="Better workflows for business operations and personal data governance." text="Serenvya focuses on high-friction business processes and the privacy controls that should sit around personal data collection, use, sharing, retention, and response." image={illustrations[3]} />
-      <section className="px-5 pb-20 lg:px-8">
+      <PageHero kicker="Solutions" kickerIcon="target" title="Better workflows for business operations and personal data governance." text="Serenvya focuses on high-friction business processes and the privacy controls that should sit around personal data collection, use, sharing, retention, and response." image={illustrations[4]} />
+      <section className="px-5 pb-20 lg:px-8 reveal">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <ImagePanel src={illustrations[7]} alt="AI and privacy operations assistant" className="aspect-[4/5]" tone="green" />
+          <ImagePanel src={illustrations[8]} alt="Data pipeline visualization" className="aspect-[4/5]" />
           <div className="grid gap-4 sm:grid-cols-2">
-            {solutionAreas.map((item) => <Glass key={item} className="flex items-start gap-3 p-5"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-7 text-white/76">{item}</p></Glass>)}
+            {solutionAreas.map((item, index) => (
+              <Glass key={item} className="flex items-start gap-3 p-5">
+                <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${index < 4 ? 'bg-sky-400' : 'bg-emerald-400'}`} />
+                <p className="text-[15px] leading-7 text-white/76">{item}</p>
+              </Glass>
+            ))}
           </div>
         </div>
       </section>
@@ -762,58 +1270,105 @@ function SolutionsPage() {
   );
 }
 
+/* ─── Process Page (Timeline Layout) ─── */
 function ProcessPage() {
+  const stepIcons = ['compass', 'layers', 'terminal', 'users'];
   return (
     <>
-      <PageHero kicker="Process" title="A clear path from assessment to operational adoption." text="Whether the work is AI automation or DPDPA readiness, the approach stays practical: assess, design, implement, and operationalize." image={illustrations[4]} />
-      <section className="px-5 pb-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-4">
-          {processSteps.map((item) => <Glass key={item.step} className="p-6">
-            <p className="text-sm font-semibold text-sky-200">{item.step}</p>
-            <h3 className="mt-6 text-2xl font-semibold tracking-tight">{item.title}</h3>
-            <p className="mt-4 text-[15px] leading-7 text-white/66">{item.text}</p>
-          </Glass>)}
+      <PageHero kicker="Process" kickerIcon="compass" title="A clear path from assessment to operational adoption." text="Whether the work is AI automation or DPDPA readiness, the approach stays practical: assess, design, implement, and operationalize." image={illustrations[5]} />
+      <section className="px-5 pb-20 lg:px-8 reveal">
+        <div className="mx-auto max-w-7xl">
+          {/* Desktop timeline */}
+          <div className="hidden lg:block">
+            {/* Connecting gradient line */}
+            <div className="relative mx-auto mb-8" style={{ maxWidth: '85%' }}>
+              <div className="h-0.5 rounded-full" style={{ background: 'linear-gradient(90deg, #0EA5E9, #22C55E, #F59E0B, rgba(255,255,255,0.6))' }} />
+            </div>
+            <div className="grid grid-cols-4 gap-6">
+              {processSteps.map((item, index) => (
+                <div key={item.step} className="flex flex-col items-center text-center">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-white/16 bg-white/[0.08] shadow-[0_0_24px_rgba(14,165,233,0.10)]">
+                    <Icon name={stepIcons[index]} className="h-7 w-7 text-sky-300" />
+                  </div>
+                  <p className="text-sm font-semibold text-sky-200">{item.step}</p>
+                  <h3 className="mt-2 text-xl font-medium tracking-tight">{item.title}</h3>
+                  <p className="mt-3 text-[15px] leading-7 text-white/66">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Mobile fallback */}
+          <div className="grid gap-4 lg:hidden">
+            {processSteps.map((item, index) => <Glass key={item.step} className="p-6">
+              <div className="mb-4 inline-flex rounded-2xl border border-white/12 bg-white/[0.08] p-3">
+                <Icon name={stepIcons[index]} className="h-6 w-6 text-sky-300" />
+              </div>
+              <p className="text-sm font-semibold text-sky-200">{item.step}</p>
+              <h3 className="mt-3 text-xl font-medium tracking-tight">{item.title}</h3>
+              <p className="mt-4 text-[15px] leading-7 text-white/66">{item.text}</p>
+            </Glass>)}
+          </div>
         </div>
       </section>
     </>
   );
 }
 
+/* ─── About Page ─── */
 function AboutPage() {
+  const aboutCards = [
+    ["Business-first automation", "AI is applied where it improves real workflows, reduces repetitive effort, and creates measurable operational value.", "lightning"],
+    ["DPDPA readiness", "Privacy work is translated into processes, responsibilities, documentation, and controls that teams can actually operate.", "shield"],
+    ["Implementation support", "The work balances strategy, documentation, systems, training, and practical handover for long-term use.", "clipboard"],
+  ];
   return (
     <>
-      <PageHero kicker="About Serenvya" title="Technology execution with a governance-aware lens." text="Serenvya Consulting & Automations Private Limited helps businesses improve operations through AI automation while building more disciplined personal data practices." image={illustrations[5]} />
-      <section className="px-5 pb-20 lg:px-8">
+      <PageHero kicker="About Serenvya" kickerIcon="globe" title="Technology execution with a governance-aware lens." text="Serenvya Consulting & Automations Private Limited helps businesses improve operations through AI automation while building more disciplined personal data practices." image={illustrations[6]} />
+      <section className="px-5 pb-20 lg:px-8 reveal">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-3">
-          {[
-            ["Business-first automation", "AI is applied where it improves real workflows, reduces repetitive effort, and creates measurable operational value."],
-            ["DPDPA readiness", "Privacy work is translated into processes, responsibilities, documentation, and controls that teams can actually operate."],
-            ["Implementation support", "The work balances strategy, documentation, systems, training, and practical handover for long-term use."],
-          ].map(([title, text]) => <Glass key={title} className="p-7"><h3 className="text-2xl font-semibold tracking-tight">{title}</h3><p className="mt-4 text-[15px] leading-7 text-white/66">{text}</p></Glass>)}
+          {aboutCards.map(([title, text, icon]) => (
+            <Glass key={title} className="p-7">
+              <div className="mb-5 inline-flex rounded-2xl border border-white/12 bg-white/[0.08] p-3">
+                <Icon name={icon} className="h-6 w-6 text-sky-300" />
+              </div>
+              <h3 className="text-xl font-medium tracking-tight">{title}</h3>
+              <p className="mt-4 text-[15px] leading-7 text-white/66">{text}</p>
+            </Glass>
+          ))}
         </div>
       </section>
     </>
   );
 }
 
+/* ─── Problem Page ─── */
 function ProblemPage({ setPage }) {
   const paymentReady = Boolean(razorpayPaymentLink);
 
   return (
     <>
-      <section className="px-5 py-14 lg:px-8 lg:py-20">
+      <section className="relative px-5 py-14 lg:px-8 lg:py-20">
+        {/* Custom Premium Background Redesign */}
+        <div className="absolute inset-0 -z-10 overflow-hidden bg-[#080E1E]">
+          {/* Soft, deep ambient glows */}
+          <div className="absolute -left-[20%] -top-[20%] h-[80%] w-[80%] rounded-full bg-amber-500/10 blur-[140px] fade-in" />
+          <div className="absolute -right-[20%] -bottom-[20%] h-[80%] w-[80%] rounded-full bg-rose-500/6 blur-[140px] fade-in" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.08),transparent_75%)] fade-in" />
+          {/* Fine dot-grid pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
+        </div>
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div className="fade-up">
-            <SectionLabel>Problem statement</SectionLabel>
-            <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">Share the problem you want Serenvya to study.</h1>
+            <SectionLabel icon="document">Problem statement</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Share the problem you want Serenvya to study.</h1>
             <p className="mt-6 text-lg leading-8 text-white/70">Use this when you already have a business process, compliance gap, or automation idea and want structured review from the team.</p>
-            <div className="mt-8 rounded-[2rem] border border-amber-200/20 bg-amber-300/10 p-5 text-white/72">
-              <p className="font-semibold text-amber-100">Paid discovery flow</p>
+            <div className="mt-8 gradient-border rounded-2xl border border-amber-200/20 bg-amber-300/10 p-5 text-white/72">
+              <p className="font-medium text-amber-100">Paid discovery flow</p>
               <p className="mt-2 text-[15px] leading-7">Submit the problem statement first. If you have been asked to pay the consultation fee, complete payment through the secure Razorpay link below. The team will review your statement and get back with the next steps.</p>
             </div>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               {paymentReady ? (
-                <a className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_22px_70px_rgba(0,140,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
+                <a className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white px-6 text-sm font-medium text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
                   Pay consultation fee <Icon name="arrow" className="ml-2 h-5 w-5" />
                 </a>
               ) : (
@@ -822,15 +1377,17 @@ function ProblemPage({ setPage }) {
               <Button page="query" variant="ghost" onClick={() => setPage("query")}>Ask a free query</Button>
             </div>
           </div>
-          <IntakeForm
-            buttonLabel="Send problem statement"
-            formType="problem"
-            intro="Describe the current situation, what is not working, and what outcome you want. Include tools, data, documents, teams, or compliance context if relevant."
-            queryLabel="Problem statement"
-            queryPlaceholder="Example: We receive customer requests in email and WhatsApp, manually update a sheet, and need an AI-assisted workflow with DPDPA-aware consent and tracking..."
-            successMessage="Thanks. Your problem statement has been sent to Serenvya. The team will review it and get back to you."
-            title="Submit your problem"
-          />
+          <div className="fade-up" style={{ animationDelay: "120ms" }}>
+            <IntakeForm
+              buttonLabel="Send problem statement"
+              formType="problem"
+              intro="Describe the current situation, what is not working, and what outcome you want. Include tools, data, documents, teams, or compliance context if relevant."
+              queryLabel="Problem statement"
+              queryPlaceholder="Example: We receive customer requests in email and WhatsApp, manually update a sheet, and need an AI-assisted workflow with DPDPA-aware consent and tracking..."
+              successMessage="Thanks. Your problem statement has been sent to Serenvya. The team will review it and get back to you."
+              title="Submit your problem"
+            />
+          </div>
         </div>
         {!paymentReady && <Glass className="mx-auto mt-6 max-w-7xl p-6">
           <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Setup pending</p>
@@ -841,33 +1398,65 @@ function ProblemPage({ setPage }) {
   );
 }
 
+/* ─── Query Page ─── */
 function QueryPage() {
+  const selectedProduct = productMap[parseHash().params.get("product") || ""];
+  const initialQuery = selectedProduct?.inquiry || "";
+  const paymentReady = Boolean(razorpayPaymentLink);
+
   return (
     <section className="relative px-5 py-14 lg:px-8 lg:py-20">
-      <div className="absolute inset-x-0 top-0 -z-0 h-80 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.22),transparent_58%)]" />
+      {/* Custom Premium Background Redesign */}
+      <div className="absolute inset-0 -z-10 overflow-hidden bg-[#080E1E]">
+        {/* Soft, deep ambient glows */}
+        <div className="absolute -left-[20%] -top-[20%] h-[80%] w-[80%] rounded-full bg-sky-500/12 blur-[140px] fade-in" />
+        <div className="absolute -right-[20%] -bottom-[20%] h-[80%] w-[80%] rounded-full bg-emerald-500/8 blur-[140px] fade-in" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.12),transparent_75%)] fade-in" />
+        {/* Fine dot-grid pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
+      </div>
+      {/* Translucent bg illustration */}
+      <img src={illustrations[7]} alt="" className="pointer-events-none absolute right-[5%] top-[10%] h-72 w-72 object-contain opacity-[0.04] mix-blend-luminosity" />
       <div className="relative mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div className="fade-up">
-          <SectionLabel>Free query</SectionLabel>
-          <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">Ask a simple question.</h1>
-          <p className="mt-6 text-lg leading-8 text-white/70">Use this when you want to know whether Serenvya can help, what service fits, or how to think about an automation or DPDPA requirement.</p>
+          <SectionLabel icon={selectedProduct ? "box" : "mail"}>{selectedProduct ? "Product inquiry" : "Free query"}</SectionLabel>
+          <h1 className="text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">{selectedProduct ? `Ask about ${selectedProduct.name}.` : "Ask a simple question."}</h1>
+          <p className="mt-6 text-lg leading-8 text-white/70">{selectedProduct ? "The message is prefilled with the product context. Add your contact details, adjust the note if needed, and Serenvya will respond with the right licensing or customization path." : "Use this when you want to know whether Serenvya can help, what service fits, or how to think about an automation or DPDPA requirement."}</p>
           <div className="mt-8 grid gap-3">
-            {["Can you help with this workflow?", "Is this a DPDPA readiness concern?", "What is the right next step?"].map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
+            {(selectedProduct ? ["Licensing and deployment options", "Customization and integration scope", "Implementation timeline and support"] : ["Can you help with this workflow?", "Is this a DPDPA readiness concern?", "What is the right next step?"]).map((item) => <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-white/72">{item}</p></div>)}
+          </div>
+          <div className="mt-6 gradient-border rounded-2xl border border-amber-200/20 bg-amber-300/10 p-5 text-white/72">
+            <p className="font-medium text-amber-100">Consultation fee</p>
+            <p className="mt-2 text-[15px] leading-7">Submit the query first so the team has context. If you have been asked to pay the consultation fee, use the secure Razorpay link below.</p>
+            <div className="mt-4">
+              {paymentReady ? (
+                <a className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white px-6 text-sm font-medium text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
+                  Pay consultation fee <Icon name="arrow" className="ml-2 h-5 w-5" />
+                </a>
+              ) : (
+                <p className="text-sm text-white/62">Payment link setup is pending. The query form is ready to use.</p>
+              )}
+            </div>
           </div>
         </div>
-        <IntakeForm
-          buttonLabel="Send query"
-          formType="query"
-          intro="Write the question in plain language. This is for early-stage queries and quick clarification."
-          queryLabel="Query"
-          queryPlaceholder="Example: Can Serenvya help us automate invoice review, or help assess our DPDPA readiness?"
-          successMessage="Thanks. Your query has been sent to Serenvya."
-          title="Send your query"
-        />
+        <div className="fade-up" style={{ animationDelay: "120ms" }}>
+          <IntakeForm
+            buttonLabel="Send query"
+            formType="query"
+            initialQuery={initialQuery}
+            intro={selectedProduct ? "Review the drafted inquiry below, add any context about your organization or workflow, and send it to Serenvya." : "Write the question in plain language. This is for early-stage queries and quick clarification."}
+            queryLabel="Query"
+            queryPlaceholder="Example: Can Serenvya help us automate invoice review, or help assess our DPDPA readiness?"
+            successMessage="Thanks. Your query has been sent to Serenvya."
+            title="Send your query"
+          />
+        </div>
       </div>
     </section>
   );
 }
 
+/* ─── App Root ─── */
 export default function App() {
   const [page, setPage] = useState(getInitialPage);
 

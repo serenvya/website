@@ -24,8 +24,8 @@ describe("Serenvya website content", () => {
   it("has expected content collections", () => {
     expect(services).toHaveLength(6);
     expect(processSteps).toHaveLength(4);
-    expect(products).toHaveLength(5);
-    expect(products.every((product) => product.slug && product.name && product.price)).toBe(true);
+    expect(products).toHaveLength(8);
+    expect(products.every((product) => product.slug && product.name && product.price && product.inquiry)).toBe(true);
     expect(solutionAreas.length).toBeGreaterThanOrEqual(6);
     expect(faqs.every((faq) => faq.q && faq.a)).toBe(true);
   });

@@ -276,6 +276,25 @@ a { text-decoration: none; }
   color: #0878c9 !important;
 }
 
+.bright-theme .dark-preview {
+  background-color: rgba(7, 17, 31, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.bright-theme .dark-preview .text-white,
+.bright-theme .dark-preview [class*="text-white/"] {
+  color: rgba(248, 250, 252, 0.92) !important;
+}
+
+.bright-theme .dark-preview .text-sky-300,
+.bright-theme .dark-preview .text-sky-400 {
+  color: #38bdf8 !important;
+}
+
+.bright-theme .dark-preview [class*="border-white/"] {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 .bright-theme .shimmer-line {
   opacity: 0.9;
 }

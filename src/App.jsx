@@ -867,7 +867,7 @@ function ProductsBand({ setPage }) {
                 <div className="absolute inset-0 bg-[#07111F]/42" />
 
                 {/* Floating Interactive Micro-UI Layout */}
-                <div className="relative z-10 w-full max-w-[240px] rounded-2xl border border-white/12 bg-[#07111F]/84 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md">
+                <div className="dark-preview relative z-10 w-full max-w-[240px] rounded-2xl border border-white/12 bg-[#07111F]/84 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md">
                   <div className="flex items-center justify-between mb-4">
                     <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-[10px] uppercase tracking-wider text-white/42 font-medium">LIVE PREVIEW</span>
@@ -993,14 +993,6 @@ function Home({ setPage }) {
   return (
     <>
       <section className="relative px-5 pb-16 pt-12 lg:px-8 lg:pb-24 lg:pt-18">
-        {/* Decorative circuit fragments */}
-        <svg className="pointer-events-none absolute left-[5%] top-[15%] h-24 w-24 text-white/[0.04]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1">
-          <path d="M10 50h30M50 10v30M50 50h40M50 50v40" /><circle cx="50" cy="50" r="3" /><circle cx="10" cy="50" r="2" /><circle cx="90" cy="50" r="2" />
-        </svg>
-        <svg className="pointer-events-none absolute right-[8%] bottom-[20%] h-20 w-20 text-white/[0.04]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1">
-          <path d="M20 20h60v60H20z" /><path d="M50 20v60" /><path d="M20 50h60" />
-        </svg>
-
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
           <div className="fade-up">
             <SectionLabel icon="workflow">AI automation and DPDPA consultancy</SectionLabel>

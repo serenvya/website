@@ -492,10 +492,10 @@ function Logo({ compact = false }) {
 /* Backdrop with dot grid and brand gradients */
 function Backdrop() {
   return (
-    <div className="noise-overlay pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#07111F]">
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,#07111F_0%,#0D1B2E_46%,#050A13_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(8,120,201,0.24),transparent_32%),radial-gradient(circle_at_78%_12%,rgba(249,115,22,0.14),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(22,163,74,0.15),transparent_32%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(24,168,220,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(24,168,220,0.06)_1px,transparent_1px)] bg-[size:36px_36px] opacity-35" />
+    <div className="noise-overlay pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#F8FBFF]">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#FFFFFF_0%,#EEF7FF_46%,#F8FBFF_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(24,168,220,0.20),transparent_32%),radial-gradient(circle_at_78%_12%,rgba(249,115,22,0.12),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(22,163,74,0.12),transparent_32%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(8,120,201,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(8,120,201,0.06)_1px,transparent_1px)] bg-[size:36px_36px] opacity-45" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#18A8DC]/40 to-transparent" />
     </div>
   );
@@ -529,7 +529,7 @@ function Shell({ children, page, setPage }) {
   useScrollReveal(page);
 
   return (
-    <div className="min-h-screen overflow-x-hidden text-white selection:bg-[#FACC15] selection:text-slate-950">
+    <div className="bright-theme min-h-screen overflow-x-hidden text-slate-950 selection:bg-[#FACC15] selection:text-slate-950">
       <Backdrop />
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#07111F]/72 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
@@ -1344,11 +1344,11 @@ function ProblemPage({ setPage }) {
     <>
       <section className="relative px-5 py-14 lg:px-8 lg:py-20">
         {/* Custom Premium Background Redesign */}
-        <div className="absolute inset-0 -z-10 overflow-hidden bg-[#07111F]">
+        <div className="absolute inset-0 -z-10 overflow-hidden bg-[#F8FBFF]">
           {/* Soft, deep ambient glows */}
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(249,115,22,0.12),transparent_38%),linear-gradient(315deg,rgba(8,120,201,0.08),transparent_42%)] fade-in" />
           {/* Fine dot-grid pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(8,120,201,0.06)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
         </div>
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div className="fade-up">
@@ -1400,11 +1400,11 @@ function QueryPage() {
   return (
     <section className="relative px-5 py-14 lg:px-8 lg:py-20">
       {/* Custom Premium Background Redesign */}
-      <div className="absolute inset-0 -z-10 overflow-hidden bg-[#07111F]">
+      <div className="absolute inset-0 -z-10 overflow-hidden bg-[#F8FBFF]">
         {/* Soft, deep ambient glows */}
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(8,120,201,0.14),transparent_40%),linear-gradient(315deg,rgba(22,163,74,0.10),transparent_42%)] fade-in" />
         {/* Fine dot-grid pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(8,120,201,0.06)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
       </div>
       {/* Translucent bg illustration */}
       <img src={illustrations[7]} alt="" className="pointer-events-none absolute right-[5%] top-[10%] h-72 w-72 object-contain opacity-[0.04] mix-blend-luminosity" />

@@ -3,30 +3,30 @@
 
 /* ─── Design Tokens ─── */
 :root {
-  --color-bg: #07111F;
-  --color-bg-surface: #0D1B2E;
-  --color-bg-elevated: #12233A;
+  --color-bg: #F8FBFF;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-elevated: #EEF7FF;
   --color-accent-blue: #0878C9;
   --color-accent-cyan: #18A8DC;
   --color-accent-green: #16A34A;
   --color-accent-amber: #FACC15;
   --color-accent-orange: #F97316;
   --color-accent-rose: #D946A7;
-  --color-text-primary: rgba(255, 255, 255, 0.92);
-  --color-text-secondary: rgba(255, 255, 255, 0.62);
-  --color-text-muted: rgba(255, 255, 255, 0.42);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.16);
-  --color-glass: rgba(255, 255, 255, 0.04);
-  --color-glass-hover: rgba(255, 255, 255, 0.07);
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748B;
+  --color-border: rgba(8, 120, 201, 0.14);
+  --color-border-hover: rgba(8, 120, 201, 0.24);
+  --color-glass: rgba(255, 255, 255, 0.78);
+  --color-glass-hover: rgba(255, 255, 255, 0.94);
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 24px;
   --radius-full: 9999px;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.24);
-  --shadow-lg: 0 16px 56px rgba(0, 0, 0, 0.32);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 8px 32px rgba(8, 120, 201, 0.12);
+  --shadow-lg: 0 16px 56px rgba(15, 23, 42, 0.14);
   --shadow-glow-blue: 0 0 40px rgba(8, 120, 201, 0.14);
   --shadow-glow-green: 0 0 40px rgba(22, 163, 74, 0.12);
   --shadow-glow-amber: 0 0 40px rgba(249, 115, 22, 0.14);
@@ -170,12 +170,104 @@ a { text-decoration: none; }
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 50%, transparent 100%);
+  background: linear-gradient(135deg, rgba(8,120,201,0.20) 0%, rgba(24,168,220,0.10) 50%, rgba(249,115,22,0.10) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+}
+
+/* Bright brand theme */
+.bright-theme {
+  color: var(--color-text-primary);
+}
+
+.bright-theme .noise-overlay {
+  background: #f8fbff !important;
+}
+
+.bright-theme .text-white {
+  color: #0f172a !important;
+}
+
+.bright-theme [class*="text-white/"] {
+  color: rgba(51, 65, 85, 0.78) !important;
+}
+
+.bright-theme .text-sky-100,
+.bright-theme .text-sky-200,
+.bright-theme .text-sky-300,
+.bright-theme .text-sky-400 {
+  color: #0878c9 !important;
+}
+
+.bright-theme .text-emerald-100,
+.bright-theme .text-emerald-200,
+.bright-theme .text-emerald-300,
+.bright-theme .text-emerald-400 {
+  color: #16a34a !important;
+}
+
+.bright-theme .text-amber-100,
+.bright-theme .text-amber-200,
+.bright-theme .text-amber-300,
+.bright-theme .text-amber-400 {
+  color: #f97316 !important;
+}
+
+.bright-theme [class*="border-white/"] {
+  border-color: rgba(8, 120, 201, 0.14) !important;
+}
+
+.bright-theme [class*="bg-white/"] {
+  background-color: rgba(255, 255, 255, 0.78) !important;
+}
+
+.bright-theme .gradient-border {
+  background-color: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: 0 18px 50px rgba(8, 120, 201, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+.bright-theme header,
+.bright-theme footer {
+  background-color: rgba(248, 251, 255, 0.84) !important;
+  border-color: rgba(8, 120, 201, 0.12) !important;
+}
+
+.bright-theme nav {
+  background-color: rgba(255, 255, 255, 0.74) !important;
+  border-color: rgba(8, 120, 201, 0.14) !important;
+}
+
+.bright-theme input,
+.bright-theme textarea {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  color: #0f172a !important;
+  border-color: rgba(8, 120, 201, 0.18) !important;
+}
+
+.bright-theme input::placeholder,
+.bright-theme textarea::placeholder {
+  color: rgba(100, 116, 139, 0.62) !important;
+}
+
+.bright-theme a[class*="bg-[#F97316]"],
+.bright-theme button[class*="bg-[#F97316]"],
+.bright-theme a[class*="bg-[#0878C9]"],
+.bright-theme button[class*="bg-[#0878C9]"] {
+  color: #ffffff !important;
+}
+
+.bright-theme a[class*="bg-[#F97316]"] *,
+.bright-theme button[class*="bg-[#F97316]"] *,
+.bright-theme a[class*="bg-[#0878C9]"] *,
+.bright-theme button[class*="bg-[#0878C9]"] * {
+  color: #ffffff !important;
+}
+
+.bright-theme .shimmer-line {
+  opacity: 0.9;
 }
 
 /* ─── Shimmer Line ─── */

@@ -312,11 +312,11 @@ function inquiryHref(product) {
 
 function Button({ children, page, href, variant = "primary", className = "", onClick, target, rel }) {
   const styles = {
-    primary: "border-white/20 bg-white text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] hover:-translate-y-0.5 hover:bg-sky-50",
-    dark: "border-white/15 bg-slate-950/80 text-white shadow-[0_14px_40px_rgba(2,8,23,0.22)] hover:-translate-y-0.5 hover:bg-slate-900",
-    ghost: "border-white/20 bg-white/10 text-white backdrop-blur-2xl hover:-translate-y-0.5 hover:bg-white/16",
+    primary: "border-orange-300/30 bg-[#F97316] text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] hover:-translate-y-0.5 hover:bg-[#F59E0B]",
+    dark: "border-white/15 bg-[#07111F]/90 text-white shadow-[0_14px_40px_rgba(2,8,23,0.26)] hover:-translate-y-0.5 hover:bg-[#0D1B2E]",
+    ghost: "border-[#18A8DC]/24 bg-white/[0.075] text-white backdrop-blur-2xl hover:-translate-y-0.5 hover:border-[#18A8DC]/45 hover:bg-[#0878C9]/18",
   };
-  const classes = `inline-flex min-h-12 items-center justify-center rounded-xl border px-6 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-300 ${styles[variant]} ${className}`;
+  const classes = `inline-flex min-h-12 items-center justify-center rounded-xl border px-6 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-300 ${styles[variant]} ${className}`;
   return <a href={href || hrefFor(page)} className={classes} onClick={onClick} rel={rel} target={target}>{children}</a>;
 }
 
@@ -404,7 +404,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
     }
   };
 
-  const inputBase = "w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-sky-300 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.15)]";
+  const inputBase = "w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-[#18A8DC] focus:shadow-[0_0_0_3px_rgba(24,168,220,0.16)]";
 
   return (
     <Glass className="p-6 sm:p-7">
@@ -462,7 +462,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
           />
         </Field>
         <button
-          className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white px-6 text-sm font-medium text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B] focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:cursor-not-allowed disabled:opacity-60"
           disabled={status === "sending"}
           type="submit"
         >
@@ -489,19 +489,14 @@ function Logo({ compact = false }) {
   );
 }
 
-/* ─── Backdrop with dot-grid + floating orbs ─── */
+/* Backdrop with dot grid and brand gradients */
 function Backdrop() {
   return (
-    <div className="noise-overlay pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#080E1E]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(0,160,255,0.30),transparent_28%),radial-gradient(circle_at_78%_12%,rgba(255,176,0,0.20),transparent_26%),radial-gradient(circle_at_86%_72%,rgba(17,184,80,0.20),transparent_28%),linear-gradient(135deg,#080E1E_0%,#0A1A30_42%,#060A14_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
-      <div className="absolute left-[8%] top-[18%] h-56 w-56 rounded-full bg-sky-400/16 blur-3xl" />
-      <div className="absolute bottom-[8%] right-[10%] h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
-      <div className="absolute right-[35%] top-[55%] h-48 w-48 rounded-full bg-amber-400/8 blur-3xl" />
-      {/* Floating orbs */}
-      <div className="absolute left-[15%] top-[30%] h-2 w-2 rounded-full bg-sky-400/30 float" />
-      <div className="absolute right-[20%] top-[20%] h-3 w-3 rounded-full bg-emerald-400/20 float-slow" />
-      <div className="absolute left-[60%] bottom-[25%] h-2 w-2 rounded-full bg-amber-400/25 float-delayed" />
+    <div className="noise-overlay pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#07111F]">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#07111F_0%,#0D1B2E_46%,#050A13_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(8,120,201,0.24),transparent_32%),radial-gradient(circle_at_78%_12%,rgba(249,115,22,0.14),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(22,163,74,0.15),transparent_32%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(24,168,220,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(24,168,220,0.06)_1px,transparent_1px)] bg-[size:36px_36px] opacity-35" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#18A8DC]/40 to-transparent" />
     </div>
   );
 }
@@ -534,15 +529,15 @@ function Shell({ children, page, setPage }) {
   useScrollReveal(page);
 
   return (
-    <div className="min-h-screen overflow-x-hidden text-white selection:bg-sky-200 selection:text-slate-950">
+    <div className="min-h-screen overflow-x-hidden text-white selection:bg-[#FACC15] selection:text-slate-950">
       <Backdrop />
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080E1E]/62 backdrop-blur-2xl">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#07111F]/72 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
           <a href="#/" onClick={() => setPage("home")} aria-label="Serenvya home"><Logo /></a>
           <nav className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] p-1.5 text-sm font-medium text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] lg:flex">
             {navItems.map((item) => {
               const active = page === item.page || (item.page === "products" && page.startsWith("products/"));
-              return <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${active ? "bg-white text-slate-950 shadow-lg" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>;
+              return <a key={item.page} href={hrefFor(item.page)} onClick={() => setPage(item.page)} className={`rounded-full px-4 py-2 transition ${active ? "bg-[#0878C9] text-white shadow-lg shadow-sky-950/30" : "hover:bg-white/10 hover:text-white"}`}>{item.label}</a>;
             })}
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
@@ -552,11 +547,11 @@ function Shell({ children, page, setPage }) {
             <Icon name={mobileOpen ? "close" : "menu"} />
           </button>
         </div>
-        {mobileOpen && <div className="border-t border-white/10 bg-[#080E1E]/95 px-5 py-4 backdrop-blur-2xl lg:hidden">
+        {mobileOpen && <div className="border-t border-white/10 bg-[#07111F]/95 px-5 py-4 backdrop-blur-2xl lg:hidden">
           <div className="grid gap-2">
             {navItems.map((item) => {
               const active = page === item.page || (item.page === "products" && page.startsWith("products/"));
-              return <a key={item.page} href={hrefFor(item.page)} onClick={() => { setPage(item.page); setMobileOpen(false); }} className={`rounded-2xl px-4 py-3 ${active ? "bg-white text-slate-950" : "bg-white/[0.06] text-white/80"}`}>{item.label}</a>;
+              return <a key={item.page} href={hrefFor(item.page)} onClick={() => { setPage(item.page); setMobileOpen(false); }} className={`rounded-2xl px-4 py-3 ${active ? "bg-[#0878C9] text-white" : "bg-white/[0.06] text-white/80"}`}>{item.label}</a>;
             })}
           </div>
         </div>}
@@ -588,9 +583,9 @@ function ImagePanel({ src, alt, className = "" }) {
 
 function ProductVisual({ product, compact = false }) {
   const toneClasses = {
-    green: "from-emerald-500/20 via-sky-500/10 to-transparent text-emerald-300",
-    amber: "from-amber-500/20 via-sky-500/10 to-transparent text-amber-300",
-    blue: "from-sky-500/20 via-emerald-500/10 to-transparent text-sky-300",
+    green: "from-[#16A34A]/20 via-[#18A8DC]/10 to-transparent text-emerald-300",
+    amber: "from-[#F97316]/20 via-[#FACC15]/10 to-transparent text-amber-300",
+    blue: "from-[#0878C9]/22 via-[#18A8DC]/10 to-transparent text-sky-300",
   };
 
   const productIconMap = {
@@ -607,7 +602,7 @@ function ProductVisual({ product, compact = false }) {
   return (
     <div className={`relative overflow-hidden w-full rounded-2xl ${compact ? "h-52" : "h-full min-h-[220px] lg:min-h-full"} flex items-center justify-center bg-gradient-to-br ${toneClasses[product.accent] || toneClasses.blue}`}>
       <img src={product.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity scale-105" />
-      <div className="absolute inset-0 bg-[#080E1E]/40" />
+      <div className="absolute inset-0 bg-[#07111F]/42" />
       
       <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/16 bg-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
         {product.partner ? (
@@ -615,7 +610,7 @@ function ProductVisual({ product, compact = false }) {
         ) : (
           <Icon name={productIconMap[product.slug] || "box"} className="h-9 w-9 text-sky-300" />
         )}
-        <div className="absolute inset-0 -z-10 rounded-3xl bg-sky-400/20 blur-md" />
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-[#18A8DC]/20 blur-md" />
       </div>
     </div>
   );
@@ -653,21 +648,21 @@ function ProductCard({ product, setPage }) {
   const accentColors = {
     green: {
       text: "text-emerald-400",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
-      glow: "bg-emerald-400/20"
+      bg: "bg-[#16A34A]/10",
+      border: "border-[#16A34A]/22",
+      glow: "bg-[#16A34A]/20"
     },
     amber: {
       text: "text-amber-400",
-      bg: "bg-amber-500/10",
-      border: "border-amber-500/20",
-      glow: "bg-amber-400/20"
+      bg: "bg-[#F97316]/10",
+      border: "border-[#F97316]/22",
+      glow: "bg-[#F97316]/20"
     },
     blue: {
       text: "text-sky-400",
-      bg: "bg-sky-500/10",
-      border: "border-sky-500/20",
-      glow: "bg-sky-400/20"
+      bg: "bg-[#0878C9]/12",
+      border: "border-[#18A8DC]/24",
+      glow: "bg-[#18A8DC]/20"
     }
   };
 
@@ -751,24 +746,24 @@ function ProductsBand({ setPage }) {
   const toneClasses = {
     green: {
       text: "text-emerald-300",
-      bg: "from-emerald-500/20 via-sky-500/10 to-transparent",
-      glow: "bg-emerald-400/20",
-      accentBorder: "border-emerald-500/30",
-      tabActive: "bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.15)]",
+      bg: "from-[#16A34A]/20 via-[#18A8DC]/10 to-transparent",
+      glow: "bg-[#16A34A]/20",
+      accentBorder: "border-[#16A34A]/30",
+      tabActive: "bg-[#16A34A]/10 border-[#16A34A]/30 shadow-[0_0_20px_rgba(22,163,74,0.15)]",
     },
     amber: {
       text: "text-amber-300",
-      bg: "from-amber-500/20 via-sky-500/10 to-transparent",
-      glow: "bg-amber-400/20",
-      accentBorder: "border-amber-500/30",
-      tabActive: "bg-amber-500/10 border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.15)]",
+      bg: "from-[#F97316]/20 via-[#FACC15]/10 to-transparent",
+      glow: "bg-[#F97316]/20",
+      accentBorder: "border-[#F97316]/30",
+      tabActive: "bg-[#F97316]/10 border-[#F97316]/30 shadow-[0_0_20px_rgba(249,115,22,0.15)]",
     },
     blue: {
       text: "text-sky-300",
-      bg: "from-sky-500/20 via-emerald-500/10 to-transparent",
-      glow: "bg-sky-400/20",
-      accentBorder: "border-sky-500/30",
-      tabActive: "bg-sky-500/10 border-sky-500/30 shadow-[0_0_20px_rgba(14,165,233,0.15)]",
+      bg: "from-[#0878C9]/22 via-[#18A8DC]/10 to-transparent",
+      glow: "bg-[#18A8DC]/20",
+      accentBorder: "border-[#18A8DC]/30",
+      tabActive: "bg-[#0878C9]/12 border-[#18A8DC]/30 shadow-[0_0_20px_rgba(24,168,220,0.16)]",
     },
   };
 
@@ -819,7 +814,7 @@ function ProductsBand({ setPage }) {
                   {/* Left Active Accent Bar */}
                   <span
                     className={`absolute left-0 top-1/4 bottom-1/4 w-1 rounded-r transition-all duration-500 ${
-                      isActive ? (isZin ? "bg-emerald-400 scale-y-100" : "bg-sky-400 scale-y-100") : "bg-transparent scale-y-0"
+                      isActive ? (isZin ? "bg-[#16A34A] scale-y-100" : "bg-[#18A8DC] scale-y-100") : "bg-transparent scale-y-0"
                     }`}
                   />
 
@@ -869,10 +864,10 @@ function ProductsBand({ setPage }) {
               {/* Product Visual Area */}
               <div className={`relative overflow-hidden aspect-[4/3] rounded-2xl bg-gradient-to-br ${toneClasses[activeProduct.accent || "blue"].bg} flex items-center justify-center p-6 border border-white/8`}>
                 <img src={activeProduct.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity scale-105" />
-                <div className="absolute inset-0 bg-[#080E1E]/40" />
+                <div className="absolute inset-0 bg-[#07111F]/42" />
 
                 {/* Floating Interactive Micro-UI Layout */}
-                <div className="relative z-10 w-full max-w-[240px] rounded-2xl border border-white/12 bg-[#080E1E]/80 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md">
+                <div className="relative z-10 w-full max-w-[240px] rounded-2xl border border-white/12 bg-[#07111F]/84 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md">
                   <div className="flex items-center justify-between mb-4">
                     <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-[10px] uppercase tracking-wider text-white/42 font-medium">LIVE PREVIEW</span>
@@ -961,7 +956,7 @@ function ProductsBand({ setPage }) {
                 </a>
                 <a
                   href={inquiryHref(activeProduct)}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/20 bg-white px-5 text-xs font-medium text-slate-950 shadow-[0_12px_36px_rgba(0,140,255,0.14)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-auto cursor-pointer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-5 text-xs font-medium text-white shadow-[0_12px_36px_rgba(249,115,22,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B] focus:outline-none focus:ring-2 focus:ring-orange-300 w-full sm:w-auto cursor-pointer"
                 >
                   License & Customize
                 </a>
@@ -1022,7 +1017,7 @@ function Home({ setPage }) {
           <div className="fade-up" style={{ animationDelay: "120ms" }}>
             <ImagePanel src={illustrations[0]} alt="Serenvya hero workflow" className="aspect-[16/10]" />
             <Glass className="relative overflow-hidden p-6 mt-4">
-              <div className="absolute -right-12 -top-16 h-40 w-40 rounded-full bg-amber-300/20 blur-3xl" />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F97316]/45 to-transparent" />
               <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-sm uppercase tracking-[0.22em] text-sky-100">Serenvya focus areas</p>
@@ -1282,12 +1277,12 @@ function ProcessPage() {
           <div className="hidden lg:block">
             {/* Connecting gradient line */}
             <div className="relative mx-auto mb-8" style={{ maxWidth: '85%' }}>
-              <div className="h-0.5 rounded-full" style={{ background: 'linear-gradient(90deg, #0EA5E9, #22C55E, #F59E0B, rgba(255,255,255,0.6))' }} />
+              <div className="h-0.5 rounded-full" style={{ background: 'linear-gradient(90deg, #0878C9, #18A8DC, #16A34A, #F97316, rgba(255,255,255,0.6))' }} />
             </div>
             <div className="grid grid-cols-4 gap-6">
               {processSteps.map((item, index) => (
                 <div key={item.step} className="flex flex-col items-center text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-white/16 bg-white/[0.08] shadow-[0_0_24px_rgba(14,165,233,0.10)]">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-white/16 bg-white/[0.08] shadow-[0_0_24px_rgba(24,168,220,0.12)]">
                     <Icon name={stepIcons[index]} className="h-7 w-7 text-sky-300" />
                   </div>
                   <p className="text-sm font-semibold text-sky-200">{item.step}</p>
@@ -1349,11 +1344,9 @@ function ProblemPage({ setPage }) {
     <>
       <section className="relative px-5 py-14 lg:px-8 lg:py-20">
         {/* Custom Premium Background Redesign */}
-        <div className="absolute inset-0 -z-10 overflow-hidden bg-[#080E1E]">
+        <div className="absolute inset-0 -z-10 overflow-hidden bg-[#07111F]">
           {/* Soft, deep ambient glows */}
-          <div className="absolute -left-[20%] -top-[20%] h-[80%] w-[80%] rounded-full bg-amber-500/10 blur-[140px] fade-in" />
-          <div className="absolute -right-[20%] -bottom-[20%] h-[80%] w-[80%] rounded-full bg-rose-500/6 blur-[140px] fade-in" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(245,158,11,0.08),transparent_75%)] fade-in" />
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(249,115,22,0.12),transparent_38%),linear-gradient(315deg,rgba(8,120,201,0.08),transparent_42%)] fade-in" />
           {/* Fine dot-grid pattern */}
           <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
         </div>
@@ -1368,7 +1361,7 @@ function ProblemPage({ setPage }) {
             </div>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               {paymentReady ? (
-                <a className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white px-6 text-sm font-medium text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
+                <a className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B]" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
                   Pay consultation fee <Icon name="arrow" className="ml-2 h-5 w-5" />
                 </a>
               ) : (
@@ -1407,11 +1400,9 @@ function QueryPage() {
   return (
     <section className="relative px-5 py-14 lg:px-8 lg:py-20">
       {/* Custom Premium Background Redesign */}
-      <div className="absolute inset-0 -z-10 overflow-hidden bg-[#080E1E]">
+      <div className="absolute inset-0 -z-10 overflow-hidden bg-[#07111F]">
         {/* Soft, deep ambient glows */}
-        <div className="absolute -left-[20%] -top-[20%] h-[80%] w-[80%] rounded-full bg-sky-500/12 blur-[140px] fade-in" />
-        <div className="absolute -right-[20%] -bottom-[20%] h-[80%] w-[80%] rounded-full bg-emerald-500/8 blur-[140px] fade-in" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.12),transparent_75%)] fade-in" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(8,120,201,0.14),transparent_40%),linear-gradient(315deg,rgba(22,163,74,0.10),transparent_42%)] fade-in" />
         {/* Fine dot-grid pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
       </div>
@@ -1430,7 +1421,7 @@ function QueryPage() {
             <p className="mt-2 text-[15px] leading-7">Submit the query first so the team has context. If you have been asked to pay the consultation fee, use the secure Razorpay link below.</p>
             <div className="mt-4">
               {paymentReady ? (
-                <a className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white px-6 text-sm font-medium text-slate-950 shadow-[0_18px_50px_rgba(0,140,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
+                <a className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B]" href={razorpayPaymentLink} rel="noreferrer" target="_blank">
                   Pay consultation fee <Icon name="arrow" className="ml-2 h-5 w-5" />
                 </a>
               ) : (

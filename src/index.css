@@ -266,6 +266,16 @@ a { text-decoration: none; }
   color: #ffffff !important;
 }
 
+.bright-theme a[class*="hover:bg-[#EAF7FF]"],
+.bright-theme button[class*="hover:bg-[#EAF7FF]"] {
+  color: #0f172a !important;
+}
+
+.bright-theme a[class*="hover:bg-[#EAF7FF]"] *,
+.bright-theme button[class*="hover:bg-[#EAF7FF]"] * {
+  color: #0878c9 !important;
+}
+
 .bright-theme .shimmer-line {
   opacity: 0.9;
 }

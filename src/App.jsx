@@ -314,7 +314,7 @@ function Button({ children, page, href, variant = "primary", className = "", onC
   const styles = {
     primary: "border-orange-300/30 bg-[#F97316] text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] hover:-translate-y-0.5 hover:bg-[#F59E0B]",
     dark: "border-white/15 bg-[#07111F]/90 text-white shadow-[0_14px_40px_rgba(2,8,23,0.26)] hover:-translate-y-0.5 hover:bg-[#0D1B2E]",
-    ghost: "border-[#18A8DC]/24 bg-white/[0.075] text-white backdrop-blur-2xl hover:-translate-y-0.5 hover:border-[#18A8DC]/45 hover:bg-[#0878C9]/18",
+    ghost: "border-[#0878C9]/28 bg-white/78 text-[#0F172A] shadow-[0_12px_34px_rgba(8,120,201,0.10)] backdrop-blur-2xl hover:-translate-y-0.5 hover:border-[#18A8DC]/55 hover:bg-[#EAF7FF]",
   };
   const classes = `inline-flex min-h-12 items-center justify-center rounded-xl border px-6 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-300 ${styles[variant]} ${className}`;
   return <a href={href || hrefFor(page)} className={classes} onClick={onClick} rel={rel} target={target}>{children}</a>;

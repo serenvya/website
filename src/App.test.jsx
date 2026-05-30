@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import App, { faqs, navItems, processSteps, products, services, solutionAreas } from "./App.jsx";
+import App, { courses, faqs, navItems, processSteps, products, services, solutionAreas } from "./App.jsx";
 import "@testing-library/jest-dom/vitest";
 
 afterEach(() => {
@@ -13,6 +13,7 @@ describe("Serenvya website content", () => {
     expect(navItems.map((item) => item.label)).toEqual([
       "Home",
       "Products",
+      "Courses",
       "Services",
       "Solutions",
       "Process",
@@ -25,6 +26,9 @@ describe("Serenvya website content", () => {
     expect(services).toHaveLength(6);
     expect(processSteps).toHaveLength(4);
     expect(products).toHaveLength(8);
+    expect(courses).toHaveLength(2);
+    expect(courses.some((course) => course.title === "AI and Office Automation for CA, CS and CMA Professionals" && course.available)).toBe(true);
+    expect(courses.some((course) => course.title === "AI and Office Automation for Lawyers" && !course.available)).toBe(true);
     expect(products.every((product) => product.slug && product.name && product.price && product.inquiry)).toBe(true);
     expect(solutionAreas.length).toBeGreaterThanOrEqual(6);
     expect(faqs.every((faq) => faq.q && faq.a)).toBe(true);

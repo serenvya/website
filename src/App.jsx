@@ -18,6 +18,7 @@ export const illustrations = [
 export const navItems = [
   { label: "Home", page: "home" },
   { label: "Products", page: "products" },
+  { label: "Courses", page: "courses" },
   { label: "Services", page: "services" },
   { label: "Solutions", page: "solutions" },
   { label: "Process", page: "process" },
@@ -57,6 +58,37 @@ export const faqs = [
   { q: "Can automation and DPDPA work happen together?", a: "Yes. Many automation projects touch personal data, so privacy-aware workflow design can reduce operational friction while improving governance." },
   { q: "Do we need to know exactly what to automate?", a: "No. Serenvya can start with a broad operational pain point, assess the workflow, and convert it into a prioritized automation roadmap." },
   { q: "Is DPDPA consultancy legal advice?", a: "Serenvya supports readiness, process design, documentation, and implementation. Formal legal interpretation should be reviewed with qualified legal counsel where required." },
+];
+
+export const courses = [
+  {
+    title: "AI and Office Automation for CA, CS and CMA Professionals",
+    status: "Open for enquiry",
+    audience: "CA, CS, CMA, tax, audit, finance, and compliance teams",
+    summary: "A practical course for professionals who want to use AI and office automation to reduce repetitive documentation, spreadsheet, research, review, and client-workflow effort.",
+    outcomes: [
+      "Use AI safely for drafting, summarization, review, and structured analysis",
+      "Automate everyday office work across documents, spreadsheets, email, and task flows",
+      "Build reusable prompts, checklists, trackers, and review workflows for professional practice",
+      "Understand privacy-aware and governance-aware use of AI in client-facing work",
+    ],
+    accent: "blue",
+    available: true,
+  },
+  {
+    title: "AI and Office Automation for Lawyers",
+    status: "Coming Soon",
+    audience: "Lawyers, legal teams, litigation offices, and legal operations teams",
+    summary: "A practice-focused course on AI-assisted legal drafting, research support, matter workflows, document organization, and office automation for legal professionals.",
+    outcomes: [
+      "Legal drafting and review workflows",
+      "Matter and document organization",
+      "Client communication and office process automation",
+      "Responsible AI use for legal teams",
+    ],
+    accent: "green",
+    available: false,
+  },
 ];
 
 const envValue = (key, fallback = "") => import.meta.env[key] || fallback;
@@ -1098,6 +1130,88 @@ function ProductsPage({ setPage }) {
 }
 
 /* ─── Product Detail Page ─── */
+function CourseCard({ course, setPage }) {
+  const accent = course.accent === "green"
+    ? {
+        border: "border-[#16A34A]/24",
+        bg: "bg-[#16A34A]/8",
+        icon: "text-emerald-300",
+        badge: "border-[#16A34A]/24 bg-[#16A34A]/10 text-emerald-300",
+      }
+    : {
+        border: "border-[#18A8DC]/24",
+        bg: "bg-[#0878C9]/8",
+        icon: "text-sky-300",
+        badge: "border-[#18A8DC]/24 bg-[#0878C9]/10 text-sky-300",
+      };
+
+  return (
+    <Glass className={`flex h-full flex-col justify-between overflow-hidden p-7 ${course.available ? "" : "opacity-86"}`}>
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className={`inline-flex rounded-2xl border ${accent.border} ${accent.bg} p-3`}>
+            <Icon name={course.available ? "terminal" : "clock"} className={`h-6 w-6 ${accent.icon}`} />
+          </div>
+          <span className={`rounded-full border px-3 py-1 text-xs font-medium ${accent.badge}`}>
+            {course.status}
+          </span>
+        </div>
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">{course.audience}</p>
+        <h2 className="mt-3 text-3xl font-medium leading-tight tracking-tight">{course.title}</h2>
+        <p className="mt-5 text-[15px] leading-7 text-white/68">{course.summary}</p>
+        <div className="mt-7 grid gap-3">
+          {course.outcomes.map((outcome) => (
+            <div key={outcome} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4">
+              <Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
+              <p className="text-[15px] leading-6 text-white/72">{outcome}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-7">
+        {course.available ? (
+          <Button page="query" onClick={() => setPage("query")}>
+            Enquire about this course <Icon name="arrow" className="ml-2 h-5 w-5" />
+          </Button>
+        ) : (
+          <div className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0878C9]/18 bg-white/70 px-6 text-sm font-medium text-white/62">
+            Coming Soon
+          </div>
+        )}
+      </div>
+    </Glass>
+  );
+}
+
+function CoursesPage({ setPage }) {
+  return (
+    <>
+      <section className="relative px-5 pb-12 pt-12 lg:px-8 lg:pb-20 lg:pt-16">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className="fade-up">
+            <SectionLabel icon="layers">Courses</SectionLabel>
+            <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Practical AI and office automation courses for professionals.</h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">Serenvya courses are designed for working professionals who want usable AI workflows, better office systems, and responsible automation habits inside real practice environments.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button page="query" onClick={() => setPage("query")}>Ask about courses <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+              <Button page="services" variant="ghost" onClick={() => setPage("services")}>Explore services</Button>
+            </div>
+          </div>
+          <div className="fade-up" style={{ animationDelay: "100ms" }}>
+            <ImagePanel src={illustrations[9]} alt="" className="aspect-[16/10]" />
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
+          {courses.map((course) => <CourseCard key={course.title} course={course} setPage={setPage} />)}
+        </div>
+      </section>
+    </>
+  );
+}
+
 function ProductDetailPage({ product, setPage }) {
   if (!product) return <ProductsPage setPage={setPage} />;
 
@@ -1453,6 +1567,7 @@ export default function App() {
   const pages = {
     home: <Home setPage={setPage} />,
     products: <ProductsPage setPage={setPage} />,
+    courses: <CoursesPage setPage={setPage} />,
     services: <ServicesPage />,
     solutions: <SolutionsPage />,
     process: <ProcessPage />,

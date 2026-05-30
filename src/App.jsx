@@ -98,8 +98,8 @@ export const courses = [
 ];
 
 const coursePaymentLinks = {
-  "ai-office-automation-ca-cs-cma": import.meta.env.VITE_COURSE_AI_OFFICE_CA_PAYMENT_LINK_URL || "",
-  "ai-office-automation-lawyers": import.meta.env.VITE_COURSE_AI_OFFICE_LAWYERS_PAYMENT_LINK_URL || "",
+  "ai-office-automation-ca-cs-cma": import.meta.env.VITE_COURSE_AI_OFFICE_CA_PAYMENT_LINK_URL || "https://rzp.io/rzp/F3l97wh",
+  "ai-office-automation-lawyers": import.meta.env.VITE_COURSE_AI_OFFICE_LAWYERS_PAYMENT_LINK_URL || "https://rzp.io/rzp/F3l97wh",
 };
 
 const envValue = (key, fallback = "") => import.meta.env[key] || fallback;

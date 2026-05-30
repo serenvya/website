@@ -31,11 +31,21 @@ export default async function handler(request, response) {
   const email = sanitize(request.body?.email);
   const mobile = normalizeMobile(request.body?.mobile);
   const query = sanitize(request.body?.query);
-  const type = sanitize(request.body?.type) === "problem" ? "problem" : "query";
-  const submissionLabel = type === "problem" ? "Problem Statement" : "Query";
+  const requestedType = sanitize(request.body?.type);
+  const type = ["problem", "course"].includes(requestedType) ? requestedType : "query";
+  const submissionLabel = type === "problem" ? "Problem Statement" : type === "course" ? "Course Registration" : "Query";
+  const course = sanitize(request.body?.course);
+  const price = sanitize(request.body?.price);
+  const address = sanitize(request.body?.address);
+  const gstNumber = sanitize(request.body?.gstNumber);
+  const profession = sanitize(request.body?.profession);
 
   if (!name || !email || !mobile || !query) {
-    return response.status(400).json({ error: `Please provide your name, email, mobile number, and ${type === "problem" ? "problem statement" : "query"}.` });
+    return response.status(400).json({ error: `Please provide your name, email, mobile number, and ${type === "problem" ? "problem statement" : type === "course" ? "course registration details" : "query"}.` });
+  }
+
+  if (type === "course" && (!course || !address || !profession)) {
+    return response.status(400).json({ error: "Please provide the course, address, and profession for registration." });
   }
 
   if (!isValidEmail(email)) {
@@ -46,7 +56,7 @@ export default async function handler(request, response) {
     return response.status(400).json({ error: "Please provide a valid 10-digit mobile number." });
   }
 
-  if (name.length > 120 || email.length > 160 || query.length > 3000) {
+  if (name.length > 120 || email.length > 160 || query.length > 3000 || address.length > 1000 || profession.length > 120 || gstNumber.length > 30) {
     return response.status(400).json({ error: "Please shorten the submission and try again." });
   }
 
@@ -57,6 +67,14 @@ export default async function handler(request, response) {
     `Name: ${name}`,
     `Email: ${email}`,
     `Mobile: ${mobile}`,
+    ...(type === "course" ? [
+      `Course: ${course}`,
+      `Offer Price: Rs. ${price || "2500/-"} per course`,
+      `Profession: ${profession}`,
+      `GST Number: ${gstNumber || "Not provided"}`,
+      "Address:",
+      address,
+    ] : []),
     "",
     `${submissionLabel}:`,
     query,

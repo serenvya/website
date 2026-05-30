@@ -64,6 +64,8 @@ export const courses = [
   {
     title: "AI and Office Automation for CA, CS and CMA Professionals",
     status: "Open for enquiry",
+    originalPrice: "10000/-",
+    offerPrice: "2500/-",
     audience: "CA, CS, CMA, tax, audit, finance, and compliance teams",
     summary: "A practical course for professionals who want to use AI and office automation to reduce repetitive documentation, spreadsheet, research, review, and client-workflow effort.",
     outcomes: [
@@ -78,6 +80,8 @@ export const courses = [
   {
     title: "AI and Office Automation for Lawyers",
     status: "Coming Soon",
+    originalPrice: "10000/-",
+    offerPrice: "2500/-",
     audience: "Lawyers, legal teams, litigation offices, and legal operations teams",
     summary: "A practice-focused course on AI-assisted legal drafting, research support, matter workflows, document organization, and office automation for legal professionals.",
     outcomes: [
@@ -605,8 +609,8 @@ function SectionLabel({ children, icon = "spark" }) {
   return <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.08] px-4 py-2 text-xs font-medium uppercase tracking-[0.14em] text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl"><Icon name={icon} className="h-4 w-4 text-amber-300" />{children}</p>;
 }
 
-function Glass({ children, className = "" }) {
-  return <div className={`gradient-border rounded-2xl bg-white/[0.035] shadow-[0_20px_60px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl hover:bg-white/[0.055] transition-colors duration-500 ${className}`}>{children}</div>;
+function Glass({ children, className = "", ...props }) {
+  return <div {...props} className={`gradient-border rounded-2xl bg-white/[0.035] shadow-[0_20px_60px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl hover:bg-white/[0.055] transition-colors duration-500 ${className}`}>{children}</div>;
 }
 
 function ImagePanel({ src, alt, className = "" }) {
@@ -1130,7 +1134,7 @@ function ProductsPage({ setPage }) {
 }
 
 /* ─── Product Detail Page ─── */
-function CourseCard({ course, setPage }) {
+function CourseCard({ course, onRegister }) {
   const accent = course.accent === "green"
     ? {
         border: "border-[#16A34A]/24",
@@ -1159,6 +1163,17 @@ function CourseCard({ course, setPage }) {
         <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">{course.audience}</p>
         <h2 className="mt-3 text-3xl font-medium leading-tight tracking-tight">{course.title}</h2>
         <p className="mt-5 text-[15px] leading-7 text-white/68">{course.summary}</p>
+        <div className="mt-6 flex flex-wrap items-end gap-4 rounded-2xl border border-[#F97316]/18 bg-white/[0.06] p-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-white/42">Regular price</p>
+            <p className="mt-1 text-lg font-medium text-white/48 line-through">Rs. {course.originalPrice}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-amber-200">Offer price</p>
+            <p className="mt-1 text-3xl font-medium text-white">Rs. {course.offerPrice}</p>
+          </div>
+          <p className="pb-1 text-sm font-medium text-white/62">per course</p>
+        </div>
         <div className="mt-7 grid gap-3">
           {course.outcomes.map((outcome) => (
             <div key={outcome} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4">
@@ -1170,8 +1185,8 @@ function CourseCard({ course, setPage }) {
       </div>
       <div className="mt-7">
         {course.available ? (
-          <Button page="query" onClick={() => setPage("query")}>
-            Enquire about this course <Icon name="arrow" className="ml-2 h-5 w-5" />
+          <Button href="#/courses" onClick={(event) => { event.preventDefault(); onRegister(course); }}>
+            Register to the course <Icon name="arrow" className="ml-2 h-5 w-5" />
           </Button>
         ) : (
           <div className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0878C9]/18 bg-white/70 px-6 text-sm font-medium text-white/62">
@@ -1183,7 +1198,128 @@ function CourseCard({ course, setPage }) {
   );
 }
 
+function CourseRegistrationForm({ selectedCourse }) {
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    gstNumber: "",
+    mobile: "",
+    email: "",
+    profession: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState("idle");
+  const [message, setMessage] = useState("");
+
+  const updateField = (event) => {
+    setErrors((current) => ({ ...current, [event.target.name]: "" }));
+    if (status === "error") setMessage("");
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  };
+
+  const submit = async (event) => {
+    event.preventDefault();
+    const mobileDigits = normalizeMobile(form.mobile);
+    const nextErrors = {};
+
+    if (!form.name.trim()) nextErrors.name = "Please enter your name.";
+    if (!form.address.trim()) nextErrors.address = "Please enter your address.";
+    if (!/^[6-9]\d{9}$/.test(mobileDigits)) nextErrors.mobile = "Enter a valid 10-digit mobile number.";
+    if (!emailPattern.test(form.email.trim())) nextErrors.email = "Enter a valid email address.";
+    if (!form.profession.trim()) nextErrors.profession = "Please enter your profession.";
+
+    if (Object.keys(nextErrors).length) {
+      setErrors(nextErrors);
+      setStatus("error");
+      setMessage("Please fix the highlighted fields and try again.");
+      return;
+    }
+
+    setStatus("sending");
+    setMessage("");
+    setErrors({});
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "course",
+          course: selectedCourse.title,
+          price: selectedCourse.offerPrice,
+          name: form.name,
+          address: form.address,
+          gstNumber: form.gstNumber,
+          mobile: mobileDigits,
+          email: form.email,
+          profession: form.profession,
+          query: `Course registration for ${selectedCourse.title}`,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || "Unable to send your registration right now.");
+      }
+
+      setStatus("sent");
+      setMessage("Thanks. Your course registration details have been sent to Serenvya.");
+      setForm({ name: "", address: "", gstNumber: "", mobile: "", email: "", profession: "" });
+    } catch (error) {
+      setStatus("error");
+      setMessage(error.message || "Unable to send your registration right now.");
+    }
+  };
+
+  const inputBase = "w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-[#18A8DC] focus:shadow-[0_0_0_3px_rgba(24,168,220,0.16)]";
+
+  return (
+    <Glass className="p-6 sm:p-7" id="course-registration">
+      <form className="grid gap-5" onSubmit={submit}>
+        <div>
+          <SectionLabel icon="document">Course Registration</SectionLabel>
+          <h2 className="text-2xl font-medium tracking-tight">Register for {selectedCourse.title}</h2>
+          <p className="mt-3 text-[15px] leading-7 text-white/64">Offer price: Rs. {selectedCourse.offerPrice} per course. Share the details below and Serenvya will contact you with the next registration step.</p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          <Field label="Name" error={errors.name}>
+            <input className={`${inputBase} ${errors.name ? "border-red-300/50" : "border-white/12"}`} name="name" onChange={updateField} required value={form.name} />
+          </Field>
+          <Field label="Profession" error={errors.profession}>
+            <input className={`${inputBase} ${errors.profession ? "border-red-300/50" : "border-white/12"}`} name="profession" onChange={updateField} placeholder="CA, CS, CMA, Lawyer..." required value={form.profession} />
+          </Field>
+          <Field label="Mobile Number" error={errors.mobile}>
+            <input className={`${inputBase} ${errors.mobile ? "border-red-300/50" : "border-white/12"}`} inputMode="tel" name="mobile" onChange={updateField} placeholder="+91 98765 43210" required type="tel" value={form.mobile} />
+          </Field>
+          <Field label="Email Id" error={errors.email}>
+            <input className={`${inputBase} ${errors.email ? "border-red-300/50" : "border-white/12"}`} name="email" onChange={updateField} placeholder="you@example.com" required type="email" value={form.email} />
+          </Field>
+          <Field label="GST Number" hint="Leave blank if not applicable.">
+            <input className={`${inputBase} border-white/12`} name="gstNumber" onChange={updateField} placeholder="GSTIN, if available" value={form.gstNumber} />
+          </Field>
+          <Field label="Address" error={errors.address}>
+            <textarea className={`min-h-28 resize-y ${inputBase} ${errors.address ? "border-red-300/50" : "border-white/12"}`} name="address" onChange={updateField} required value={form.address} />
+          </Field>
+        </div>
+        <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B] focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:cursor-not-allowed disabled:opacity-60" disabled={status === "sending"} type="submit">
+          {status === "sending" ? "Sending..." : "Submit registration"}
+          <Icon name="arrow" className="ml-2 h-5 w-5" />
+        </button>
+        {message && <p className={`rounded-2xl border px-4 py-3 text-sm ${status === "error" ? "border-red-300/30 bg-red-400/10 text-red-100" : "border-emerald-300/30 bg-emerald-400/10 text-emerald-100"}`}>{message}</p>}
+      </form>
+    </Glass>
+  );
+}
+
 function CoursesPage({ setPage }) {
+  const defaultCourse = courses.find((course) => course.available) || courses[0];
+  const [selectedCourse, setSelectedCourse] = useState(defaultCourse);
+
+  const registerCourse = (course) => {
+    setSelectedCourse(course);
+    window.setTimeout(() => document.getElementById("course-registration")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  };
+
   return (
     <>
       <section className="relative px-5 pb-12 pt-12 lg:px-8 lg:pb-20 lg:pt-16">
@@ -1193,7 +1329,7 @@ function CoursesPage({ setPage }) {
             <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Practical AI and office automation courses for professionals.</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">Serenvya courses are designed for working professionals who want usable AI workflows, better office systems, and responsible automation habits inside real practice environments.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button page="query" onClick={() => setPage("query")}>Ask about courses <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
+              <Button href="#/courses" onClick={(event) => { event.preventDefault(); registerCourse(defaultCourse); }}>Register now <Icon name="arrow" className="ml-2 h-5 w-5" /></Button>
               <Button page="services" variant="ghost" onClick={() => setPage("services")}>Explore services</Button>
             </div>
           </div>
@@ -1205,7 +1341,12 @@ function CoursesPage({ setPage }) {
 
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
-          {courses.map((course) => <CourseCard key={course.title} course={course} setPage={setPage} />)}
+          {courses.map((course) => <CourseCard key={course.title} course={course} onRegister={registerCourse} />)}
+        </div>
+      </section>
+      <section className="px-5 pb-20 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <CourseRegistrationForm selectedCourse={selectedCourse} />
         </div>
       </section>
     </>

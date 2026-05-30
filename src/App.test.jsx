@@ -29,6 +29,7 @@ describe("Serenvya website content", () => {
     expect(courses).toHaveLength(2);
     expect(courses.some((course) => course.title === "AI and Office Automation for CA, CS and CMA Professionals" && course.available)).toBe(true);
     expect(courses.some((course) => course.title === "AI and Office Automation for Lawyers" && !course.available)).toBe(true);
+    expect(courses.every((course) => course.originalPrice === "10000/-" && course.offerPrice === "2500/-")).toBe(true);
     expect(products.every((product) => product.slug && product.name && product.price && product.inquiry)).toBe(true);
     expect(solutionAreas.length).toBeGreaterThanOrEqual(6);
     expect(faqs.every((faq) => faq.q && faq.a)).toBe(true);
@@ -51,5 +52,20 @@ describe("Serenvya website content", () => {
 
     expect(screen.getByLabelText(/email/i)).toBeRequired();
     expect(screen.getByLabelText(/mobile number/i)).toBeRequired();
+  });
+
+  it("renders course registration fields", () => {
+    window.location.hash = "#/courses";
+    render(<App />);
+
+    expect(screen.getAllByText(/AI and Office Automation for CA, CS and CMA Professionals/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Rs\. 10000\/-/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Rs\. 2500\/-/i).length).toBeGreaterThan(0);
+    expect(screen.getByLabelText(/^name$/i)).toBeRequired();
+    expect(screen.getByLabelText(/address/i)).toBeRequired();
+    expect(screen.getByLabelText(/mobile number/i)).toBeRequired();
+    expect(screen.getByLabelText(/email id/i)).toBeRequired();
+    expect(screen.getByLabelText(/profession/i)).toBeRequired();
+    expect(screen.getByLabelText(/gst number/i)).toBeInTheDocument();
   });
 });

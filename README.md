@@ -56,7 +56,7 @@ Before using `info@serenvya.com` as the sender, verify the `serenvya.com` domain
 
 ## Razorpay payment option
 
-The site includes a payment entry point on the Problem Statement page for consultancy fees. It is designed for the current business model where the amount is discussed or pre-agreed first, then the client pays through a Razorpay-hosted payment page.
+The site includes payment entry points for consultancy fees and course fees. It is designed for the current business model where payments happen through Razorpay-hosted payment pages.
 
 Recommended setup:
 
@@ -67,8 +67,10 @@ Recommended setup:
 
 ```bash
 VITE_RAZORPAY_PAYMENT_LINK_URL=https://rzp.io/...
+VITE_COURSE_AI_OFFICE_CA_PAYMENT_LINK_URL=https://rzp.io/...
+VITE_COURSE_AI_OFFICE_LAWYERS_PAYMENT_LINK_URL=https://rzp.io/...
 ```
 
 5. Redeploy the Vercel project.
 
-If this variable is not set, the Problem Statement page remains usable and sends visitors to the free query page to discuss payment details first.
+If a payment link variable is not set, the relevant page remains usable and asks visitors to submit the form first so Serenvya can share the payment step.

@@ -62,6 +62,7 @@ export const faqs = [
 
 export const courses = [
   {
+    slug: "ai-office-automation-ca-cs-cma",
     title: "AI and Office Automation for CA, CS and CMA Professionals",
     status: "Open for enquiry",
     originalPrice: "10000/-",
@@ -78,8 +79,9 @@ export const courses = [
     available: true,
   },
   {
+    slug: "ai-office-automation-lawyers",
     title: "AI and Office Automation for Lawyers",
-    status: "Coming Soon",
+    status: "Open for registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "Lawyers, legal teams, litigation offices, and legal operations teams",
@@ -91,9 +93,14 @@ export const courses = [
       "Responsible AI use for legal teams",
     ],
     accent: "green",
-    available: false,
+    available: true,
   },
 ];
+
+const coursePaymentLinks = {
+  "ai-office-automation-ca-cs-cma": import.meta.env.VITE_COURSE_AI_OFFICE_CA_PAYMENT_LINK_URL || "",
+  "ai-office-automation-lawyers": import.meta.env.VITE_COURSE_AI_OFFICE_LAWYERS_PAYMENT_LINK_URL || "",
+};
 
 const envValue = (key, fallback = "") => import.meta.env[key] || fallback;
 
@@ -1199,6 +1206,7 @@ function CourseCard({ course, onRegister }) {
 }
 
 function CourseRegistrationForm({ selectedCourse }) {
+  const paymentLink = coursePaymentLinks[selectedCourse.slug] || "";
   const [form, setForm] = useState({
     name: "",
     address: "",
@@ -1247,13 +1255,14 @@ function CourseRegistrationForm({ selectedCourse }) {
           type: "course",
           course: selectedCourse.title,
           price: selectedCourse.offerPrice,
+          paymentLink,
           name: form.name,
           address: form.address,
           gstNumber: form.gstNumber,
           mobile: mobileDigits,
           email: form.email,
           profession: form.profession,
-          query: `Course registration for ${selectedCourse.title}`,
+          query: `Course registration for ${selectedCourse.title}. Payment link ${paymentLink ? "is available on the website" : "is pending setup"}.`,
         }),
       });
       const result = await response.json().catch(() => ({}));
@@ -1280,6 +1289,13 @@ function CourseRegistrationForm({ selectedCourse }) {
           <SectionLabel icon="document">Course Registration</SectionLabel>
           <h2 className="text-2xl font-medium tracking-tight">Register for {selectedCourse.title}</h2>
           <p className="mt-3 text-[15px] leading-7 text-white/64">Offer price: Rs. {selectedCourse.offerPrice} per course. Share the details below and Serenvya will contact you with the next registration step.</p>
+          {paymentLink ? (
+            <a className="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B]" href={paymentLink} rel="noreferrer" target="_blank">
+              Pay course fee <Icon name="arrow" className="ml-2 h-5 w-5" />
+            </a>
+          ) : (
+            <p className="mt-5 rounded-2xl border border-[#0878C9]/18 bg-white/70 px-4 py-3 text-sm text-white/62">Razorpay payment link is pending. Submit the registration form and Serenvya will share the payment step.</p>
+          )}
         </div>
         <div className="grid gap-5 md:grid-cols-2">
           <Field label="Name" error={errors.name}>

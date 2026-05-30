@@ -39,6 +39,7 @@ export default async function handler(request, response) {
   const address = sanitize(request.body?.address);
   const gstNumber = sanitize(request.body?.gstNumber);
   const profession = sanitize(request.body?.profession);
+  const paymentLink = sanitize(request.body?.paymentLink);
 
   if (!name || !email || !mobile || !query) {
     return response.status(400).json({ error: `Please provide your name, email, mobile number, and ${type === "problem" ? "problem statement" : type === "course" ? "course registration details" : "query"}.` });
@@ -70,6 +71,7 @@ export default async function handler(request, response) {
     ...(type === "course" ? [
       `Course: ${course}`,
       `Offer Price: Rs. ${price || "2500/-"} per course`,
+      `Payment Link: ${paymentLink || "Pending setup"}`,
       `Profession: ${profession}`,
       `GST Number: ${gstNumber || "Not provided"}`,
       "Address:",

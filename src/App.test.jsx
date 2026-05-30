@@ -28,7 +28,7 @@ describe("Serenvya website content", () => {
     expect(products).toHaveLength(8);
     expect(courses).toHaveLength(2);
     expect(courses.some((course) => course.title === "AI and Office Automation for CA, CS and CMA Professionals" && course.available)).toBe(true);
-    expect(courses.some((course) => course.title === "AI and Office Automation for Lawyers" && !course.available)).toBe(true);
+    expect(courses.some((course) => course.title === "AI and Office Automation for Lawyers" && course.available)).toBe(true);
     expect(courses.every((course) => course.originalPrice === "10000/-" && course.offerPrice === "2500/-")).toBe(true);
     expect(products.every((product) => product.slug && product.name && product.price && product.inquiry)).toBe(true);
     expect(solutionAreas.length).toBeGreaterThanOrEqual(6);

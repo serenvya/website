@@ -52,7 +52,17 @@ describe("submission storage records", () => {
     process.env.SUBMISSIONS_WEBHOOK_SECRET = "wrong";
     vi.stubGlobal("fetch", vi.fn(async () => ({
       ok: true,
-      json: async () => ({ ok: false, error: "Unauthorized" }),
+      text: async () => JSON.stringify({ ok: false, error: "Unauthorized" }),
+    })));
+
+    await expect(saveSubmissionRecord({ type: "course" })).resolves.toEqual({ configured: true, saved: false });
+  });
+
+  it("treats non-JSON storage responses as failed saves", async () => {
+    process.env.SUBMISSIONS_WEBHOOK_URL = "https://script.google.com/macros/s/test/exec";
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true,
+      text: async () => "<html>Google error page</html>",
     })));
 
     await expect(saveSubmissionRecord({ type: "course" })).resolves.toEqual({ configured: true, saved: false });

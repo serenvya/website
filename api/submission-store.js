@@ -74,9 +74,20 @@ export async function saveSubmissionRecord(record) {
       return { configured: true, saved: false };
     }
 
-    const result = await storageResponse.json().catch(() => ({ ok: true }));
+    const responseText = await storageResponse.text().catch(() => "");
+    let result = null;
 
-    if (result?.ok === false) {
+    try {
+      result = JSON.parse(responseText);
+    } catch {
+      console.error("Submission storage returned non-JSON response", {
+        body: responseText.slice(0, 500),
+        type: record.type,
+      });
+      return { configured: true, saved: false };
+    }
+
+    if (result?.ok !== true) {
       console.error("Submission storage rejected record", {
         error: result.error || "Unknown storage rejection",
         type: record.type,

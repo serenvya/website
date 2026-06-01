@@ -144,6 +144,9 @@ export default async function handler(request, response) {
         fromEmail,
         toEmail,
       });
+      if (storageResult.saved) {
+        return response.status(200).json({ ok: true, saved: true, storageConfigured: storageResult.configured, emailed: false });
+      }
       return response.status(502).json({ error: "Unable to send your query right now." });
     }
   }

@@ -1,5 +1,11 @@
-import { describe, expect, it } from "vitest";
-import { buildStorageUrl, buildSubmissionRecord } from "./submission-store.js";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { buildStorageUrl, buildSubmissionRecord, saveSubmissionRecord } from "./submission-store.js";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  delete process.env.SUBMISSIONS_WEBHOOK_URL;
+  delete process.env.SUBMISSIONS_WEBHOOK_SECRET;
+});
 
 describe("submission storage records", () => {
   it("builds a structured course registration record", () => {
@@ -39,5 +45,16 @@ describe("submission storage records", () => {
     expect(buildStorageUrl("https://example.com/hook?sheet=one", "abc123")).toBe(
       "https://example.com/hook?sheet=one&secret=abc123"
     );
+  });
+
+  it("treats Apps Script ok false responses as failed saves", async () => {
+    process.env.SUBMISSIONS_WEBHOOK_URL = "https://script.google.com/macros/s/test/exec";
+    process.env.SUBMISSIONS_WEBHOOK_SECRET = "wrong";
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true,
+      json: async () => ({ ok: false, error: "Unauthorized" }),
+    })));
+
+    await expect(saveSubmissionRecord({ type: "course" })).resolves.toEqual({ configured: true, saved: false });
   });
 });

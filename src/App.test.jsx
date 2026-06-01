@@ -55,7 +55,7 @@ describe("Serenvya website content", () => {
     expect(screen.getByLabelText(/mobile number/i)).toBeRequired();
   });
 
-  it("renders course registration fields", () => {
+  it("renders course cards with direct payment links", () => {
     window.location.hash = "#/courses";
     render(<App />);
 
@@ -63,15 +63,12 @@ describe("Serenvya website content", () => {
     expect(screen.getAllByText(/AI for Students - Basic/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Excel for Students - Advanced/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Power BI for Students - Advanced/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Rs\. 10000\/-/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Rs\. 2500\/-/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Rs\. 20000\/-/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Rs\. 5000\/-/i).length).toBeGreaterThan(0);
-    expect(screen.getByLabelText(/^name$/i)).toBeRequired();
-    expect(screen.getByLabelText(/address/i)).toBeRequired();
-    expect(screen.getByLabelText(/mobile number/i)).toBeRequired();
-    expect(screen.getByLabelText(/email id/i)).toBeRequired();
-    expect(screen.getByLabelText(/profession/i)).toBeRequired();
-    expect(screen.getByLabelText(/gst number/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Rs\. 10000\/- \+GST/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Rs\. 2500\/- \+GST/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Rs\. 20000\/- \+GST/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Rs\. 5000\/- \+GST/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /register to the course/i }).some((link) => link.getAttribute("href") === "https://rzp.io/rzp/F3l97wh")).toBe(true);
+    expect(screen.getAllByRole("link", { name: /register to the course/i }).some((link) => link.getAttribute("href") === "https://rzp.io/rzp/Br058C5")).toBe(true);
+    expect(screen.queryByLabelText(/^name$/i)).not.toBeInTheDocument();
   });
 });

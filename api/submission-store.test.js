@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSubmissionRecord } from "./submission-store.js";
+import { buildStorageUrl, buildSubmissionRecord } from "./submission-store.js";
 
 describe("submission storage records", () => {
   it("builds a structured course registration record", () => {
@@ -30,5 +30,14 @@ describe("submission storage records", () => {
     });
     expect(record.id).toBeTruthy();
     expect(record.createdAt).toBeTruthy();
+  });
+
+  it("adds the Apps Script secret as a URL parameter", () => {
+    expect(buildStorageUrl("https://script.google.com/macros/s/test/exec", "private secret")).toBe(
+      "https://script.google.com/macros/s/test/exec?secret=private+secret"
+    );
+    expect(buildStorageUrl("https://example.com/hook?sheet=one", "abc123")).toBe(
+      "https://example.com/hook?sheet=one&secret=abc123"
+    );
   });
 });

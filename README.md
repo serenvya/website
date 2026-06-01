@@ -51,7 +51,7 @@ SUBMISSIONS_WEBHOOK_URL=https://your-secure-storage-webhook.example.com
 SUBMISSIONS_WEBHOOK_SECRET=optional_shared_secret
 ```
 
-When `SUBMISSIONS_WEBHOOK_SECRET` is set, the website backend sends it as a bearer token in the `Authorization` header. If the storage webhook is configured but fails, the website returns an error and does not move the course participant to payment.
+When `SUBMISSIONS_WEBHOOK_SECRET` is set, the website backend sends it as a bearer token in the `Authorization` header and as a `secret` URL parameter for Google Apps Script compatibility. If the storage webhook is configured but fails, the website returns an error and does not move the course participant to payment.
 
 Saved submission records include:
 

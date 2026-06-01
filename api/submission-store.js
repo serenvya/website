@@ -28,6 +28,19 @@ export function buildSubmissionRecord(payload) {
   };
 }
 
+export function buildStorageUrl(storageUrl, secret) {
+  if (!secret) return storageUrl;
+
+  try {
+    const url = new URL(storageUrl);
+    url.searchParams.set("secret", secret);
+    return url.toString();
+  } catch {
+    const separator = storageUrl.includes("?") ? "&" : "?";
+    return `${storageUrl}${separator}secret=${encodeURIComponent(secret)}`;
+  }
+}
+
 export async function saveSubmissionRecord(record) {
   const storageUrl = process.env.SUBMISSIONS_WEBHOOK_URL;
 
@@ -39,12 +52,13 @@ export async function saveSubmissionRecord(record) {
   const timeout = setTimeout(() => controller.abort(), STORE_TIMEOUT_MS);
 
   try {
-    const storageResponse = await fetch(storageUrl, {
+    const secret = process.env.SUBMISSIONS_WEBHOOK_SECRET || "";
+    const storageResponse = await fetch(buildStorageUrl(storageUrl, secret), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "User-Agent": "serenvya-website-submission-store",
-        ...(process.env.SUBMISSIONS_WEBHOOK_SECRET ? { Authorization: `Bearer ${process.env.SUBMISSIONS_WEBHOOK_SECRET}` } : {}),
+        ...(secret ? { Authorization: `Bearer ${secret}` } : {}),
       },
       body: JSON.stringify(record),
       signal: controller.signal,

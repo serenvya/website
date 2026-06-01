@@ -79,4 +79,4 @@ VITE_COURSE_STUDENTS_POWER_BI_ADVANCED_PAYMENT_LINK_URL=https://rzp.io/rzp/Br058
 
 5. Redeploy the Vercel project.
 
-Course register buttons open the configured Razorpay payment page directly.
+Course register buttons take visitors to the participant details form. After details are submitted, the configured Razorpay payment page opens.

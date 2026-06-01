@@ -40,9 +40,42 @@ Vercel will show the exact DNS records to add. In GoDaddy, open your domain DNS 
 
 Use the values shown in Vercel as the source of truth. After saving GoDaddy DNS, return to Vercel and click **Refresh** or wait for propagation.
 
-## Query and problem statement forms
+## Website submissions backend
 
-The free query form and the problem statement form both post to the Vercel serverless endpoint at `/api/contact`. The request includes a `type` value so Serenvya can identify whether the submission is a simple query or a paid-discovery problem statement. Name, email, mobile number, and the query/problem text are mandatory; email and mobile number are validated in the browser and again in the API route.
+The free query form, problem statement form, course participant form, and product licensing enquiry flow all post to the Vercel serverless endpoint at `/api/contact`. The request includes a `type` value so Serenvya can identify whether the submission is a simple query, paid-discovery problem statement, course registration, or product licensing enquiry.
+
+For durable backend storage, configure a secure webhook that receives structured JSON records and saves them to your preferred system, such as Google Sheets through Apps Script, Airtable, Supabase, a CRM, or another internal database.
+
+```bash
+SUBMISSIONS_WEBHOOK_URL=https://your-secure-storage-webhook.example.com
+SUBMISSIONS_WEBHOOK_SECRET=optional_shared_secret
+```
+
+When `SUBMISSIONS_WEBHOOK_SECRET` is set, the website backend sends it as a bearer token in the `Authorization` header. If the storage webhook is configured but fails, the website returns an error and does not move the course participant to payment.
+
+Saved submission records include:
+
+```json
+{
+  "id": "generated-submission-id",
+  "createdAt": "2026-06-01T00:00:00.000Z",
+  "type": "course",
+  "label": "Course Registration",
+  "name": "Participant Name",
+  "email": "participant@example.com",
+  "mobile": "9876543210",
+  "course": "AI For CS and CMA's",
+  "product": "",
+  "productSlug": "",
+  "price": "2500/- +GST",
+  "paymentLink": "https://rzp.io/...",
+  "profession": "CS",
+  "gstNumber": "",
+  "address": "Participant address",
+  "query": "Submission context",
+  "source": "serenvya-website"
+}
+```
 
 Email sending uses Resend. Add these environment variables in Vercel:
 

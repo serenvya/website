@@ -502,7 +502,7 @@ function Field({ label, children, error, hint }) {
   );
 }
 
-function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceholder, buttonLabel, successMessage, initialQuery = "" }) {
+function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceholder, buttonLabel, successMessage, initialQuery = "", extraPayload = {} }) {
   const [form, setForm] = useState({ name: "", email: "", mobile: "", query: initialQuery });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
@@ -538,7 +538,7 @@ function IntakeForm({ formType = "query", title, intro, queryLabel, queryPlaceho
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, mobile: mobileDigits, type: formType }),
+        body: JSON.stringify({ ...form, ...extraPayload, mobile: mobileDigits, type: formType }),
       });
       const result = await response.json().catch(() => ({}));
 
@@ -1797,7 +1797,8 @@ function QueryPage() {
         <div className="fade-up" style={{ animationDelay: "120ms" }}>
           <IntakeForm
             buttonLabel="Send query"
-            formType="query"
+            extraPayload={selectedProduct ? { product: selectedProduct.name, productSlug: selectedProduct.slug } : {}}
+            formType={selectedProduct ? "license" : "query"}
             initialQuery={initialQuery}
             intro={selectedProduct ? "Review the drafted inquiry below, add any context about your organization or workflow, and send it to Serenvya." : "Write the question in plain language. This is for early-stage queries and quick clarification."}
             queryLabel="Query"

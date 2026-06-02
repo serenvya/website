@@ -276,6 +276,14 @@ a { text-decoration: none; }
   color: #0878c9 !important;
 }
 
+.bright-theme .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+.bright-theme .dark-preview .hover\:text-white:hover {
+  color: #ffffff !important;
+}
+
 .bright-theme .dark-preview {
   background-color: rgba(7, 17, 31, 0.88) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;

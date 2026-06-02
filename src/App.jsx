@@ -64,7 +64,7 @@ export const courses = [
   {
     slug: "ai-for-cs-cma",
     title: "AI For CS and CMA's",
-    status: "Open for enquiry",
+    status: "Open for Registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "CS, CMA, compliance, finance, and professional practice teams",
@@ -81,7 +81,7 @@ export const courses = [
   {
     slug: "ai-office-automation-lawyers",
     title: "AI and Office Automation for Lawyers",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "Lawyers, legal teams, litigation offices, and legal operations teams",
@@ -98,7 +98,7 @@ export const courses = [
   {
     slug: "students-ai-basic",
     title: "AI for Students - Basic",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "Students beginning with AI tools and practical productivity workflows",
@@ -115,7 +115,7 @@ export const courses = [
   {
     slug: "students-ai-advanced",
     title: "AI for Students - Advanced",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "20000/-",
     offerPrice: "5000/-",
     audience: "Students ready to build advanced AI-assisted workflows and projects",
@@ -132,7 +132,7 @@ export const courses = [
   {
     slug: "students-excel-basic",
     title: "Excel for Students - Basic",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "Students learning spreadsheet basics for academics and internships",
@@ -149,7 +149,7 @@ export const courses = [
   {
     slug: "students-excel-advanced",
     title: "Excel for Students - Advanced",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "20000/-",
     offerPrice: "5000/-",
     audience: "Students building advanced spreadsheet and analysis capability",
@@ -166,7 +166,7 @@ export const courses = [
   {
     slug: "students-power-bi-basic",
     title: "Power BI for Students - Basic",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "Students starting with dashboards and business intelligence",
@@ -183,7 +183,7 @@ export const courses = [
   {
     slug: "students-power-bi-advanced",
     title: "Power BI for Students - Advanced",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "20000/-",
     offerPrice: "5000/-",
     audience: "Students who want advanced dashboard and analytics project skills",
@@ -200,7 +200,7 @@ export const courses = [
   {
     slug: "businessmen-ai-basic",
     title: "AI for Businessmen - Basic",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "10000/-",
     offerPrice: "2500/-",
     audience: "Business owners, founders, traders, and operational decision-makers",
@@ -217,7 +217,7 @@ export const courses = [
   {
     slug: "businessmen-ai-advance",
     title: "AI for Businessmen - Advance",
-    status: "Open for registration",
+    status: "Open for Registration",
     originalPrice: "20000/-",
     offerPrice: "5000/-",
     audience: "Business owners ready to build stronger AI workflows and automation ideas",
@@ -1303,10 +1303,7 @@ function CourseCard({ course, onRegister }) {
   return (
     <Glass className={`flex h-full flex-col justify-between overflow-hidden p-7 ${course.available ? "" : "opacity-86"}`}>
       <div>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className={`inline-flex rounded-2xl border ${accent.border} ${accent.bg} p-3`}>
-            <Icon name={course.available ? "terminal" : "clock"} className={`h-6 w-6 ${accent.icon}`} />
-          </div>
+        <div className="flex flex-wrap items-center justify-end gap-3">
           <span className={`rounded-full border px-3 py-1 text-xs font-medium ${accent.badge}`}>
             {course.status}
           </span>

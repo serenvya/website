@@ -1286,18 +1286,19 @@ function ProductsPage({ setPage }) {
 
 /* ─── Product Detail Page ─── */
 function CourseCard({ course, onRegister }) {
-  const accent = course.accent === "green"
+  const isAdvancedCourse = course.offerPrice === "5000/-" || /advance/i.test(course.title);
+  const accent = isAdvancedCourse
     ? {
-        border: "border-[#16A34A]/24",
-        bg: "bg-[#16A34A]/8",
-        icon: "text-emerald-300",
-        badge: "border-[#16A34A]/24 bg-[#16A34A]/10 text-emerald-300",
-      }
-    : {
         border: "border-[#18A8DC]/24",
         bg: "bg-[#0878C9]/8",
         icon: "text-sky-300",
         badge: "border-[#18A8DC]/24 bg-[#0878C9]/10 text-sky-300",
+      }
+    : {
+        border: "border-[#16A34A]/24",
+        bg: "bg-[#16A34A]/8",
+        icon: "text-emerald-300",
+        badge: "border-[#16A34A]/24 bg-[#16A34A]/10 text-emerald-300",
       };
 
   return (

@@ -197,6 +197,40 @@ export const courses = [
     accent: "amber",
     available: true,
   },
+  {
+    slug: "businessmen-ai-basic",
+    title: "AI for Businessmen - Basic",
+    status: "Open for registration",
+    originalPrice: "10000/-",
+    offerPrice: "2500/-",
+    audience: "Business owners, founders, traders, and operational decision-makers",
+    summary: "A practical business-focused AI course for owners who want to use AI for communication, daily planning, customer follow-up, reports, and office productivity.",
+    outcomes: [
+      "Use AI for emails, proposals, customer replies, and business communication",
+      "Create simple prompts for planning, marketing ideas, summaries, and reports",
+      "Improve daily office productivity across documents, spreadsheets, and task follow-up",
+      "Understand safe AI use for business data, privacy, and review",
+    ],
+    accent: "blue",
+    available: true,
+  },
+  {
+    slug: "businessmen-ai-advance",
+    title: "AI for Businessmen - Advance",
+    status: "Open for registration",
+    originalPrice: "20000/-",
+    offerPrice: "5000/-",
+    audience: "Business owners ready to build stronger AI workflows and automation ideas",
+    summary: "An advanced business AI course focused on repeatable workflows, sales and operations support, reporting systems, team productivity, and automation planning.",
+    outcomes: [
+      "Design AI-assisted workflows for sales, operations, finance, and customer support",
+      "Create reusable prompt systems for recurring business decisions and reports",
+      "Plan simple automation opportunities across teams, tools, and documents",
+      "Build governance habits for reviewing AI output before business use",
+    ],
+    accent: "amber",
+    available: true,
+  },
 ];
 
 const coursePaymentLinks = {
@@ -208,6 +242,8 @@ const coursePaymentLinks = {
   "students-excel-advanced": import.meta.env.VITE_COURSE_STUDENTS_EXCEL_ADVANCED_PAYMENT_LINK_URL || "https://rzp.io/rzp/Br058C5",
   "students-power-bi-basic": import.meta.env.VITE_COURSE_STUDENTS_POWER_BI_BASIC_PAYMENT_LINK_URL || "https://rzp.io/rzp/F3l97wh",
   "students-power-bi-advanced": import.meta.env.VITE_COURSE_STUDENTS_POWER_BI_ADVANCED_PAYMENT_LINK_URL || "https://rzp.io/rzp/Br058C5",
+  "businessmen-ai-basic": import.meta.env.VITE_COURSE_BUSINESSMEN_AI_BASIC_PAYMENT_LINK_URL || "https://rzp.io/rzp/F3l97wh",
+  "businessmen-ai-advance": import.meta.env.VITE_COURSE_BUSINESSMEN_AI_ADVANCE_PAYMENT_LINK_URL || "https://rzp.io/rzp/Br058C5",
 };
 
 const envValue = (key, fallback = "") => import.meta.env[key] || fallback;

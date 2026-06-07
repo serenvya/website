@@ -286,7 +286,7 @@ export const products = [
   {
     slug: "whatsapp-group-broadcaster",
     key: "whatsappBroadcaster",
-    name: "WhatsApp Group Broadcaster",
+    name: "Serenvya Reach",
     eyebrow: "Desktop outreach automation",
     summary: "Send text, image, video, or combined messages to WhatsApp Desktop groups from a CSV list with controlled batching and logs.",
     detail: "A Windows desktop automation tool built for carefully controlled WhatsApp group communication. It reads group names from CSV, supports image-only, text-only, and image-with-caption modes, offers pause, resume, stop, calibration, batch delays, and background mode that restores the user's active window after each send.",
@@ -295,7 +295,7 @@ export const products = [
     image: illustrations[2],
     accent: "amber",
     idealFor: "Community managers, training teams, local business networks, and operators who need structured group messaging.",
-    inquiry: productInquiry("WhatsApp Group Broadcaster", "We want to understand how it can send controlled WhatsApp Desktop group messages from CSV lists, support text or media campaigns, manage batch delays, and maintain sending logs."),
+    inquiry: productInquiry("Serenvya Reach", "We want to understand how it can send controlled WhatsApp Desktop group messages from CSV lists, support text or media campaigns, manage batch delays, and maintain sending logs."),
     outcomes: ["Load target groups from CSV", "Send media, text, or media with caption", "Control batch size, delay, and rest gaps", "Export sending results for review"],
     features: ["WhatsApp Desktop automation", "CSV group import", "Batch throttling", "Pause and stop controls", "Background mode", "Calibration and result logs"],
   },

@@ -22,6 +22,10 @@ npm run preview
 
 This repo includes `vercel.json` with the Vite framework, build command, output directory, and SPA rewrite.
 
+## Live Website Publishing Schedule
+
+Publish accumulated website changes to the live site once per day at **1:00 PM IST** only. Do not push or redeploy repeatedly during the day. If a change is urgent, it should be clearly marked as urgent and may be published immediately.
+
 1. Push the `website` folder to your GitHub repository, or make `website` the Vercel project root.
 2. In Vercel, create a new project and import the repo.
 3. Confirm these settings:

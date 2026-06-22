@@ -14,6 +14,7 @@ describe("Serenvya website content", () => {
       "Home",
       "Products",
       "Courses",
+      "Survey",
       "Services",
       "Solutions",
       "Process",

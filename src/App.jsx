@@ -19,6 +19,7 @@ export const navItems = [
   { label: "Home", page: "home" },
   { label: "Products", page: "products" },
   { label: "Courses", page: "courses" },
+  { label: "Survey", page: "survey", href: "/survey/" },
   { label: "Services", page: "services" },
   { label: "Solutions", page: "solutions" },
   { label: "Process", page: "process" },
@@ -490,6 +491,7 @@ function Icon({ name, className = "h-5 w-5" }) {
 }
 
 function hrefFor(page) {
+  if (page === "survey") return "/survey/";
   return page === "home" ? "#/" : `#/${page}`;
 }
 

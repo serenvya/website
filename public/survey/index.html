@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Serenvya Readiness Survey</title>
+    <meta
+      name="description"
+      content="Automation and DPDPA readiness survey by Serenvya Consulting and Automations P. L."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="brand-panel" aria-label="Serenvya survey introduction">
+        <div>
+          <img class="brand-logo" src="./assets/serenvya_logo_transparent.png" alt="Serenvya" />
+          <p class="eyebrow">Consulting and Automations Private Limited</p>
+          <h1>Office Automation and DPDPA Readiness Survey</h1>
+          <p class="intro">
+            A focused assessment for business teams to understand how automated their office workflows are and how prepared they are for India&apos;s DPDPA obligations.
+          </p>
+        </div>
+        <div class="score-preview" aria-hidden="true">
+          <span>AI Automation</span>
+          <strong>+</strong>
+          <span>DPDPA Readiness</span>
+        </div>
+      </section>
+
+      <section class="survey-panel">
+        <form id="surveyForm" novalidate>
+          <section class="form-step active" data-step="consent">
+            <p class="section-kicker">Consent</p>
+            <h2>Would you like to take the survey and share the details with us?</h2>
+            <div class="choice-grid consent-grid" role="radiogroup" aria-label="Consent choice">
+              <label class="choice-card">
+                <input type="radio" name="consent" value="yes" required />
+                <span>Yes, I would like to continue</span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="consent" value="no" required />
+                <span>No, I do not want to continue</span>
+              </label>
+            </div>
+            <p class="no-consent-note" id="noConsentNote" hidden>
+              Thank you for visiting Serenvya. No further questions will be asked and no details will be collected.
+            </p>
+          </section>
+
+          <div id="surveyBody" hidden>
+            <nav class="page-tabs" aria-label="Survey pages">
+              <button type="button" class="page-tab active" data-page-tab="0">1. Automation</button>
+              <button type="button" class="page-tab" data-page-tab="1">2. DPDPA</button>
+            </nav>
+
+            <div class="survey-page active" data-page="0">
+              <div class="page-heading">
+                <p class="section-kicker">Page 1 of 2</p>
+                <h2>Process Automation Using AI</h2>
+              </div>
+
+              <section class="form-step active" data-step="details">
+                <p class="section-kicker">Participant Details</p>
+                <h2>Where should we send your readiness report?</h2>
+                <div class="field-grid">
+                  <label>
+                    Full name
+                    <input name="fullName" autocomplete="name" required />
+                  </label>
+                  <label>
+                    Work email
+                    <input name="email" type="email" autocomplete="email" required />
+                  </label>
+                  <label>
+                    Company / organisation
+                    <input name="company" autocomplete="organization" required />
+                  </label>
+                  <label>
+                    Role / designation
+                    <input name="role" autocomplete="organization-title" />
+                  </label>
+                  <label>
+                    Phone
+                    <input name="phone" type="tel" autocomplete="tel" />
+                  </label>
+                  <label>
+                    Approximate team size
+                    <select name="teamSize" required>
+                      <option value="">Select</option>
+                      <option>1-10</option>
+                      <option>11-50</option>
+                      <option>51-200</option>
+                      <option>201-500</option>
+                      <option>500+</option>
+                    </select>
+                  </label>
+                </div>
+              </section>
+
+              <section class="form-step active" data-step="automation">
+                <div class="question-stack" id="automationQuestions"></div>
+              </section>
+
+              <div class="actions page-actions">
+                <button type="button" id="nextPageButton">Next: DPDPA</button>
+                <p class="status" id="pageStatusMessage" role="status"></p>
+              </div>
+            </div>
+
+            <div class="survey-page" data-page="1">
+              <div class="page-heading">
+                <p class="section-kicker">Page 2 of 2</p>
+                <h2>DPDPA Readiness</h2>
+              </div>
+
+              <section class="form-step active" data-step="dpdpa">
+                <div class="question-stack" id="dpdpaQuestions"></div>
+              </section>
+
+              <section class="form-step active report-card" aria-live="polite">
+                <p class="section-kicker">Live Snapshot</p>
+                <h2>Your preliminary scores</h2>
+                <div class="meter-grid">
+                  <div>
+                    <div class="meter-label">
+                      <span>Automation</span>
+                      <strong id="automationScore">0%</strong>
+                    </div>
+                    <div class="meter"><span id="automationBar"></span></div>
+                  </div>
+                  <div>
+                    <div class="meter-label">
+                      <span>DPDPA</span>
+                      <strong id="dpdpaScore">0%</strong>
+                    </div>
+                    <div class="meter"><span id="dpdpaBar"></span></div>
+                  </div>
+                </div>
+                <p class="fineprint">
+                  The final report is an indicative business-readiness assessment, not a legal opinion or certification.
+                </p>
+              </section>
+
+              <div class="actions">
+                <button type="button" class="secondary-button" id="backPageButton">Back</button>
+                <button type="submit" id="submitButton">Submit and Email Report</button>
+                <a class="fallback-link" id="fallbackEmailLink" href="#" hidden>Open email draft</a>
+                <p class="status" id="statusMessage" role="status"></p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <template id="questionTemplate">
+      <fieldset class="question">
+        <legend></legend>
+        <div class="option-row"></div>
+      </fieldset>
+    </template>
+
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

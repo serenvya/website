@@ -35,6 +35,8 @@ const noConsentNote = document.querySelector("#noConsentNote");
 const statusMessage = document.querySelector("#statusMessage");
 const submitButton = document.querySelector("#submitButton");
 const fallbackEmailLink = document.querySelector("#fallbackEmailLink");
+const thankYouPanel = document.querySelector("#thankYouPanel");
+const newResponseButton = document.querySelector("#newResponseButton");
 const nextPageButton = document.querySelector("#nextPageButton");
 const backPageButton = document.querySelector("#backPageButton");
 const pageStatusMessage = document.querySelector("#pageStatusMessage");
@@ -278,6 +280,17 @@ function showPage(pageIndex) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function showSurveyForm() {
+  form.hidden = false;
+  thankYouPanel.hidden = true;
+}
+
+function showThankYou() {
+  form.hidden = true;
+  thankYouPanel.hidden = false;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function controlsForPage(pageIndex) {
   return [...surveyPages[pageIndex].querySelectorAll("input, select")];
 }
@@ -317,6 +330,7 @@ function handleConsentChange() {
 
   surveyBody.hidden = !wantsSurvey;
   noConsentNote.hidden = consent !== "no";
+  thankYouPanel.hidden = true;
   statusMessage.textContent = "";
   pageStatusMessage.textContent = "";
   fallbackEmailLink.hidden = true;
@@ -367,6 +381,18 @@ pageTabs.forEach((tab, index) => {
   });
 });
 
+newResponseButton.addEventListener("click", () => {
+  form.reset();
+  surveyBody.hidden = true;
+  noConsentNote.hidden = true;
+  showPage(0);
+  surveyBody.querySelectorAll("input, select, button").forEach((control) => {
+    control.disabled = true;
+  });
+  updateScores();
+  showSurveyForm();
+});
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const consent = new FormData(form).get("consent");
@@ -397,8 +423,7 @@ form.addEventListener("submit", async (event) => {
   statusMessage.textContent = "Preparing and sending your report...";
 
   try {
-    const result = await sendReport(report);
-    statusMessage.textContent = `Report sent successfully through ${result.provider}. Thank you for visiting Serenvya.`;
+    await sendReport(report);
     form.reset();
     surveyBody.hidden = true;
     noConsentNote.hidden = true;
@@ -407,6 +432,7 @@ form.addEventListener("submit", async (event) => {
       control.disabled = true;
     });
     updateScores();
+    showThankYou();
   } catch (error) {
     fallbackEmailLink.hidden = false;
     statusMessage.textContent = `${error.message} Use the email draft button to send this report now, and check the mail sending setup.`;

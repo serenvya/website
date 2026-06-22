@@ -71,6 +71,35 @@ body {
   padding: 24px;
 }
 
+.thank-you-panel {
+  min-height: 420px;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 18px;
+}
+
+.thank-you-panel[hidden] {
+  display: none;
+}
+
+.thank-you-panel h2 {
+  margin: 0;
+  max-width: 720px;
+  color: var(--ink);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.thank-you-panel p:not(.section-kicker) {
+  margin: 0;
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
 .brand-logo {
   width: min(300px, 100%);
   height: auto;

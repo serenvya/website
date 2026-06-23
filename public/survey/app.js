@@ -140,6 +140,8 @@ function buildReport() {
   const data = Object.fromEntries(new FormData(form).entries());
   const automationScore = getSectionScore("automation", automationQuestions.length);
   const dpdpaScore = getSectionScore("dpdpa", dpdpaQuestions.length);
+  const dataRetentionConsent = data.dataRetentionConsent || "no";
+  const reportRecipient = dataRetentionConsent === "yes" ? data.email : "info@serenvya.com";
 
   return {
     generatedAt: new Date().toISOString(),
@@ -155,10 +157,15 @@ function buildReport() {
       marketingCall: data.marketingCallConsent || "no",
       marketingEmail: data.marketingEmailConsent || "no",
       messaging: data.messagingConsent || "no",
-      dataRetention: data.dataRetentionConsent || "no",
+      dataRetention: dataRetentionConsent,
       partnerSharing: data.partnerSharingConsent || "no",
       noticeVersion: "DPDPA notice and consent - 2026-06-23",
       withdrawalContact: "info@serenvya.com"
+    },
+    delivery: {
+      reportRecipient,
+      participantEmailAllowed: dataRetentionConsent === "yes",
+      internalCopyEmail: "info@serenvya.com"
     },
     automation: {
       score: automationScore,
@@ -210,7 +217,9 @@ function buildReportText(report) {
 function buildFallbackEmailHref(report) {
   const subject = `Serenvya Readiness Report - ${report.participant.company}`;
   const body = buildReportText(report);
-  return `mailto:${encodeURIComponent(report.participant.email)}?cc=${encodeURIComponent("info@serenvya.com")}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const recipient = report.delivery?.reportRecipient || report.participant.email;
+  const cc = recipient === "info@serenvya.com" ? "" : `cc=${encodeURIComponent("info@serenvya.com")}&`;
+  return `mailto:${encodeURIComponent(recipient)}?${cc}subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 function sendViaGoogleScript(report) {
@@ -318,13 +327,6 @@ function validatePage(pageIndex) {
   const firstInvalid = controlsForPage(pageIndex).find((control) => !control.checkValidity());
   if (firstInvalid) {
     firstInvalid.reportValidity();
-    return false;
-  }
-
-  if (pageIndex === 0 && new FormData(form).get("dataRetentionConsent") !== "yes") {
-    const dataRetentionYes = form.elements.dataRetentionConsent?.[0];
-    dataRetentionYes?.focus();
-    pageStatusMessage.textContent = "Please consent to storage and processing so we can generate and email your report.";
     return false;
   }
 

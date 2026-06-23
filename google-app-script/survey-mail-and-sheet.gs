@@ -21,15 +21,15 @@ function doPost(e) {
     if (!participant.email || !participant.fullName || !participant.company) {
       throw new Error("Required participant details are missing.");
     }
-    if (!report.consent || report.consent.dataRetention !== "yes") {
-      throw new Error("Data storage and processing consent is required to generate the report.");
-    }
 
     appendSurveyRow(report);
 
+    var recipient = getReportRecipient(report);
+    var ccEmail = recipient === CC_EMAIL ? "" : CC_EMAIL;
+
     MailApp.sendEmail({
-      to: participant.email,
-      cc: CC_EMAIL,
+      to: recipient,
+      cc: ccEmail,
       subject: "Serenvya Readiness Report - " + participant.company,
       htmlBody: buildEmailHtml(report),
       body: buildEmailText(report),
@@ -42,12 +42,25 @@ function doPost(e) {
   }
 }
 
+function getReportRecipient(report) {
+  var participant = report.participant || {};
+  var delivery = report.delivery || {};
+  var consent = report.consent || {};
+
+  if (consent.dataRetention === "yes") {
+    return valueOrBlank(delivery.reportRecipient) || valueOrBlank(participant.email);
+  }
+
+  return CC_EMAIL;
+}
+
 function appendSurveyRow(report) {
   var sheet = getSurveySheet();
   var participant = report.participant || {};
   var automation = report.automation || {};
   var dpdpa = report.dpdpa || {};
   var consent = report.consent || {};
+  var delivery = report.delivery || {};
   var automationScore = automation.score || {};
   var dpdpaScore = dpdpa.score || {};
 
@@ -71,7 +84,9 @@ function appendSurveyRow(report) {
     "Data Retention Consent",
     "Partner Sharing Consent",
     "Consent Notice Version",
-    "Consent Withdrawal Contact"
+    "Consent Withdrawal Contact",
+    "Report Recipient",
+    "Participant Email Allowed"
   ]);
 
   sheet.appendRow([
@@ -94,7 +109,9 @@ function appendSurveyRow(report) {
     valueOrBlank(consent.dataRetention),
     valueOrBlank(consent.partnerSharing),
     valueOrBlank(consent.noticeVersion),
-    valueOrBlank(consent.withdrawalContact)
+    valueOrBlank(consent.withdrawalContact),
+    valueOrBlank(delivery.reportRecipient || getReportRecipient(report)),
+    valueOrBlank(delivery.participantEmailAllowed)
   ]);
 }
 

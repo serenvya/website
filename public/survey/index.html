@@ -30,34 +30,17 @@
 
       <section class="survey-panel">
         <form id="surveyForm" novalidate>
-          <section class="form-step active" data-step="consent">
-            <p class="section-kicker">Consent</p>
-            <h2>Would you like to take the survey and share the details with us?</h2>
-            <div class="choice-grid consent-grid" role="radiogroup" aria-label="Consent choice">
-              <label class="choice-card">
-                <input type="radio" name="consent" value="yes" required />
-                <span>Yes, I would like to continue</span>
-              </label>
-              <label class="choice-card">
-                <input type="radio" name="consent" value="no" required />
-                <span>No, I do not want to continue</span>
-              </label>
-            </div>
-            <p class="no-consent-note" id="noConsentNote" hidden>
-              Thank you for visiting Serenvya. No further questions will be asked and no details will be collected.
-            </p>
-          </section>
-
-          <div id="surveyBody" hidden>
+          <div id="surveyBody">
             <nav class="page-tabs" aria-label="Survey pages">
-              <button type="button" class="page-tab active" data-page-tab="0">1. Automation</button>
-              <button type="button" class="page-tab" data-page-tab="1">2. DPDPA</button>
+              <button type="button" class="page-tab active" data-page-tab="0">1. Details & Consent</button>
+              <button type="button" class="page-tab" data-page-tab="1">2. Automation</button>
+              <button type="button" class="page-tab" data-page-tab="2">3. DPDPA</button>
             </nav>
 
             <div class="survey-page active" data-page="0">
               <div class="page-heading">
-                <p class="section-kicker">Page 1 of 2</p>
-                <h2>Process Automation Using AI</h2>
+                <p class="section-kicker">Page 1 of 3</p>
+                <h2>Participant Details, Notice and Consent</h2>
               </div>
 
               <section class="form-step active" data-step="details">
@@ -178,19 +161,32 @@
                 </fieldset>
               </section>
 
-              <section class="form-step active" data-step="automation">
-                <div class="question-stack" id="automationQuestions"></div>
-              </section>
-
               <div class="actions page-actions">
-                <button type="button" id="nextPageButton">Next: DPDPA</button>
+                <button type="button" id="nextPageButton">Next: Automation</button>
                 <p class="status" id="pageStatusMessage" role="status"></p>
               </div>
             </div>
 
             <div class="survey-page" data-page="1">
               <div class="page-heading">
-                <p class="section-kicker">Page 2 of 2</p>
+                <p class="section-kicker">Page 2 of 3</p>
+                <h2>Process Automation Using AI</h2>
+              </div>
+
+              <section class="form-step active" data-step="automation">
+                <div class="question-stack" id="automationQuestions"></div>
+              </section>
+
+              <div class="actions page-actions">
+                <button type="button" class="secondary-button" id="backToDetailsButton">Back</button>
+                <button type="button" id="nextDpdpaButton">Next: DPDPA</button>
+                <p class="status" id="automationStatusMessage" role="status"></p>
+              </div>
+            </div>
+
+            <div class="survey-page" data-page="2">
+              <div class="page-heading">
+                <p class="section-kicker">Page 3 of 3</p>
                 <h2>DPDPA Readiness</h2>
               </div>
 

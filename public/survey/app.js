@@ -31,15 +31,17 @@ const dpdpaQuestions = [
 
 const form = document.querySelector("#surveyForm");
 const surveyBody = document.querySelector("#surveyBody");
-const noConsentNote = document.querySelector("#noConsentNote");
 const statusMessage = document.querySelector("#statusMessage");
 const submitButton = document.querySelector("#submitButton");
 const fallbackEmailLink = document.querySelector("#fallbackEmailLink");
 const thankYouPanel = document.querySelector("#thankYouPanel");
 const newResponseButton = document.querySelector("#newResponseButton");
 const nextPageButton = document.querySelector("#nextPageButton");
+const nextDpdpaButton = document.querySelector("#nextDpdpaButton");
+const backToDetailsButton = document.querySelector("#backToDetailsButton");
 const backPageButton = document.querySelector("#backPageButton");
 const pageStatusMessage = document.querySelector("#pageStatusMessage");
+const automationStatusMessage = document.querySelector("#automationStatusMessage");
 const surveyPages = [...document.querySelectorAll(".survey-page")];
 const pageTabs = [...document.querySelectorAll(".page-tab")];
 const surveyConfig = window.SERENVYA_SURVEY_CONFIG || {};
@@ -291,6 +293,7 @@ function showPage(pageIndex) {
     tab.setAttribute("aria-current", index === pageIndex ? "step" : "false");
   });
   pageStatusMessage.textContent = "";
+  automationStatusMessage.textContent = "";
   statusMessage.textContent = "";
   fallbackEmailLink.hidden = true;
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -328,6 +331,26 @@ function validatePage(pageIndex) {
   return true;
 }
 
+function validateBeforePage(pageIndex) {
+  if (pageIndex >= 1) {
+    showPage(0);
+    if (!validatePage(0)) {
+      pageStatusMessage.textContent ||= "Please complete participant details and consent before moving to automation.";
+      return false;
+    }
+  }
+
+  if (pageIndex >= 2) {
+    showPage(1);
+    if (!validatePage(1)) {
+      automationStatusMessage.textContent = "Please complete all automation questions before moving to DPDPA.";
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function updateScores() {
   const automation = getSectionScore("automation", automationQuestions.length);
   const dpdpa = getSectionScore("dpdpa", dpdpaQuestions.length);
@@ -338,67 +361,40 @@ function updateScores() {
   document.querySelector("#dpdpaBar").style.width = `${dpdpa.percent}%`;
 }
 
-function handleConsentChange() {
-  const consent = new FormData(form).get("consent");
-  const wantsSurvey = consent === "yes";
-
-  if (!wantsSurvey) {
-    surveyBody.querySelectorAll("input, select").forEach((control) => {
-      if (control.type === "radio" || control.type === "checkbox") {
-        control.checked = false;
-      } else {
-        control.value = "";
-      }
-    });
-  }
-
-  surveyBody.hidden = !wantsSurvey;
-  noConsentNote.hidden = consent !== "no";
-  thankYouPanel.hidden = true;
-  statusMessage.textContent = "";
-  pageStatusMessage.textContent = "";
-  fallbackEmailLink.hidden = true;
-  fallbackEmailLink.removeAttribute("href");
-
-  surveyBody.querySelectorAll("input, select, button").forEach((control) => {
-    control.disabled = !wantsSurvey;
-  });
-
-  if (wantsSurvey) {
-    showPage(0);
-  }
-}
-
 renderQuestions("#automationQuestions", "automation", automationQuestions);
 renderQuestions("#dpdpaQuestions", "dpdpa", dpdpaQuestions);
-surveyBody.querySelectorAll("input, select, button").forEach((control) => {
-  control.disabled = true;
-});
 
 form.addEventListener("change", (event) => {
-  if (event.target.name === "consent") {
-    handleConsentChange();
-  }
   fallbackEmailLink.hidden = true;
   updateScores();
 });
 
 nextPageButton.addEventListener("click", () => {
   if (!validatePage(0)) {
-    pageStatusMessage.textContent ||= "Please complete Page 1 before moving to DPDPA.";
+    pageStatusMessage.textContent ||= "Please complete participant details and consent before moving to automation.";
     return;
   }
   showPage(1);
 });
 
-backPageButton.addEventListener("click", () => {
+nextDpdpaButton.addEventListener("click", () => {
+  if (!validateBeforePage(2)) {
+    return;
+  }
+  showPage(2);
+});
+
+backToDetailsButton.addEventListener("click", () => {
   showPage(0);
+});
+
+backPageButton.addEventListener("click", () => {
+  showPage(1);
 });
 
 pageTabs.forEach((tab, index) => {
   tab.addEventListener("click", () => {
-    if (index === 1 && !validatePage(0)) {
-      pageStatusMessage.textContent ||= "Please complete Page 1 before moving to DPDPA.";
+    if (!validateBeforePage(index)) {
       return;
     }
     showPage(index);
@@ -407,24 +403,13 @@ pageTabs.forEach((tab, index) => {
 
 newResponseButton.addEventListener("click", () => {
   form.reset();
-  surveyBody.hidden = true;
-  noConsentNote.hidden = true;
   showPage(0);
-  surveyBody.querySelectorAll("input, select, button").forEach((control) => {
-    control.disabled = true;
-  });
   updateScores();
   showSurveyForm();
 });
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const consent = new FormData(form).get("consent");
-
-  if (consent === "no") {
-    statusMessage.textContent = "No survey response was collected.";
-    return;
-  }
 
   if (!validatePage(0)) {
     showPage(0);
@@ -436,7 +421,14 @@ form.addEventListener("submit", async (event) => {
   if (!validatePage(1)) {
     showPage(1);
     validatePage(1);
-    statusMessage.textContent = "Please complete all required questions before submitting.";
+    automationStatusMessage.textContent = "Please complete all automation questions before submitting.";
+    return;
+  }
+
+  if (!validatePage(2)) {
+    showPage(2);
+    validatePage(2);
+    statusMessage.textContent = "Please complete all DPDPA questions before submitting.";
     return;
   }
 
@@ -449,12 +441,7 @@ form.addEventListener("submit", async (event) => {
   try {
     await sendReport(report);
     form.reset();
-    surveyBody.hidden = true;
-    noConsentNote.hidden = true;
     showPage(0);
-    surveyBody.querySelectorAll("input, select, button").forEach((control) => {
-      control.disabled = true;
-    });
     updateScores();
     showThankYou();
   } catch (error) {

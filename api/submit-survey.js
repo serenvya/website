@@ -1,6 +1,31 @@
+const INTERNAL_REPORT_EMAIL = "info@serenvya.com";
+
+function prepareReportForGoogleScript(report) {
+  if (report?.consent?.dataRetention === "yes") {
+    return report;
+  }
+
+  const participant = report?.participant || {};
+  return {
+    ...report,
+    participant: {
+      ...participant,
+      email: INTERNAL_REPORT_EMAIL,
+      originalEmail: participant.email || "",
+    },
+    delivery: {
+      ...(report?.delivery || {}),
+      reportRecipient: INTERNAL_REPORT_EMAIL,
+      participantEmailAllowed: false,
+      originalParticipantEmail: participant.email || "",
+      internalCopyEmail: INTERNAL_REPORT_EMAIL,
+    },
+  };
+}
+
 function buildFormBody(report) {
   const body = new URLSearchParams();
-  body.set("payload", JSON.stringify(report));
+  body.set("payload", JSON.stringify(prepareReportForGoogleScript(report)));
   return body;
 }
 

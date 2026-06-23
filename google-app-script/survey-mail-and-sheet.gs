@@ -91,7 +91,7 @@ function appendSurveyRow(report) {
 
   sheet.appendRow([
     valueOrBlank(participant.fullName),
-    valueOrBlank(participant.email),
+    valueOrBlank(participant.originalEmail || participant.email),
     valueOrBlank(participant.phone),
     new Date(),
     valueOrBlank(participant.company),

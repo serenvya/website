@@ -149,6 +149,15 @@ function buildReport() {
       phone: data.phone || "Not shared",
       teamSize: data.teamSize
     },
+    consent: {
+      marketingCall: data.marketingCallConsent || "no",
+      marketingEmail: data.marketingEmailConsent || "no",
+      messaging: data.messagingConsent || "no",
+      dataRetention: data.dataRetentionConsent || "no",
+      partnerSharing: data.partnerSharingConsent || "no",
+      noticeVersion: "DPDPA notice and consent - 2026-06-23",
+      withdrawalContact: "info@serenvya.com"
+    },
     automation: {
       score: automationScore,
       band: scoreBand(automationScore.percent),
@@ -174,6 +183,13 @@ function buildReportText(report) {
     `Role: ${participant.role}`,
     `Team size: ${participant.teamSize}`,
     `Phone: ${participant.phone}`,
+    "",
+    "Consent Preferences",
+    `Marketing calls: ${report.consent.marketingCall}`,
+    `Marketing emails: ${report.consent.marketingEmail}`,
+    `WhatsApp / SMS: ${report.consent.messaging}`,
+    `Data storage and processing: ${report.consent.dataRetention}`,
+    `Partner sharing: ${report.consent.partnerSharing}`,
     "",
     `Automation Readiness: ${automation.score.percent}% (${automation.band})`,
     ...automation.recommendations.map((item) => `- ${item}`),
@@ -301,6 +317,14 @@ function validatePage(pageIndex) {
     firstInvalid.reportValidity();
     return false;
   }
+
+  if (pageIndex === 0 && new FormData(form).get("dataRetentionConsent") !== "yes") {
+    const dataRetentionYes = form.elements.dataRetentionConsent?.[0];
+    dataRetentionYes?.focus();
+    pageStatusMessage.textContent = "Please consent to storage and processing so we can generate and email your report.";
+    return false;
+  }
+
   return true;
 }
 
@@ -361,7 +385,7 @@ form.addEventListener("change", (event) => {
 
 nextPageButton.addEventListener("click", () => {
   if (!validatePage(0)) {
-    pageStatusMessage.textContent = "Please complete Page 1 before moving to DPDPA.";
+    pageStatusMessage.textContent ||= "Please complete Page 1 before moving to DPDPA.";
     return;
   }
   showPage(1);
@@ -374,7 +398,7 @@ backPageButton.addEventListener("click", () => {
 pageTabs.forEach((tab, index) => {
   tab.addEventListener("click", () => {
     if (index === 1 && !validatePage(0)) {
-      pageStatusMessage.textContent = "Please complete Page 1 before moving to DPDPA.";
+      pageStatusMessage.textContent ||= "Please complete Page 1 before moving to DPDPA.";
       return;
     }
     showPage(index);
@@ -405,7 +429,7 @@ form.addEventListener("submit", async (event) => {
   if (!validatePage(0)) {
     showPage(0);
     validatePage(0);
-    pageStatusMessage.textContent = "Please complete Page 1 before submitting.";
+    pageStatusMessage.textContent ||= "Please complete Page 1 before submitting.";
     return;
   }
 

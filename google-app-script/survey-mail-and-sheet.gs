@@ -21,6 +21,9 @@ function doPost(e) {
     if (!participant.email || !participant.fullName || !participant.company) {
       throw new Error("Required participant details are missing.");
     }
+    if (!report.consent || report.consent.dataRetention !== "yes") {
+      throw new Error("Data storage and processing consent is required to generate the report.");
+    }
 
     appendSurveyRow(report);
 
@@ -44,6 +47,7 @@ function appendSurveyRow(report) {
   var participant = report.participant || {};
   var automation = report.automation || {};
   var dpdpa = report.dpdpa || {};
+  var consent = report.consent || {};
   var automationScore = automation.score || {};
   var dpdpaScore = dpdpa.score || {};
 
@@ -60,7 +64,14 @@ function appendSurveyRow(report) {
     "DPDPA Score",
     "DPDPA Band",
     "Generated At",
-    "Report JSON"
+    "Report JSON",
+    "Marketing Call Consent",
+    "Marketing Email Consent",
+    "WhatsApp / SMS Consent",
+    "Data Retention Consent",
+    "Partner Sharing Consent",
+    "Consent Notice Version",
+    "Consent Withdrawal Contact"
   ]);
 
   sheet.appendRow([
@@ -76,7 +87,14 @@ function appendSurveyRow(report) {
     valueOrBlank(dpdpaScore.percent) + "%",
     valueOrBlank(dpdpa.band),
     valueOrBlank(report.generatedAt),
-    JSON.stringify(report)
+    JSON.stringify(report),
+    valueOrBlank(consent.marketingCall),
+    valueOrBlank(consent.marketingEmail),
+    valueOrBlank(consent.messaging),
+    valueOrBlank(consent.dataRetention),
+    valueOrBlank(consent.partnerSharing),
+    valueOrBlank(consent.noticeVersion),
+    valueOrBlank(consent.withdrawalContact)
   ]);
 }
 
@@ -118,6 +136,7 @@ function buildEmailHtml(report) {
   var participant = report.participant || {};
   var automation = report.automation || {};
   var dpdpa = report.dpdpa || {};
+  var consent = report.consent || {};
   var automationScore = automation.score || {};
   var dpdpaScore = dpdpa.score || {};
 
@@ -132,6 +151,14 @@ function buildEmailHtml(report) {
     "<tr><td><strong>Role</strong></td><td>" + escapeHtml(participant.role) + "</td></tr>",
     "<tr><td><strong>Team size</strong></td><td>" + escapeHtml(participant.teamSize) + "</td></tr>",
     "<tr><td><strong>Phone</strong></td><td>" + escapeHtml(participant.phone) + "</td></tr>",
+    "</table>",
+    "<h2>Consent Preferences</h2>",
+    '<table cellpadding="8" cellspacing="0" style="border-collapse: collapse;">',
+    "<tr><td><strong>Marketing calls</strong></td><td>" + escapeHtml(consent.marketingCall) + "</td></tr>",
+    "<tr><td><strong>Marketing emails</strong></td><td>" + escapeHtml(consent.marketingEmail) + "</td></tr>",
+    "<tr><td><strong>WhatsApp / SMS</strong></td><td>" + escapeHtml(consent.messaging) + "</td></tr>",
+    "<tr><td><strong>Data storage and processing</strong></td><td>" + escapeHtml(consent.dataRetention) + "</td></tr>",
+    "<tr><td><strong>Partner sharing</strong></td><td>" + escapeHtml(consent.partnerSharing) + "</td></tr>",
     "</table>",
     "<h2>Automation Readiness</h2>",
     "<p><strong>Score:</strong> " + escapeHtml(automationScore.percent) + "% (" + escapeHtml(automation.band) + ")</p>",
@@ -154,6 +181,7 @@ function buildEmailText(report) {
   var participant = report.participant || {};
   var automation = report.automation || {};
   var dpdpa = report.dpdpa || {};
+  var consent = report.consent || {};
   var automationScore = automation.score || {};
   var dpdpaScore = dpdpa.score || {};
   var lines = [
@@ -164,6 +192,13 @@ function buildEmailText(report) {
     "Role: " + valueOrBlank(participant.role),
     "Team size: " + valueOrBlank(participant.teamSize),
     "Phone: " + valueOrBlank(participant.phone),
+    "",
+    "Consent Preferences",
+    "Marketing calls: " + valueOrBlank(consent.marketingCall),
+    "Marketing emails: " + valueOrBlank(consent.marketingEmail),
+    "WhatsApp / SMS: " + valueOrBlank(consent.messaging),
+    "Data storage and processing: " + valueOrBlank(consent.dataRetention),
+    "Partner sharing: " + valueOrBlank(consent.partnerSharing),
     "",
     "Automation Readiness: " + valueOrBlank(automationScore.percent) + "% (" + valueOrBlank(automation.band) + ")"
   ];

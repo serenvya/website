@@ -14,6 +14,10 @@ function validateReport(report) {
     return "Survey scores are missing.";
   }
 
+  if (report?.consent?.dataRetention !== "yes") {
+    return "Data storage and processing consent is required to generate the report.";
+  }
+
   return "";
 }
 

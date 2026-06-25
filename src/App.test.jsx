@@ -26,7 +26,7 @@ describe("Serenvya website content", () => {
   it("has expected content collections", () => {
     expect(services).toHaveLength(6);
     expect(processSteps).toHaveLength(4);
-    expect(products).toHaveLength(8);
+    expect(products).toHaveLength(9);
     expect(courses).toHaveLength(10);
     expect(courses.some((course) => course.title === "AI For CS and CMA's" && course.available)).toBe(true);
     expect(courses.some((course) => course.title === "AI and Office Automation for Lawyers" && course.available)).toBe(true);

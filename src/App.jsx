@@ -253,6 +253,30 @@ const productInquiry = (name, focus) => `I want to enquire about ${name}. ${focu
 
 export const products = [
   {
+    slug: "serenvya-auditsuite",
+    key: "serenvyaAuditSuite",
+    name: "Serenvya’s AuditSuite",
+    eyebrow: "CA financial statement workflow",
+    badge: "NEW RELEASE",
+    summary: "Connect Tally through Edge, import accounting data, map ledgers, identify review exceptions, and prepare structured financial statement drafts for CA teams.",
+    detail: "Prepare structured financial statement drafts from Tally data with a controlled workflow for imports, ledger mapping, exception review, and CA review and sign-off.",
+    detailSupport: "Reduce manual compilation, standardise ledger treatment, and keep every review step visible to your team.",
+    price: envValue("VITE_PRODUCT_SERENVYA_AUDITSUITE_PRICE", "Fixed annual firm license"),
+    priceLabel: "Fixed annual license",
+    deployment: "Secure web workspace with Tally Edge",
+    deploymentLabel: "Deployment",
+    image: illustrations[8],
+    accent: "blue",
+    detailEyebrow: "Controlled statement preparation",
+    detailHeading: "Built for controlled statement preparation",
+    idealFor: "For CA firms, audit practices, and finance teams preparing Balance Sheets, Profit & Loss statements, notes, and supporting schedules from Tally data.",
+    inquiry: productInquiry("Serenvya’s AuditSuite", "We want to understand how it can connect Tally through Edge, import accounting data, map ledgers, identify review exceptions, and prepare structured financial statement drafts for CA teams."),
+    primaryCtaLabel: "Ask about AuditSuite",
+    outcomes: ["Connect Tally data through the secure Edge workflow", "Organise imported ledgers and reports in one review workspace", "Map ledgers consistently to financial statement heads", "Surface exceptions before statement drafting", "Generate structured drafts for CA review and sign-off"],
+    features: ["Secure Tally data connection", "Import ledgers and reports", "Ledger-to-statement mapping", "Exception review and resolution", "Draft statements, notes and schedules", "CA review and sign-off"],
+    outputsLine: "Outputs: Balance Sheet, Profit & Loss, notes, schedules, exception lists, and export-ready statement drafts.",
+  },
+  {
     slug: "salary-slip-processor",
     key: "salarySlipProcessor",
     name: "Advanced Salary Slip Processor",
@@ -390,6 +414,63 @@ const utilityPages = [
 ];
 const pageMap = Object.fromEntries([...navItems, ...utilityPages].map((item) => [item.page, item]));
 const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || "";
+const AUDITSUITE_LICENSE_URL = import.meta.env.VITE_AUDITSUITE_LICENSE_URL || "#/products/auditsuite/license";
+const AUDITSUITE_LICENSE_PAGE = "products/auditsuite/license";
+const AUDITSUITE_CHECKOUT_PAGE = "products/auditsuite/license/checkout";
+const AUDITSUITE_PLAN_IDS = ["starter", "professional", "enterprise"];
+const auditsuiteCheckoutBaseUrl = String(import.meta.env.NEXT_PUBLIC_AUDITSUITE_CHECKOUT_BASE_URL || "").replace(/\/+$/, "");
+
+function getAuditSuiteCheckoutUrl(planId) {
+  if (!AUDITSUITE_PLAN_IDS.includes(planId)) {
+    if (import.meta.env.DEV) console.error(`Unsupported AuditSuite plan id: ${planId}`);
+    return `#/${AUDITSUITE_LICENSE_PAGE}`;
+  }
+
+  if (!auditsuiteCheckoutBaseUrl) {
+    if (import.meta.env.DEV) console.error("NEXT_PUBLIC_AUDITSUITE_CHECKOUT_BASE_URL is not configured. AuditSuite checkout links are disabled.");
+    return `#/${AUDITSUITE_LICENSE_PAGE}`;
+  }
+
+  return `${auditsuiteCheckoutBaseUrl}/license/checkout?plan=${encodeURIComponent(planId)}`;
+}
+
+// Temporary test pricing only. Replace these values with approved pricing before enabling payment checkout.
+// Handoff: Serenvya displays plan choices and redirects buyers with only ?plan=<planId>.
+// ZIN / AuditSuite validates the plan ID, collects buyer details, creates pending purchase records, handles Razorpay checkout, and issues licenses after verified payment.
+const auditsuitePlans = [
+  {
+    id: "starter",
+    name: "AuditSuite Starter",
+    description: "For small CA practices preparing financial statements for a focused portfolio of clients.",
+    price: "₹9,999 / year",
+    cta: "Choose Starter",
+    features: ["1 firm workspace", "Up to 3 team members", "Tally Edge connectivity", "Ledger mapping and exception review", "Structured statement drafts", "Standard email support"],
+    fit: "For focused firm workflows.",
+  },
+  {
+    id: "professional",
+    name: "AuditSuite Professional",
+    description: "For growing CA firms managing recurring financial statement preparation across multiple clients.",
+    price: "₹24,999 / year",
+    badge: "Most popular",
+    cta: "Choose Professional",
+    highlighted: true,
+    features: ["1 firm workspace", "Up to 10 team members", "Tally Edge connectivity", "Multi-client workflow support", "Configurable mapping and guided review", "Export-ready outputs + priority support"],
+    fit: "For growing recurring operations.",
+  },
+  // Enterprise may later move to a Contact sales or custom licensing model.
+  {
+    id: "enterprise",
+    name: "AuditSuite Enterprise",
+    description: "For larger firms that need multi-team access, stronger implementation support, and more structured operational controls.",
+    price: "₹49,999 / year",
+    cta: "Choose Enterprise",
+    features: ["Multiple team workspaces", "Up to 25 team members", "Tally Edge connectivity", "Multi-client and multi-team workflows", "Advanced review controls", "Dedicated onboarding and licence administration"],
+    fit: "For multi-team firm operations.",
+  },
+];
+
+const auditsuitePlanMap = Object.fromEntries(auditsuitePlans.map((plan) => [plan.id, plan]));
 
 function parseHash() {
   const raw = window.location.hash.replace("#/", "") || "home";
@@ -399,6 +480,7 @@ function parseHash() {
 
 function getInitialPage() {
   const { path: page } = parseHash();
+  if (page === AUDITSUITE_LICENSE_PAGE || page === AUDITSUITE_CHECKOUT_PAGE) return page;
   if (page === "products" || productMap[page.replace("products/", "")]) return page;
   return pageMap[page] ? page : "home";
 }
@@ -781,6 +863,7 @@ function ProductVisual({ product, compact = false }) {
     "salary-slip-processor": "document",
     "quotation-invoice-suite": "rupee",
     "whatsapp-group-broadcaster": "node",
+    "serenvya-auditsuite": "clipboard",
     "contact-qr-code-generator": "qr",
     "stuffing-plan-manager": "clipboard",
     "income-tax-calculator-ay-2026-27": "chart",
@@ -810,7 +893,7 @@ function ProductPrice({ product }) {
     <div className="flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.065] p-4">
       <span className="rounded-full bg-white/10 p-2 text-amber-200"><Icon name="rupee" className="h-5 w-5" /></span>
       <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-white/42">Price</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-white/42">{product.priceLabel || "Price"}</p>
         <p className="mt-1 text-lg font-medium text-white">{product.price}</p>
       </div>
     </div>
@@ -876,6 +959,11 @@ function ProductCard({ product, setPage }) {
               {product.name}
             </h3>
           </div>
+          {product.badge && (
+            <span className={`shrink-0 rounded-full border ${accent.border} ${accent.bg} px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] ${accent.text} shadow-[0_4px_20px_rgba(0,0,0,0.15)]`}>
+              {product.badge}
+            </span>
+          )}
         </div>
 
         {/* Summary Description */}
@@ -918,13 +1006,14 @@ function ProductCard({ product, setPage }) {
 
 function ProductsBand({ setPage }) {
   const [activeIdx, setActiveIdx] = useState(0);
-  const featuredProducts = [products[7], products[1], products[6]];
+  const featuredProducts = ["zin-finance-agent", "quotation-invoice-suite", "lbh-lex-suite"].map((slug) => productMap[slug]);
   const activeProduct = featuredProducts[activeIdx];
 
   const productIconMap = {
     "salary-slip-processor": "document",
     "quotation-invoice-suite": "rupee",
     "whatsapp-group-broadcaster": "node",
+    "serenvya-auditsuite": "clipboard",
     "contact-qr-code-generator": "qr",
     "stuffing-plan-manager": "clipboard",
     "income-tax-calculator-ay-2026-27": "chart",
@@ -1520,10 +1609,11 @@ function ProductDetailPage({ product, setPage }) {
             <SectionLabel>{product.eyebrow}</SectionLabel>
             <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">{product.name}</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">{product.detail}</p>
+            {product.detailSupport && <p className="mt-3 max-w-2xl text-[15px] leading-7 text-white/58">{product.detailSupport}</p>}
             <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
               <ProductPrice product={product} />
               <div className="rounded-2xl border border-white/12 bg-white/[0.065] p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-white/42">Delivery</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-white/42">{product.deploymentLabel || "Delivery"}</p>
                 <p className="mt-1 text-lg font-medium text-white">{product.deployment}</p>
               </div>
             </div>
@@ -1534,8 +1624,19 @@ function ProductDetailPage({ product, setPage }) {
               <span className="text-sm font-medium text-white">{product.partner.replace("Serenvya x ", "")}</span>
             </div>}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ProductAction product={product} label="Ask about this product" />
-              <Button href={inquiryHref(product)} variant="ghost">Discuss customization</Button>
+              {product.slug === "serenvya-auditsuite" ? (
+                <>
+                  <Button href={AUDITSUITE_LICENSE_URL}>
+                    Get your license <Icon name="arrow" className="ml-2 h-5 w-5" />
+                  </Button>
+                  <ProductAction product={product} label={product.primaryCtaLabel || "Ask about this product"} variant="ghost" />
+                </>
+              ) : (
+                <>
+                  <ProductAction product={product} label={product.primaryCtaLabel || "Ask about this product"} />
+                  <Button href={inquiryHref(product)} variant="ghost">Discuss customization</Button>
+                </>
+              )}
             </div>
           </div>
           <div className="fade-up" style={{ animationDelay: "100ms" }}>
@@ -1547,8 +1648,8 @@ function ProductDetailPage({ product, setPage }) {
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[0.95fr_1.05fr]">
           <Glass className="p-7">
-            <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Best fit</p>
-            <h2 className="mt-4 text-2xl font-medium tracking-tight">Who this is for</h2>
+            <p className="text-sm uppercase tracking-[0.18em] text-amber-200">{product.detailEyebrow || "Best fit"}</p>
+            <h2 className="mt-4 text-2xl font-medium tracking-tight">{product.detailHeading || "Who this is for"}</h2>
             <p className="mt-4 text-[15px] leading-7 text-white/68">{product.idealFor}</p>
             <div className="mt-7 grid gap-3">
               {product.outcomes.map((outcome) => <div key={outcome} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-6 text-white/72">{outcome}</p></div>)}
@@ -1559,6 +1660,7 @@ function ProductDetailPage({ product, setPage }) {
               <p className="text-sm font-semibold text-sky-200">0{index + 1}</p>
               <h3 className="mt-5 text-xl font-medium tracking-tight">{feature}</h3>
             </Glass>)}
+            {product.outputsLine && <p className="text-[13px] leading-6 text-white/56 sm:col-span-2">{product.outputsLine}</p>}
           </div>
         </div>
       </section>
@@ -1577,6 +1679,106 @@ function ProductDetailPage({ product, setPage }) {
         </Glass>
       </section>
     </>
+  );
+}
+
+function AuditSuiteLicensePage({ setPage }) {
+  const reassuranceItems = [
+    "Secure web workspace",
+    "Tally Edge connectivity",
+    "Controlled ledger mapping and exception review",
+    "Structured financial statement drafts",
+    "CA review and sign-off workflow",
+  ];
+
+  return (
+    <>
+      <section className="relative px-5 pb-12 pt-12 lg:px-8 lg:pb-16 lg:pt-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="fade-up max-w-4xl">
+            <SectionLabel icon="clipboard">AuditSuite licensing</SectionLabel>
+            <h1 className="text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Choose the right AuditSuite license</h1>
+            <p className="mt-7 max-w-3xl text-lg leading-8 text-white/70">Select a license for your firm’s financial statement workflow. Every plan includes a secure web workspace, Tally Edge connectivity, structured ledger mapping, and CA review controls.</p>
+            <p className="mt-3 max-w-3xl text-[15px] leading-7 text-white/60">Every plan includes secure workspace access, Tally Edge connectivity, controlled ledger mapping, and CA review workflows.</p>
+            <p className="mt-3 text-[15px] leading-7 text-white/56">All plans are billed annually. Pricing shown below is for testing only.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-16 lg:px-8">
+        <div className="mx-auto grid max-w-7xl items-stretch gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {auditsuitePlans.map((plan) => (
+            <Glass key={plan.id} className={`flex h-full flex-col justify-between p-6 transition duration-300 hover:-translate-y-1 ${plan.highlighted ? "border-[#18A8DC]/45 bg-[#0878C9]/10 shadow-[0_28px_78px_rgba(8,120,201,0.24),inset_0_1px_0_rgba(255,255,255,0.14)] ring-1 ring-[#18A8DC]/18" : ""}`}>
+              <div>
+                <div className="flex min-h-7 items-start justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-200">Annual license</p>
+                  {plan.badge && <span className="rounded-full border border-[#18A8DC]/30 bg-[#0878C9]/14 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-200">{plan.badge}</span>}
+                </div>
+                <h2 className="mt-5 text-2xl font-medium tracking-tight text-white">{plan.name}</h2>
+                <p className="mt-4 min-h-[76px] text-[15px] leading-7 text-white/66">{plan.description}</p>
+                <p className="mt-5 text-3xl font-medium tracking-tight text-white">{plan.price}</p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">Temporary test pricing</p>
+                <div className="mt-5 grid gap-2">
+                  {plan.features.map((feature) => (
+                    <div key={feature} className="flex items-start gap-2.5 rounded-xl bg-white/[0.045] px-3.5 py-2.5">
+                      <Icon name="check" className="mt-1 h-3.5 w-3.5 shrink-0 text-emerald-300" />
+                      <p className="text-[15px] leading-6 text-white/72">{feature}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 text-[13px] leading-6 text-white/46">{plan.fit}</p>
+              </div>
+              <div className="mt-5">
+                <Button href={getAuditSuiteCheckoutUrl(plan.id)} className="w-full" variant={plan.highlighted ? "primary" : "ghost"}>
+                  {plan.cta} <Icon name="arrow" className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </Glass>
+          ))}
+        </div>
+        <div className="mx-auto mt-7 max-w-3xl text-center">
+          <p className="inline-flex items-center justify-center gap-2 text-[15px] leading-7 text-white/62"><Icon name="lock" className="h-4 w-4 text-sky-200/80" />Secure checkout powered by Razorpay.</p>
+          <p className="mt-2 text-[15px] leading-7 text-white/60">Not sure which plan fits your firm? <a href={inquiryHref(productMap["serenvya-auditsuite"])} onClick={() => setPage("query")} className="font-medium text-sky-200 hover:text-white">Contact the Serenvya team</a>.</p>
+        </div>
+      </section>
+
+      <section className="px-5 pb-20 lg:px-8">
+        <Glass className="mx-auto max-w-7xl p-7 lg:p-9">
+          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">Every AuditSuite license includes</h2>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {reassuranceItems.map((item) => (
+              <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4">
+                <Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
+                <p className="text-[15px] leading-6 text-white/72">{item}</p>
+              </div>
+            ))}
+          </div>
+        </Glass>
+      </section>
+    </>
+  );
+}
+
+function AuditSuiteCheckoutPlaceholder({ setPage }) {
+  const selectedPlan = auditsuitePlanMap[parseHash().params.get("plan") || ""] || auditsuitePlans[0];
+
+  return (
+    <section className="relative px-5 py-14 lg:px-8 lg:py-20">
+      <img src={illustrations[8]} alt="" className="pointer-events-none absolute right-0 top-0 h-96 w-96 object-contain opacity-[0.06] mix-blend-luminosity" />
+      <div className="mx-auto max-w-3xl">
+        <Glass className="fade-up p-7 lg:p-9">
+          <SectionLabel icon="clipboard">AuditSuite license</SectionLabel>
+          <h1 className="text-4xl font-medium leading-tight tracking-tight sm:text-5xl">{selectedPlan.name}</h1>
+          <p className="mt-5 text-3xl font-medium tracking-tight text-white">{selectedPlan.price}</p>
+          <p className="mt-4 text-lg leading-8 text-white/70">Secure Razorpay checkout will be available here.</p>
+          <div className="mt-8">
+            <Button href={`#/${AUDITSUITE_LICENSE_PAGE}`} variant="ghost" onClick={() => setPage(AUDITSUITE_LICENSE_PAGE)}>
+              Back to plans <Icon name="arrow" className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </Glass>
+      </div>
+    </section>
   );
 }
 
@@ -1862,6 +2064,8 @@ export default function App() {
   const pages = {
     home: <Home setPage={setPage} />,
     products: <ProductsPage setPage={setPage} />,
+    [AUDITSUITE_LICENSE_PAGE]: <AuditSuiteLicensePage setPage={setPage} />,
+    [AUDITSUITE_CHECKOUT_PAGE]: <AuditSuiteCheckoutPlaceholder setPage={setPage} />,
     courses: <CoursesPage setPage={setPage} />,
     services: <ServicesPage />,
     solutions: <SolutionsPage />,

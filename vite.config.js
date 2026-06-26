@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import contactHandler from "./api/contact.js";
+import auditsuitePaymentLinkHandler from "./api/auditsuite-payment-link.js";
 
 function parseJsonBody(request) {
   return new Promise((resolve, reject) => {
@@ -24,11 +25,11 @@ function parseJsonBody(request) {
   });
 }
 
-function apiContactDevMiddleware() {
+function apiRouteDevMiddleware(routePath, handler, label) {
   return {
-    name: "serenvya-api-contact-dev",
+    name: `serenvya-api-dev:${routePath}`,
     configureServer(server) {
-      server.middlewares.use("/api/contact", async (request, response) => {
+      server.middlewares.use(routePath, async (request, response) => {
         try {
           request.body = await parseJsonBody(request);
           response.status = (statusCode) => {
@@ -40,14 +41,14 @@ function apiContactDevMiddleware() {
             response.end(JSON.stringify(payload));
             return response;
           };
-          await contactHandler(request, response);
+          await handler(request, response);
         } catch (error) {
-          console.error("Local /api/contact route failed", { message: error?.message || "Unknown route error" });
+          console.error(`Local ${routePath} route failed`, { message: error?.message || "Unknown route error" });
           if (!response.headersSent) {
             response.statusCode = 500;
             response.setHeader("Content-Type", "application/json");
           }
-          response.end(JSON.stringify({ error: "Unable to process contact request." }));
+          response.end(JSON.stringify({ error: `Unable to process ${label} request.` }));
         }
       });
     },
@@ -56,5 +57,10 @@ function apiContactDevMiddleware() {
 
 export default defineConfig({
   envPrefix: ["VITE_", "NEXT_PUBLIC_"],
-  plugins: [apiContactDevMiddleware(), react(), tailwindcss()],
+  plugins: [
+    apiRouteDevMiddleware("/api/contact", contactHandler, "contact"),
+    apiRouteDevMiddleware("/api/auditsuite-payment-link", auditsuitePaymentLinkHandler, "AuditSuite checkout"),
+    react(),
+    tailwindcss(),
+  ],
 });

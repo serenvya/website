@@ -1769,7 +1769,8 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
         throw new Error(result.error || "Unable to start your checkout right now.");
       }
 
-      window.location.href = selectedPaymentLink;
+      setStatus("sent");
+      window.open(selectedPaymentLink, "_blank", "noopener,noreferrer");
     } catch (error) {
       setCheckoutError(error.message || "Unable to start your checkout right now.");
       setStatus("error");
@@ -1831,13 +1832,15 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
 
           {checkoutError && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(185,28,28,0.08)]">{checkoutError}</p>}
 
+          {status === "sent" && <p className="rounded-xl border border-emerald-300/30 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-100">Your details are captured. Redirecting you to the secure payment page in a new tab — if it did not open, <a className="font-semibold underline" href={getAuditSuitePaymentLink(plan.id, { couponApplied })} target="_blank" rel="noopener noreferrer">click here to pay {finalAmount}</a>.</p>}
+
           <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0878C9]/28 bg-white/78 px-6 text-sm font-medium text-[#0F172A] shadow-[0_12px_34px_rgba(8,120,201,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#18A8DC]/55 hover:bg-[#EAF7FF] focus:outline-none focus:ring-2 focus:ring-sky-300" onClick={onClose} type="button">
-              Cancel
+              {status === "sent" ? "Close" : "Cancel"}
             </button>
-            <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B] focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:cursor-not-allowed disabled:opacity-70" disabled={status === "sending"} type="submit">
-              {status === "sending" ? "Preparing secure payment…" : `Continue to secure payment — ${finalAmount}`}
-              {status !== "sending" && <Icon name="arrow" className="ml-2 h-5 w-5" />}
+            <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B] focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:cursor-not-allowed disabled:opacity-70" disabled={status === "sending" || status === "sent"} type="submit">
+              {status === "sending" ? "Preparing secure payment…" : status === "sent" ? "Payment page opened" : `Continue to secure payment — ${finalAmount}`}
+              {status !== "sending" && status !== "sent" && <Icon name="arrow" className="ml-2 h-5 w-5" />}
             </button>
           </div>
         </form>

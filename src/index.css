@@ -216,6 +216,13 @@ a { text-decoration: none; }
   color: #f97316 !important;
 }
 
+.bright-theme .text-red-100,
+.bright-theme .text-red-200,
+.bright-theme .text-red-300,
+.bright-theme .text-red-400 {
+  color: #dc2626 !important;
+}
+
 .bright-theme [class*="border-white/"] {
   border-color: rgba(8, 120, 201, 0.14) !important;
 }

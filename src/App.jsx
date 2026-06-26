@@ -1729,8 +1729,6 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
       return;
     }
 
-    setErrors({});
-    setCheckoutError("");
     const selectedPaymentLink = getAuditSuitePaymentLink(plan.id, { couponApplied });
     if (!selectedPaymentLink) {
       setCheckoutError("Checkout is temporarily unavailable. Please contact the Serenvya team.");
@@ -1738,9 +1736,44 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
       return;
     }
 
-    // Temporary test flow: bypass the pre-payment email handoff and redirect directly.
-    // Reintroduce the existing /api/contact notification step here before production.
-    window.location.href = selectedPaymentLink;
+    setErrors({});
+    setCheckoutError("");
+    setStatus("sending");
+
+    try {
+      const mobileDigits = normalizeMobile(form.phone);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "auditsuite_checkout_started",
+          product: plan.name,
+          billing: "Annual license",
+          name: form.fullName,
+          email: form.email,
+          mobile: mobileDigits,
+          firmName: form.firmName,
+          price: finalPrice,
+          finalAmount: couponApplied ? "15000" : "20000",
+          originalAmount: "30000",
+          offerAmount: "20000",
+          couponCode: couponApplied ? AUDITSUITE_DEMO_COUPON_CODE : "",
+          couponSavings: couponApplied ? "₹5,000" : "",
+          paymentLink: selectedPaymentLink,
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || "Unable to start your checkout right now.");
+      }
+
+      window.location.href = selectedPaymentLink;
+    } catch (error) {
+      setCheckoutError(error.message || "Unable to start your checkout right now.");
+      setStatus("error");
+    }
   };
 
   return (

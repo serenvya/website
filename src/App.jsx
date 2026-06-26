@@ -598,7 +598,7 @@ function Field({ label, children, error, hint }) {
       <span className="mb-2 block text-sm font-medium text-white/72">{label}</span>
       {children}
       {hint && !error && <span className="mt-2 block text-xs leading-5 text-white/42">{hint}</span>}
-      {error && <span className="mt-2 block text-xs leading-5 text-red-100">{error}</span>}
+      {error && <span className="mt-2 block text-[13px] font-medium leading-5 text-red-300">{error}</span>}
     </label>
   );
 }
@@ -1859,20 +1859,33 @@ function AuditSuiteLicensePage({ setPage }) {
 
   return (
     <>
-      <section className="relative px-5 pb-12 pt-12 lg:px-8 lg:pb-16 lg:pt-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="fade-up max-w-4xl">
+      <section className="relative px-5 pb-16 pt-12 lg:px-8 lg:pb-24 lg:pt-16">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_minmax(0,460px)] lg:items-start lg:gap-12">
+          <div className="fade-up">
             <SectionLabel icon="clipboard">AuditSuite licensing</SectionLabel>
-            <h1 className="text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Get your AuditSuite firm license</h1>
-            <p className="mt-7 max-w-3xl text-lg leading-8 text-white/70">Start with a secure firm license for your financial statement workflow. The license includes a secure web workspace, Tally Edge connectivity, structured ledger mapping, and CA review controls.</p>
-            <p className="mt-3 max-w-3xl text-[15px] leading-7 text-white/60">Built for CA-led import, mapping, exception review, and structured statement draft preparation.</p>
-            <p className="mt-3 text-[15px] leading-7 text-white/56">All licenses are billed annually. Secure online payment and license delivery are included.</p>
-          </div>
-        </div>
-      </section>
+            <h1 className="mt-1 text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">Get your AuditSuite firm license</h1>
+            <p className="mt-6 text-lg leading-8 text-white/70">Start with a secure firm license for your financial statement workflow. The license includes a secure web workspace, Tally Edge connectivity, structured ledger mapping, and CA review controls.</p>
+            <p className="mt-3 text-[15px] leading-7 text-white/60">Built for CA-led import, mapping, exception review, and structured statement draft preparation.</p>
 
-      <section className="px-5 pb-16 lg:px-8">
-        <div className="mx-auto grid max-w-2xl items-stretch gap-4">
+            <div className="mt-8 border-t border-white/10 pt-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-200">Every license includes</p>
+              <div className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                {reassuranceItems.map((item) => (
+                  <div key={item} className="flex items-start gap-2.5">
+                    <Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
+                    <p className="text-[15px] leading-6 text-white/72">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-2">
+              <p className="inline-flex items-center gap-2 text-[15px] leading-7 text-white/62"><Icon name="lock" className="h-4 w-4 text-sky-200/80" />Secure checkout powered by Razorpay. All licenses are billed annually.</p>
+              <p className="text-[15px] leading-7 text-white/60">Not sure which plan fits your firm? <a href={inquiryHref(productMap["serenvya-auditsuite"])} onClick={() => setPage("query")} className="font-medium text-sky-200 hover:text-white">Contact the Serenvya team</a>.</p>
+            </div>
+          </div>
+
+          <div className="lg:sticky lg:top-24">
           {auditsuitePlans.map((plan) => (
             <Glass key={plan.id} className={`flex h-full flex-col justify-between p-6 transition duration-300 hover:-translate-y-1 ${plan.highlighted ? "border-[#18A8DC]/55 bg-[#0878C9]/10 shadow-[0_30px_82px_rgba(8,120,201,0.25),inset_0_1px_0_rgba(255,255,255,0.16)] ring-1 ring-[#18A8DC]/22" : ""}`}>
               <div>
@@ -1949,25 +1962,8 @@ function AuditSuiteLicensePage({ setPage }) {
               </div>
             </Glass>
           ))}
-        </div>
-        <div className="mx-auto mt-7 max-w-3xl text-center">
-          <p className="inline-flex items-center justify-center gap-2 text-[15px] leading-7 text-white/62"><Icon name="lock" className="h-4 w-4 text-sky-200/80" />Secure checkout powered by Razorpay.</p>
-          <p className="mt-2 text-[15px] leading-7 text-white/60">Not sure which plan fits your firm? <a href={inquiryHref(productMap["serenvya-auditsuite"])} onClick={() => setPage("query")} className="font-medium text-sky-200 hover:text-white">Contact the Serenvya team</a>.</p>
-        </div>
-      </section>
-
-      <section className="px-5 pb-20 lg:px-8">
-        <Glass className="mx-auto max-w-7xl p-7 lg:p-9">
-          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">Every AuditSuite license includes</h2>
-          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {reassuranceItems.map((item) => (
-              <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4">
-                <Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
-                <p className="text-[15px] leading-6 text-white/72">{item}</p>
-              </div>
-            ))}
           </div>
-        </Glass>
+        </div>
       </section>
       {detailsPlan && <AuditSuiteCustomerDetailsModal couponApplied={couponApplied} onClose={() => setDetailsPlan(null)} plan={detailsPlan} />}
     </>

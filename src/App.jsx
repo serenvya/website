@@ -417,32 +417,9 @@ const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || ""
 const AUDITSUITE_LICENSE_URL = import.meta.env.VITE_AUDITSUITE_LICENSE_URL || "#/products/auditsuite/license";
 const AUDITSUITE_LICENSE_PAGE = "products/auditsuite/license";
 const AUDITSUITE_CHECKOUT_PAGE = "products/auditsuite/license/checkout";
-const AUDITSUITE_PLAN_IDS = ["firm-license"];
-const auditsuitePaymentLink20000 = String(import.meta.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_20000 || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_20000 : "") || "").trim();
-const auditsuitePaymentLink15000 = String(import.meta.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_15000 || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_15000 : "") || "").trim();
-const AUDITSUITE_PAYMENT_LINKS = {
-  20000: auditsuitePaymentLink20000,
-  15000: auditsuitePaymentLink15000,
-};
-// Demo-only client coupon. Move validation server-side before production use.
+// The coupon is still applied in the UI for display, but the discount is re-validated
+// server-side (api/auditsuite-payment-link.js) before the payable amount is set.
 const AUDITSUITE_DEMO_COUPON_CODE = "AUDITSUITE25";
-
-function getAuditSuitePaymentLink(planId, { couponApplied = false } = {}) {
-  if (!AUDITSUITE_PLAN_IDS.includes(planId)) {
-    if (import.meta.env.DEV) console.error(`Unsupported AuditSuite plan id: ${planId}`);
-    return "";
-  }
-
-  const selectedPaymentLink = couponApplied ? AUDITSUITE_PAYMENT_LINKS[15000] : AUDITSUITE_PAYMENT_LINKS[20000];
-  if (!selectedPaymentLink || !selectedPaymentLink.startsWith("https://")) {
-    if (import.meta.env.DEV) {
-      console.error(couponApplied ? "Missing ₹15,000 AuditSuite payment link configuration" : "Missing ₹20,000 AuditSuite payment link configuration");
-    }
-    return "";
-  }
-
-  return selectedPaymentLink;
-}
 
 function validateAuditSuiteCustomerForm(form) {
   const errors = {};
@@ -1692,6 +1669,7 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
   const [errors, setErrors] = useState({});
   const [checkoutError, setCheckoutError] = useState("");
   const [status, setStatus] = useState("idle");
+  const [paymentUrl, setPaymentUrl] = useState("");
   const finalAmount = couponApplied ? "₹15,000" : "₹20,000";
   const finalPrice = couponApplied ? plan.couponPrice : plan.price;
 
@@ -1729,48 +1707,65 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
       return;
     }
 
-    const selectedPaymentLink = getAuditSuitePaymentLink(plan.id, { couponApplied });
-    if (!selectedPaymentLink) {
-      setCheckoutError("Checkout is temporarily unavailable. Please contact the Serenvya team.");
-      setStatus("error");
-      return;
-    }
-
     setErrors({});
     setCheckoutError("");
     setStatus("sending");
 
     try {
       const mobileDigits = normalizeMobile(form.phone);
-      const response = await fetch("/api/contact", {
+      const couponCode = couponApplied ? AUDITSUITE_DEMO_COUPON_CODE : "";
+
+      // Step 1: mint a unique Razorpay payment link for this buyer (amount decided server-side).
+      const linkResponse = await fetch("/api/auditsuite-payment-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type: "auditsuite_checkout_started",
-          product: plan.name,
-          billing: "Annual license",
           name: form.fullName,
           email: form.email,
           mobile: mobileDigits,
           firmName: form.firmName,
-          price: finalPrice,
-          finalAmount: couponApplied ? "15000" : "20000",
-          originalAmount: "30000",
-          offerAmount: "20000",
-          couponCode: couponApplied ? AUDITSUITE_DEMO_COUPON_CODE : "",
-          couponSavings: couponApplied ? "₹5,000" : "",
-          paymentLink: selectedPaymentLink,
-          submittedAt: new Date().toISOString(),
+          couponCode,
         }),
       });
-      const result = await response.json().catch(() => ({}));
+      const linkResult = await linkResponse.json().catch(() => ({}));
 
-      if (!response.ok) {
-        throw new Error(result.error || "Unable to start your checkout right now.");
+      if (!linkResponse.ok || !linkResult?.paymentLink) {
+        throw new Error(linkResult.error || "Unable to start your checkout right now.");
       }
 
+      const buyerPaymentLink = linkResult.paymentLink;
+
+      // Step 2: notify the Serenvya team (same flow as the query form). Best effort —
+      // the payment link already exists, so a failed notification must not block the buyer.
+      try {
+        await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "auditsuite_checkout_started",
+            product: plan.name,
+            billing: "Annual license",
+            name: form.fullName,
+            email: form.email,
+            mobile: mobileDigits,
+            firmName: form.firmName,
+            price: linkResult.finalAmount || finalPrice,
+            finalAmount: String(linkResult.amount || (couponApplied ? 15000 : 20000)),
+            originalAmount: "30000",
+            offerAmount: "20000",
+            couponCode,
+            couponSavings: couponApplied ? "₹5,000" : "",
+            paymentLink: buyerPaymentLink,
+            submittedAt: new Date().toISOString(),
+          }),
+        });
+      } catch (notifyError) {
+        console.error("AuditSuite checkout notification failed", notifyError);
+      }
+
+      setPaymentUrl(buyerPaymentLink);
       setStatus("sent");
-      window.open(selectedPaymentLink, "_blank", "noopener,noreferrer");
+      window.open(buyerPaymentLink, "_blank", "noopener,noreferrer");
     } catch (error) {
       setCheckoutError(error.message || "Unable to start your checkout right now.");
       setStatus("error");
@@ -1832,7 +1827,7 @@ function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
 
           {checkoutError && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(185,28,28,0.08)]">{checkoutError}</p>}
 
-          {status === "sent" && <p className="rounded-xl border border-emerald-300/30 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-100">Your details are captured. Redirecting you to the secure payment page in a new tab — if it did not open, <a className="font-semibold underline" href={getAuditSuitePaymentLink(plan.id, { couponApplied })} target="_blank" rel="noopener noreferrer">click here to pay {finalAmount}</a>.</p>}
+          {status === "sent" && <p className="rounded-xl border border-emerald-300/30 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-100">Your details are captured. Redirecting you to the secure payment page in a new tab — if it did not open, <a className="font-semibold underline" href={paymentUrl} target="_blank" rel="noopener noreferrer">click here to pay {finalAmount}</a>.</p>}
 
           <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0878C9]/28 bg-white/78 px-6 text-sm font-medium text-[#0F172A] shadow-[0_12px_34px_rgba(8,120,201,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#18A8DC]/55 hover:bg-[#EAF7FF] focus:outline-none focus:ring-2 focus:ring-sky-300" onClick={onClose} type="button">

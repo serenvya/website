@@ -144,6 +144,7 @@ export default async function handler(request, response) {
       `Final displayed price: ${price || "Not provided"}`,
       `Original price: ${originalPrice || "₹30,000"}`,
       `Offer price: ${offerPrice || "₹20,000"}`,
+      `Payment link: ${paymentLink || "Not generated"}`,
       ...(couponCode ? [
         `Coupon code: ${couponCode}`,
         `Coupon savings: ${couponSavings || "₹5,000"}`,

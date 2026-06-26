@@ -55,7 +55,7 @@ function renderQuestions(containerId, section, questions) {
     const node = template.content.cloneNode(true);
     const fieldset = node.querySelector(".question");
     const legend = node.querySelector("legend");
-    const optionRow = node.querySelector(".option-row");
+    const optionRow = node.querySelector(".question-options");
     const name = `${section}_${index}`;
 
     legend.textContent = `${index + 1}. ${question}`;
@@ -63,10 +63,17 @@ function renderQuestions(containerId, section, questions) {
 
     answerOptions.forEach((option) => {
       const label = document.createElement("label");
-      label.innerHTML = `
-        <input type="radio" name="${name}" value="${option.value}" required />
-        <span>${option.label}</span>
-      `;
+      const input = document.createElement("input");
+      const text = document.createElement("span");
+
+      label.className = "question-option";
+      input.type = "radio";
+      input.name = name;
+      input.value = option.value;
+      input.required = true;
+      text.className = "question-option-text";
+      text.textContent = option.label;
+      label.append(input, text);
       optionRow.appendChild(label);
     });
 

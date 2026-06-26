@@ -15,6 +15,11 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function formatRupeeAmount(value) {
+  const amount = Number(String(value || "").replace(/\D/g, ""));
+  return amount ? `₹${amount.toLocaleString("en-IN")}` : "";
+}
+
 export default async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -30,23 +35,36 @@ export default async function handler(request, response) {
     return response.status(500).json({ error: "Contact form is not configured yet." });
   }
 
-  const name = sanitize(request.body?.name);
-  const email = sanitize(request.body?.email);
-  const mobile = normalizeMobile(request.body?.mobile);
-  const query = sanitize(request.body?.query);
   const requestedType = sanitize(request.body?.type);
-  const type = ["problem", "course", "license"].includes(requestedType) ? requestedType : "query";
-  const submissionLabel = type === "problem" ? "Problem Statement" : type === "course" ? "Course Registration" : type === "license" ? "Product Licensing Inquiry" : "Query";
+  const type = ["problem", "course", "license", "auditsuite_checkout_started"].includes(requestedType) ? requestedType : "query";
+  const submissionLabel = type === "problem" ? "Problem Statement" : type === "course" ? "Course Registration" : type === "license" ? "Product Licensing Inquiry" : type === "auditsuite_checkout_started" ? "AuditSuite License Checkout" : "Query";
+  const name = sanitize(request.body?.name || request.body?.fullName);
+  const email = sanitize(request.body?.email);
+  const mobile = normalizeMobile(request.body?.mobile || request.body?.phone);
+  const query = sanitize(request.body?.query);
   const course = sanitize(request.body?.course);
-  const product = sanitize(request.body?.product);
+  const product = sanitize(request.body?.product || request.body?.productName);
   const productSlug = sanitize(request.body?.productSlug);
-  const price = sanitize(request.body?.price);
+  const finalAmount = sanitize(request.body?.finalAmount);
+  const originalAmount = sanitize(request.body?.originalAmount);
+  const offerAmount = sanitize(request.body?.offerAmount);
+  const price = sanitize(request.body?.price || formatRupeeAmount(finalAmount));
+  const billing = sanitize(request.body?.billing || request.body?.billingCycle);
+  const originalPrice = sanitize(request.body?.originalPrice || formatRupeeAmount(originalAmount));
+  const offerPrice = sanitize(request.body?.offerPrice || formatRupeeAmount(offerAmount));
+  const couponCode = sanitize(request.body?.couponCode);
+  const couponSavings = sanitize(request.body?.couponSavings);
+  const firmName = sanitize(request.body?.firmName);
+  const status = sanitize(request.body?.status);
+  const note = sanitize(request.body?.note);
+  const submittedAt = sanitize(request.body?.submittedAt);
   const address = sanitize(request.body?.address);
   const gstNumber = sanitize(request.body?.gstNumber);
   const profession = sanitize(request.body?.profession);
   const paymentLink = sanitize(request.body?.paymentLink);
 
-  if (!name || !email || !mobile || !query) {
+  if (!name || !email || !mobile || (type !== "auditsuite_checkout_started" && !query)) {
+    console.error("Invalid contact request payload", { type, missing: { name: !name, email: !email, mobile: !mobile, query: !query } });
     return response.status(400).json({ error: `Please provide your name, email, mobile number, and ${type === "problem" ? "problem statement" : type === "course" ? "course registration details" : "query"}.` });
   }
 
@@ -58,6 +76,11 @@ export default async function handler(request, response) {
     return response.status(400).json({ error: "Please provide the product name for licensing enquiries." });
   }
 
+  if (type === "auditsuite_checkout_started" && (!product || !firmName || !finalAmount || !originalAmount || !offerAmount)) {
+    console.error("Invalid AuditSuite checkout payload", { missing: { product: !product, firmName: !firmName, finalAmount: !finalAmount, originalAmount: !originalAmount, offerAmount: !offerAmount } });
+    return response.status(400).json({ error: "Please provide the AuditSuite product, firm name, and price for checkout." });
+  }
+
   if (!isValidEmail(email)) {
     return response.status(400).json({ error: "Please provide a valid email address." });
   }
@@ -66,7 +89,7 @@ export default async function handler(request, response) {
     return response.status(400).json({ error: "Please provide a valid 10-digit mobile number." });
   }
 
-  if (name.length > 120 || email.length > 160 || query.length > 3000 || address.length > 1000 || profession.length > 120 || gstNumber.length > 30 || product.length > 160 || productSlug.length > 120) {
+  if (name.length > 120 || email.length > 160 || query.length > 3000 || address.length > 1000 || profession.length > 120 || gstNumber.length > 30 || product.length > 160 || productSlug.length > 120 || firmName.length > 160) {
     return response.status(400).json({ error: "Please shorten the submission and try again." });
   }
 
@@ -76,7 +99,7 @@ export default async function handler(request, response) {
     name,
     email,
     mobile,
-    query,
+    query: query || "AuditSuite license checkout started.",
     course,
     product,
     productSlug,
@@ -113,11 +136,30 @@ export default async function handler(request, response) {
       `Product: ${product}`,
       `Product Slug: ${productSlug || "Not provided"}`,
     ] : []),
+    ...(type === "auditsuite_checkout_started" ? [
+      `Status: ${status || "Customer proceeded to secure payment"}`,
+      `Important note: ${note || "Payment has not been verified yet. This customer has only proceeded to the secure payment step."}`,
+      `Product: ${product}`,
+      `Billing: ${billing || "Annual license"}`,
+      `Final displayed price: ${price || "Not provided"}`,
+      `Original price: ${originalPrice || "₹30,000"}`,
+      `Offer price: ${offerPrice || "₹20,000"}`,
+      ...(couponCode ? [
+        `Coupon code: ${couponCode}`,
+        `Coupon savings: ${couponSavings || "₹5,000"}`,
+      ] : []),
+      `Full name: ${name}`,
+      `Email address: ${email}`,
+      `Phone number: ${mobile}`,
+      `Firm name: ${firmName}`,
+      `Submission date and time: ${submittedAt || new Date().toISOString()}`,
+    ] : []),
     `Saved to backend storage: ${storageResult.configured ? "Yes" : "Not configured"}`,
     "",
     `${submissionLabel}:`,
-    query,
+    query || "AuditSuite license checkout started.",
   ];
+  const subject = type === "auditsuite_checkout_started" ? `New AuditSuite license checkout started — ${price}` : `New Serenvya ${submissionLabel.toLowerCase()} from ${name}`;
 
   if (apiKey) {
     const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -131,7 +173,7 @@ export default async function handler(request, response) {
         from: `Serenvya Website <${fromEmail}>`,
         to: [toEmail],
         reply_to: email || toEmail,
-        subject: `New Serenvya ${submissionLabel.toLowerCase()} from ${name}`,
+        subject,
         text: lines.join("\n"),
       }),
     });

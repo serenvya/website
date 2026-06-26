@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const img = (name) => `/illustrations/${name}`;
 
@@ -253,6 +253,30 @@ const productInquiry = (name, focus) => `I want to enquire about ${name}. ${focu
 
 export const products = [
   {
+    slug: "serenvya-auditsuite",
+    key: "serenvyaAuditSuite",
+    name: "Serenvya’s AuditSuite",
+    eyebrow: "CA financial statement workflow",
+    badge: "NEW RELEASE",
+    summary: "Connect Tally through Edge, import accounting data, map ledgers, identify review exceptions, and prepare structured financial statement drafts for CA teams.",
+    detail: "Prepare structured financial statement drafts from Tally data with a controlled workflow for imports, ledger mapping, exception review, and CA review and sign-off.",
+    detailSupport: "Reduce manual compilation, standardise ledger treatment, and keep every review step visible to your team.",
+    price: envValue("VITE_PRODUCT_SERENVYA_AUDITSUITE_PRICE", "Fixed annual firm license"),
+    priceLabel: "Fixed annual license",
+    deployment: "Secure web workspace with Tally Edge",
+    deploymentLabel: "Deployment",
+    image: illustrations[8],
+    accent: "blue",
+    detailEyebrow: "Controlled statement preparation",
+    detailHeading: "Built for controlled statement preparation",
+    idealFor: "For CA firms, audit practices, and finance teams preparing Balance Sheets, Profit & Loss statements, notes, and supporting schedules from Tally data.",
+    inquiry: productInquiry("Serenvya’s AuditSuite", "We want to understand how it can connect Tally through Edge, import accounting data, map ledgers, identify review exceptions, and prepare structured financial statement drafts for CA teams."),
+    primaryCtaLabel: "Ask about AuditSuite",
+    outcomes: ["Connect Tally data through the secure Edge workflow", "Organise imported ledgers and reports in one review workspace", "Map ledgers consistently to financial statement heads", "Surface exceptions before statement drafting", "Generate structured drafts for CA review and sign-off"],
+    features: ["Secure Tally data connection", "Import ledgers and reports", "Ledger-to-statement mapping", "Exception review and resolution", "Draft statements, notes and schedules", "CA review and sign-off"],
+    outputsLine: "Outputs: Balance Sheet, Profit & Loss, notes, schedules, exception lists, and export-ready statement drafts.",
+  },
+  {
     slug: "salary-slip-processor",
     key: "salarySlipProcessor",
     name: "Advanced Salary Slip Processor",
@@ -390,6 +414,67 @@ const utilityPages = [
 ];
 const pageMap = Object.fromEntries([...navItems, ...utilityPages].map((item) => [item.page, item]));
 const razorpayPaymentLink = import.meta.env.VITE_RAZORPAY_PAYMENT_LINK_URL || "";
+const AUDITSUITE_LICENSE_URL = import.meta.env.VITE_AUDITSUITE_LICENSE_URL || "#/products/auditsuite/license";
+const AUDITSUITE_LICENSE_PAGE = "products/auditsuite/license";
+const AUDITSUITE_CHECKOUT_PAGE = "products/auditsuite/license/checkout";
+const AUDITSUITE_PLAN_IDS = ["firm-license"];
+const auditsuitePaymentLink20000 = String(import.meta.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_20000 || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_20000 : "") || "").trim();
+const auditsuitePaymentLink15000 = String(import.meta.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_15000 || (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_AUDITSUITE_PAYMENT_LINK_15000 : "") || "").trim();
+const AUDITSUITE_PAYMENT_LINKS = {
+  20000: auditsuitePaymentLink20000,
+  15000: auditsuitePaymentLink15000,
+};
+// Demo-only client coupon. Move validation server-side before production use.
+const AUDITSUITE_DEMO_COUPON_CODE = "AUDITSUITE25";
+
+function getAuditSuitePaymentLink(planId, { couponApplied = false } = {}) {
+  if (!AUDITSUITE_PLAN_IDS.includes(planId)) {
+    if (import.meta.env.DEV) console.error(`Unsupported AuditSuite plan id: ${planId}`);
+    return "";
+  }
+
+  const selectedPaymentLink = couponApplied ? AUDITSUITE_PAYMENT_LINKS[15000] : AUDITSUITE_PAYMENT_LINKS[20000];
+  if (!selectedPaymentLink || !selectedPaymentLink.startsWith("https://")) {
+    if (import.meta.env.DEV) {
+      console.error(couponApplied ? "Missing ₹15,000 AuditSuite payment link configuration" : "Missing ₹20,000 AuditSuite payment link configuration");
+    }
+    return "";
+  }
+
+  return selectedPaymentLink;
+}
+
+function validateAuditSuiteCustomerForm(form) {
+  const errors = {};
+  const mobileDigits = normalizeMobile(form.phone);
+
+  if (!form.fullName.trim()) errors.fullName = "Please enter your full name.";
+  if (!emailPattern.test(form.email.trim())) errors.email = "Enter a valid email address.";
+  if (!/^[6-9]\d{9}$/.test(mobileDigits)) errors.phone = "Enter a valid 10-digit mobile number.";
+  if (!form.firmName.trim()) errors.firmName = "Please enter your firm name.";
+
+  return errors;
+}
+
+// Temporary test pricing only. Replace these values with approved pricing before enabling payment checkout.
+// Handoff: Serenvya displays plan choices and redirects buyers with only ?plan=<planId>.
+// ZIN / AuditSuite validates the plan ID, collects buyer details, creates pending purchase records, handles Razorpay checkout, and issues licenses after verified payment.
+const auditsuitePlans = [
+  {
+    id: "firm-license",
+    name: "AuditSuite Firm License",
+    description: "For CA firms preparing structured financial statement drafts from Tally data with a controlled review workflow.",
+    regularPrice: "₹30,000 / year",
+    price: "₹20,000 / year",
+    couponPrice: "₹15,000 / year",
+    cta: "Get AuditSuite license",
+    highlighted: true,
+    // A 25% discount coupon may be applied later during billing to bring the final price to ₹15,000. Do not display that coupon on this plan card.
+    features: ["1 secure firm workspace", "Up to 10 team members", "Tally Edge connectivity", "Controlled ledger mapping", "Exception review workflow", "Structured statement drafts"],
+  },
+];
+
+const auditsuitePlanMap = Object.fromEntries(auditsuitePlans.map((plan) => [plan.id, plan]));
 
 function parseHash() {
   const raw = window.location.hash.replace("#/", "") || "home";
@@ -399,6 +484,7 @@ function parseHash() {
 
 function getInitialPage() {
   const { path: page } = parseHash();
+  if (page === AUDITSUITE_LICENSE_PAGE || page === AUDITSUITE_CHECKOUT_PAGE) return page;
   if (page === "products" || productMap[page.replace("products/", "")]) return page;
   return pageMap[page] ? page : "home";
 }
@@ -781,6 +867,7 @@ function ProductVisual({ product, compact = false }) {
     "salary-slip-processor": "document",
     "quotation-invoice-suite": "rupee",
     "whatsapp-group-broadcaster": "node",
+    "serenvya-auditsuite": "clipboard",
     "contact-qr-code-generator": "qr",
     "stuffing-plan-manager": "clipboard",
     "income-tax-calculator-ay-2026-27": "chart",
@@ -810,7 +897,7 @@ function ProductPrice({ product }) {
     <div className="flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.065] p-4">
       <span className="rounded-full bg-white/10 p-2 text-amber-200"><Icon name="rupee" className="h-5 w-5" /></span>
       <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-white/42">Price</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-white/42">{product.priceLabel || "Price"}</p>
         <p className="mt-1 text-lg font-medium text-white">{product.price}</p>
       </div>
     </div>
@@ -876,6 +963,11 @@ function ProductCard({ product, setPage }) {
               {product.name}
             </h3>
           </div>
+          {product.badge && (
+            <span className={`shrink-0 rounded-full border ${accent.border} ${accent.bg} px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] ${accent.text} shadow-[0_4px_20px_rgba(0,0,0,0.15)]`}>
+              {product.badge}
+            </span>
+          )}
         </div>
 
         {/* Summary Description */}
@@ -918,13 +1010,14 @@ function ProductCard({ product, setPage }) {
 
 function ProductsBand({ setPage }) {
   const [activeIdx, setActiveIdx] = useState(0);
-  const featuredProducts = [products[7], products[1], products[6]];
+  const featuredProducts = ["zin-finance-agent", "quotation-invoice-suite", "lbh-lex-suite"].map((slug) => productMap[slug]);
   const activeProduct = featuredProducts[activeIdx];
 
   const productIconMap = {
     "salary-slip-processor": "document",
     "quotation-invoice-suite": "rupee",
     "whatsapp-group-broadcaster": "node",
+    "serenvya-auditsuite": "clipboard",
     "contact-qr-code-generator": "qr",
     "stuffing-plan-manager": "clipboard",
     "income-tax-calculator-ay-2026-27": "chart",
@@ -1520,10 +1613,11 @@ function ProductDetailPage({ product, setPage }) {
             <SectionLabel>{product.eyebrow}</SectionLabel>
             <h1 className="max-w-4xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">{product.name}</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70">{product.detail}</p>
+            {product.detailSupport && <p className="mt-3 max-w-2xl text-[15px] leading-7 text-white/58">{product.detailSupport}</p>}
             <div className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
               <ProductPrice product={product} />
               <div className="rounded-2xl border border-white/12 bg-white/[0.065] p-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-white/42">Delivery</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-white/42">{product.deploymentLabel || "Delivery"}</p>
                 <p className="mt-1 text-lg font-medium text-white">{product.deployment}</p>
               </div>
             </div>
@@ -1534,8 +1628,19 @@ function ProductDetailPage({ product, setPage }) {
               <span className="text-sm font-medium text-white">{product.partner.replace("Serenvya x ", "")}</span>
             </div>}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ProductAction product={product} label="Ask about this product" />
-              <Button href={inquiryHref(product)} variant="ghost">Discuss customization</Button>
+              {product.slug === "serenvya-auditsuite" ? (
+                <>
+                  <Button href={AUDITSUITE_LICENSE_URL}>
+                    Get your license <Icon name="arrow" className="ml-2 h-5 w-5" />
+                  </Button>
+                  <ProductAction product={product} label={product.primaryCtaLabel || "Ask about this product"} variant="ghost" />
+                </>
+              ) : (
+                <>
+                  <ProductAction product={product} label={product.primaryCtaLabel || "Ask about this product"} />
+                  <Button href={inquiryHref(product)} variant="ghost">Discuss customization</Button>
+                </>
+              )}
             </div>
           </div>
           <div className="fade-up" style={{ animationDelay: "100ms" }}>
@@ -1547,8 +1652,8 @@ function ProductDetailPage({ product, setPage }) {
       <section className="px-5 pb-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[0.95fr_1.05fr]">
           <Glass className="p-7">
-            <p className="text-sm uppercase tracking-[0.18em] text-amber-200">Best fit</p>
-            <h2 className="mt-4 text-2xl font-medium tracking-tight">Who this is for</h2>
+            <p className="text-sm uppercase tracking-[0.18em] text-amber-200">{product.detailEyebrow || "Best fit"}</p>
+            <h2 className="mt-4 text-2xl font-medium tracking-tight">{product.detailHeading || "Who this is for"}</h2>
             <p className="mt-4 text-[15px] leading-7 text-white/68">{product.idealFor}</p>
             <div className="mt-7 grid gap-3">
               {product.outcomes.map((outcome) => <div key={outcome} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4"><Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" /><p className="text-[15px] leading-6 text-white/72">{outcome}</p></div>)}
@@ -1559,6 +1664,7 @@ function ProductDetailPage({ product, setPage }) {
               <p className="text-sm font-semibold text-sky-200">0{index + 1}</p>
               <h3 className="mt-5 text-xl font-medium tracking-tight">{feature}</h3>
             </Glass>)}
+            {product.outputsLine && <p className="text-[13px] leading-6 text-white/56 sm:col-span-2">{product.outputsLine}</p>}
           </div>
         </div>
       </section>
@@ -1577,6 +1683,286 @@ function ProductDetailPage({ product, setPage }) {
         </Glass>
       </section>
     </>
+  );
+}
+
+function AuditSuiteCustomerDetailsModal({ couponApplied, onClose, plan }) {
+  const closeButtonRef = useRef(null);
+  const [form, setForm] = useState({ fullName: "", email: "", phone: "", firmName: "" });
+  const [errors, setErrors] = useState({});
+  const [checkoutError, setCheckoutError] = useState("");
+  const [status, setStatus] = useState("idle");
+  const finalAmount = couponApplied ? "₹15,000" : "₹20,000";
+  const finalPrice = couponApplied ? plan.couponPrice : plan.price;
+
+  useEffect(() => {
+    const previouslyFocusedElement = document.activeElement;
+    closeButtonRef.current?.focus();
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedElement?.focus?.();
+    };
+  }, [onClose]);
+
+  const inputBase = "w-full rounded-2xl border bg-white/[0.08] px-4 py-3 text-white outline-none transition placeholder:text-white/34 focus:border-[#18A8DC] focus:shadow-[0_0_0_3px_rgba(24,168,220,0.16)]";
+
+  const updateField = (event) => {
+    setErrors((current) => ({ ...current, [event.target.name]: "" }));
+    setCheckoutError("");
+    if (status === "error") setStatus("idle");
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  };
+
+  const continueToPayment = async (event) => {
+    event.preventDefault();
+    if (status === "sending") return;
+
+    const nextErrors = validateAuditSuiteCustomerForm(form);
+
+    if (Object.keys(nextErrors).length) {
+      setErrors(nextErrors);
+      setStatus("error");
+      return;
+    }
+
+    setErrors({});
+    setCheckoutError("");
+    const selectedPaymentLink = getAuditSuitePaymentLink(plan.id, { couponApplied });
+    if (!selectedPaymentLink) {
+      setCheckoutError("Checkout is temporarily unavailable. Please contact the Serenvya team.");
+      setStatus("error");
+      return;
+    }
+
+    // Temporary test flow: bypass the pre-payment email handoff and redirect directly.
+    // Reintroduce the existing /api/contact notification step here before production.
+    window.location.href = selectedPaymentLink;
+  };
+
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center px-5 py-6" role="presentation">
+      <button aria-label="Close customer details form" className="absolute inset-0 cursor-default bg-[#07111F]/70 backdrop-blur-sm" onClick={onClose} type="button" />
+      <Glass className="relative max-h-[calc(100vh-3rem)] w-full max-w-3xl overflow-y-auto p-6 shadow-[0_30px_90px_rgba(2,8,23,0.34)] sm:p-7" role="dialog" aria-modal="true" aria-labelledby="auditsuite-customer-title">
+        <button
+          aria-label="Close"
+          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/12 bg-white/[0.08] text-white/70 transition hover:bg-white/[0.14] hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300"
+          onClick={onClose}
+          ref={closeButtonRef}
+          type="button"
+        >
+          <Icon name="close" className="h-5 w-5" />
+        </button>
+        <form className="grid gap-5" onSubmit={continueToPayment}>
+          <div className="pr-12">
+            <SectionLabel icon="document">Customer details</SectionLabel>
+            <h2 id="auditsuite-customer-title" className="text-2xl font-medium tracking-tight">Complete your AuditSuite license details</h2>
+            <p className="mt-3 text-[15px] leading-7 text-white/64">Add the buyer and firm details below. The secure Razorpay payment page opens after this step.</p>
+          </div>
+
+          <div className="rounded-2xl border border-[#18A8DC]/20 bg-[#EAF7FF]/[0.07] p-4">
+            <div className="grid gap-3 text-[15px] leading-6 text-white/72 sm:grid-cols-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/42">Product</p>
+                <p className="mt-1 font-medium text-white">AuditSuite Firm License</p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/42">Billing</p>
+                <p className="mt-1 font-medium text-white">Annual license</p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/42">Final payable amount</p>
+                <p className="mt-1 font-medium text-white">{finalPrice}</p>
+              </div>
+            </div>
+            {couponApplied && <p className="mt-3 rounded-xl border border-emerald-300/22 bg-emerald-400/10 px-3 py-2 text-sm font-medium text-emerald-100">Coupon AUDITSUITE25 applied — ₹5,000 saved</p>}
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            <Field label="Full name" error={errors.fullName}>
+              <input aria-invalid={Boolean(errors.fullName)} className={`${inputBase} ${errors.fullName ? "border-red-300/50" : "border-white/12"}`} name="fullName" onChange={updateField} placeholder="Enter your full name" value={form.fullName} />
+            </Field>
+            <Field label="Email address" error={errors.email}>
+              <input aria-invalid={Boolean(errors.email)} className={`${inputBase} ${errors.email ? "border-red-300/50" : "border-white/12"}`} name="email" onChange={updateField} placeholder="you@firm.com" type="email" value={form.email} />
+            </Field>
+            <Field label="Phone number" error={errors.phone} hint="Use a 10-digit Indian mobile number. +91, spaces, or dashes are okay.">
+              <input aria-invalid={Boolean(errors.phone)} className={`${inputBase} ${errors.phone ? "border-red-300/50" : "border-white/12"}`} inputMode="tel" name="phone" onChange={updateField} placeholder="Enter mobile number" type="tel" value={form.phone} />
+            </Field>
+            <Field label="Firm name" error={errors.firmName}>
+              <input aria-invalid={Boolean(errors.firmName)} className={`${inputBase} ${errors.firmName ? "border-red-300/50" : "border-white/12"}`} name="firmName" onChange={updateField} placeholder="Enter your firm name" value={form.firmName} />
+            </Field>
+          </div>
+
+          {checkoutError && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(185,28,28,0.08)]">{checkoutError}</p>}
+
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0878C9]/28 bg-white/78 px-6 text-sm font-medium text-[#0F172A] shadow-[0_12px_34px_rgba(8,120,201,0.10)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#18A8DC]/55 hover:bg-[#EAF7FF] focus:outline-none focus:ring-2 focus:ring-sky-300" onClick={onClose} type="button">
+              Cancel
+            </button>
+            <button className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-300/30 bg-[#F97316] px-6 text-sm font-medium text-white shadow-[0_18px_50px_rgba(249,115,22,0.24)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F59E0B] focus:outline-none focus:ring-2 focus:ring-orange-300 disabled:cursor-not-allowed disabled:opacity-70" disabled={status === "sending"} type="submit">
+              {status === "sending" ? "Preparing secure payment…" : `Continue to secure payment — ${finalAmount}`}
+              {status !== "sending" && <Icon name="arrow" className="ml-2 h-5 w-5" />}
+            </button>
+          </div>
+        </form>
+      </Glass>
+    </div>
+  );
+}
+
+function AuditSuiteLicensePage({ setPage }) {
+  const [couponCode, setCouponCode] = useState("");
+  const [couponStatus, setCouponStatus] = useState("idle");
+  const [detailsPlan, setDetailsPlan] = useState(null);
+  const couponApplied = couponStatus === "applied";
+  const reassuranceItems = [
+    "Secure web workspace",
+    "Tally Edge connectivity",
+    "Controlled ledger mapping and exception review",
+    "Structured financial statement drafts",
+    "CA review and sign-off workflow",
+  ];
+
+  return (
+    <>
+      <section className="relative px-5 pb-12 pt-12 lg:px-8 lg:pb-16 lg:pt-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="fade-up max-w-4xl">
+            <SectionLabel icon="clipboard">AuditSuite licensing</SectionLabel>
+            <h1 className="text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">Get your AuditSuite firm license</h1>
+            <p className="mt-7 max-w-3xl text-lg leading-8 text-white/70">Start with a secure firm license for your financial statement workflow. The license includes a secure web workspace, Tally Edge connectivity, structured ledger mapping, and CA review controls.</p>
+            <p className="mt-3 max-w-3xl text-[15px] leading-7 text-white/60">Built for CA-led import, mapping, exception review, and structured statement draft preparation.</p>
+            <p className="mt-3 text-[15px] leading-7 text-white/56">All licenses are billed annually. Secure online payment and license delivery are included.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-16 lg:px-8">
+        <div className="mx-auto grid max-w-2xl items-stretch gap-4">
+          {auditsuitePlans.map((plan) => (
+            <Glass key={plan.id} className={`flex h-full flex-col justify-between p-6 transition duration-300 hover:-translate-y-1 ${plan.highlighted ? "border-[#18A8DC]/55 bg-[#0878C9]/10 shadow-[0_30px_82px_rgba(8,120,201,0.25),inset_0_1px_0_rgba(255,255,255,0.16)] ring-1 ring-[#18A8DC]/22" : ""}`}>
+              <div>
+                <div className="flex min-h-7 items-start justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-200">Annual license</p>
+                  {plan.badge && <span className="rounded-full border border-[#18A8DC]/30 bg-[#0878C9]/14 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-200">{plan.badge}</span>}
+                </div>
+                <h2 className="mt-5 text-[28px] font-medium leading-tight tracking-tight text-white">{plan.name}</h2>
+                <p className="mt-4 min-h-[76px] text-[15px] leading-7 text-white/66">{plan.description}</p>
+                <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                  {plan.regularPrice && (
+                    <span className="relative inline-block text-base font-medium text-white/44">
+                      {plan.regularPrice}
+                      <span aria-hidden="true" className="pointer-events-none absolute left-0 top-1/2 z-10 h-0.5 w-full -translate-y-1/2 rounded-full bg-[#111827]" />
+                    </span>
+                  )}
+                  <span className="rounded-full border border-[#18A8DC]/24 bg-[#0878C9]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-200">Limited-time offer</span>
+                </div>
+                <p className="mt-2 text-3xl font-medium tracking-tight text-white">{couponApplied ? plan.couponPrice : plan.price}</p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/46">Annual firm license</p>
+                <p className="mt-2 text-[13px] leading-6 text-white/48">{couponApplied ? "You save ₹15,000 on the annual license" : "Save ₹10,000 on the annual license"}</p>
+                <div className="mt-5 grid gap-2">
+                  {plan.features.map((feature) => (
+                    <div key={feature} className="flex items-start gap-2.5 rounded-xl bg-[#EAF7FF]/[0.07] px-3.5 py-2.5">
+                      <Icon name="check" className="mt-1 h-3.5 w-3.5 shrink-0 text-emerald-300" />
+                      <p className="text-[15px] leading-6 text-white/72">{feature}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6">
+                  <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+                    <input
+                      aria-label="AuditSuite coupon code"
+                      className={`min-h-12 rounded-xl border bg-[#EAF7FF]/10 px-4 text-sm font-medium text-white outline-none transition placeholder:text-white/36 focus:border-[#18A8DC] focus:shadow-[0_0_0_3px_rgba(24,168,220,0.16)] ${couponStatus === "error" ? "border-red-300/40" : couponApplied ? "border-emerald-300/35" : "border-white/12"}`}
+                      onChange={(event) => {
+                        setCouponCode(event.target.value);
+                        if (couponStatus !== "idle") setCouponStatus("idle");
+                      }}
+                      placeholder="Enter coupon code"
+                      value={couponCode}
+                    />
+                    <button
+                      className={`inline-flex min-h-12 items-center justify-center rounded-xl border px-5 text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-300 ${couponApplied ? "border-emerald-300/35 bg-emerald-500/80 text-white shadow-[0_10px_24px_rgba(16,185,129,0.16)]" : "border-[#18A8DC]/35 bg-[#0878C9] text-white shadow-[0_12px_28px_rgba(8,120,201,0.18)] hover:-translate-y-0.5 hover:bg-[#0B6FB8]"}`}
+                      onClick={() => {
+                        const normalizedCode = couponCode.trim().toUpperCase();
+                        if (normalizedCode === AUDITSUITE_DEMO_COUPON_CODE) {
+                          setCouponCode(AUDITSUITE_DEMO_COUPON_CODE);
+                          setCouponStatus("applied");
+                          return;
+                        }
+                        setCouponStatus("error");
+                      }}
+                      type="button"
+                    >
+                      {couponApplied ? "Applied" : "Apply coupon"}
+                    </button>
+                  </div>
+                  {couponApplied && <p className="mt-3 rounded-xl border border-emerald-300/22 bg-emerald-400/10 px-4 py-3 text-sm font-medium text-emerald-100">✓ Coupon applied — ₹5,000 saved</p>}
+                  {couponStatus === "error" && <p className="mt-3 rounded-xl border border-red-300/22 bg-red-400/10 px-4 py-3 text-sm font-medium text-red-100">This coupon code is not valid.</p>}
+                </div>
+              </div>
+              <div className="mt-7">
+                <Button
+                  href="#"
+                  className="w-full"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setDetailsPlan(plan);
+                  }}
+                  variant={plan.highlighted ? "primary" : "ghost"}
+                >
+                  {plan.cta} <Icon name="arrow" className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </Glass>
+          ))}
+        </div>
+        <div className="mx-auto mt-7 max-w-3xl text-center">
+          <p className="inline-flex items-center justify-center gap-2 text-[15px] leading-7 text-white/62"><Icon name="lock" className="h-4 w-4 text-sky-200/80" />Secure checkout powered by Razorpay.</p>
+          <p className="mt-2 text-[15px] leading-7 text-white/60">Not sure which plan fits your firm? <a href={inquiryHref(productMap["serenvya-auditsuite"])} onClick={() => setPage("query")} className="font-medium text-sky-200 hover:text-white">Contact the Serenvya team</a>.</p>
+        </div>
+      </section>
+
+      <section className="px-5 pb-20 lg:px-8">
+        <Glass className="mx-auto max-w-7xl p-7 lg:p-9">
+          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">Every AuditSuite license includes</h2>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {reassuranceItems.map((item) => (
+              <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/[0.06] p-4">
+                <Icon name="check" className="mt-1 h-4 w-4 shrink-0 text-emerald-300" />
+                <p className="text-[15px] leading-6 text-white/72">{item}</p>
+              </div>
+            ))}
+          </div>
+        </Glass>
+      </section>
+      {detailsPlan && <AuditSuiteCustomerDetailsModal couponApplied={couponApplied} onClose={() => setDetailsPlan(null)} plan={detailsPlan} />}
+    </>
+  );
+}
+
+function AuditSuiteCheckoutPlaceholder({ setPage }) {
+  const selectedPlan = auditsuitePlanMap[parseHash().params.get("plan") || ""] || auditsuitePlans[0];
+
+  return (
+    <section className="relative px-5 py-14 lg:px-8 lg:py-20">
+      <img src={illustrations[8]} alt="" className="pointer-events-none absolute right-0 top-0 h-96 w-96 object-contain opacity-[0.06] mix-blend-luminosity" />
+      <div className="mx-auto max-w-3xl">
+        <Glass className="fade-up p-7 lg:p-9">
+          <SectionLabel icon="clipboard">AuditSuite license</SectionLabel>
+          <h1 className="text-4xl font-medium leading-tight tracking-tight sm:text-5xl">{selectedPlan.name}</h1>
+          <p className="mt-5 text-3xl font-medium tracking-tight text-white">{selectedPlan.price}</p>
+          <p className="mt-4 text-lg leading-8 text-white/70">Secure Razorpay checkout will be available here.</p>
+          <div className="mt-8">
+            <Button href={`#/${AUDITSUITE_LICENSE_PAGE}`} variant="ghost" onClick={() => setPage(AUDITSUITE_LICENSE_PAGE)}>
+              Back to plans <Icon name="arrow" className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </Glass>
+      </div>
+    </section>
   );
 }
 
@@ -1862,6 +2248,8 @@ export default function App() {
   const pages = {
     home: <Home setPage={setPage} />,
     products: <ProductsPage setPage={setPage} />,
+    [AUDITSUITE_LICENSE_PAGE]: <AuditSuiteLicensePage setPage={setPage} />,
+    [AUDITSUITE_CHECKOUT_PAGE]: <AuditSuiteCheckoutPlaceholder setPage={setPage} />,
     courses: <CoursesPage setPage={setPage} />,
     services: <ServicesPage />,
     solutions: <SolutionsPage />,
